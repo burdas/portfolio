@@ -1,0 +1,33 @@
+---
+import { skills } from '../data/portfolio';
+---
+
+<section id="about" class="py-24 border-t border-white/5">
+  <div class="max-w-4xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-8">Sobre mí</h2>
+    <div class="space-y-6 text-gray-400 leading-relaxed">
+      <p class="text-lg">
+        Ingeniero informático especializado en desarrollo full stack y analítica de datos, con más de 5 años de experiencia profesional trabajando en entornos reales de negocio y proyectos de producción.
+      </p>
+      <p class="text-lg">
+        Actualmente trabajo como Software Engineer en consultoría, participando en el desarrollo de soluciones backend robustas (PHP, MySQL) bajo arquitecturas limpias y hexagonales, aplicando principios de Clean Code, Bounded Contexts, testing y Extreme programming.
+      </p>
+      <p class="text-lg">
+        Mi trayectoria previa como responsable de analítica de datos me aporta una visión diferencial: entiendo profundamente el dato, el impacto del software en negocio y la importancia de tomar decisiones basadas en información fiable.
+      </p>
+      <p class="text-lg">
+        Mantengo una formación constante y autodidacta, desarrollando proyectos propios y explorando tecnologías actuales como Astro, JavaScript moderno, APIs, autenticación, DevOps ligero, CI/CD e integración de herramientas de IA.
+      </p>
+    </div>
+    <div class="mt-12">
+      <h3 class="text-xl font-semibold mb-4 text-gray-200">Habilidades técnicas</h3>
+      <div class="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <span class="px-3 py-1 bg-white/5 border border-white/10 text-gray-300 rounded-full text-sm">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

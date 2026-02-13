@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { experience } from '../../data/portfolio';
+
+export async function getStaticPaths() {
+  return experience.map((job) => ({
+    params: { slug: job.slug },
+    props: { job }
+  }));
+}
+
+const { job } = Astro.props;
+---
+
+<Layout title={`${job.role} - ${job.company}`} description={job.description}>
+  <article class="min-h-screen pt-24 pb-16">
+    <div class="max-w-4xl mx-auto px-6">
+      <a href="/#experience" class="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-8">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Volver a Experiencia
+      </a>
+      
+      <header class="mb-12">
+        <span class="text-sm text-gray-500">{job.period}</span>
+        <h1 class="text-4xl md:text-5xl font-bold mt-2 mb-4">{job.role}</h1>
+        <p class="text-xl text-gray-400">{job.company}</p>
+      </header>
+
+      <div class="prose prose-invert prose-lg max-w-none mb-12">
+        <p class="text-gray-300 leading-relaxed">{job.description}</p>
+      </div>
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-6">Highlights</h2>
+        <ul class="space-y-4">
+          {job.highlights.map((highlight) => (
+            <li class="flex items-start gap-3 text-gray-400">
+              <span class="text-white mt-1">→</span>
+              {highlight}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </article>
+</Layout>
