@@ -75,9 +75,9 @@ import Layout from '../layouts/Layout.astro';
       scene.add(pointLight5);
 
       function getZoom(width) {
-        if (width < 768) return 25;
-        if (width < 1024) return 18;
-        return 40;
+        if (width < 768) return 18;
+        if (width < 1024) return 14;
+        return 20;
       }
 
       const ARCamera = sizes.width / sizes.height;
