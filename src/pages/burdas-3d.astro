@@ -1,0 +1,380 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Burdas 3D - Interactive">
+  <section class="h-screen w-full relative">
+    <div class="h-full w-full flex items-center justify-center bg-gray-900" id="canvas-container"></div>
+    <a href="/" class="absolute top-6 left-6 px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-medium rounded-full hover:bg-white/20 transition">
+      ← Volver al Portfolio
+    </a>
+  </section>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import gsap from 'gsap';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('canvas-container');
+      
+      const sizes = {
+        width: container.clientWidth,
+        height: container.clientHeight
+      };
+
+      const scene = new THREE.Scene();
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+      directionalLight.position.set(5, 10, 7);
+      scene.add(directionalLight);
+
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight2.position.set(-5, -5, -5);
+      scene.add(directionalLight2);
+
+      const pointLight = new THREE.PointLight(0x6366f1, 1, 100);
+      pointLight.position.set(-5, 5, 5);
+      scene.add(pointLight);
+
+      const pointLight2 = new THREE.PointLight(0xf472b6, 0.8, 100);
+      pointLight2.position.set(5, -5, 5);
+      scene.add(pointLight2);
+
+      function getZoom(width) {
+        if (width < 768) return 12.5;
+        if (width < 1024) return 9;
+        return 6.5;
+      }
+
+      const ARCamera = sizes.width / sizes.height;
+      let zoom = getZoom(sizes.width);
+
+      const camera = new THREE.OrthographicCamera(
+        -ARCamera * zoom + 0.6,
+        ARCamera * zoom - 1,
+        zoom,
+        -zoom + 0.6,
+        -10,
+        40
+      );
+      camera.position.set(-11.77, 7, 18.75);
+      scene.add(camera);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: container.appendChild(document.createElement('canvas')),
+        powerPreference: 'high-performance',
+        alpha: true
+      });
+      renderer.setSize(sizes.width, sizes.height);
+      renderer.shadowMap.enabled = true;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.update();
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.enableRotate = false;
+      controls.enableDamping = false;
+
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2();
+      let model = null;
+      let isPressed = false;
+      let isRotating = false;
+      let isHovered = false;
+      let shakeAnimation = null;
+
+      function shortestAngleDiff(target, current) {
+        target = ((target % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        current = ((current % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        let delta = target - current;
+        if (delta > Math.PI) {
+          delta -= 2 * Math.PI;
+        } else if (delta < -Math.PI) {
+          delta += 2 * Math.PI;
+        }
+        return delta;
+      }
+
+      function onMouseMoveRaycaster(event) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        pointer.x = (x / sizes.width) * 2 - 1;
+        pointer.y = -(y / sizes.height) * 2 + 1;
+      }
+
+      function onEnter() {
+        if (!model) return;
+        gsap.to(model.scale, {
+          x: 1.1,
+          y: 1.1,
+          z: 1.1,
+          duration: 0.6,
+          ease: 'elastic.out(1, 0.55)'
+        });
+      }
+
+      function onLeave() {
+        if (!model) return;
+        gsap.to(model.scale, {
+          x: 1.0,
+          y: 1.0,
+          z: 1.0,
+          duration: 0.6,
+          ease: 'elastic.out(1, 0.55)'
+        });
+      }
+
+      function moveRaycast(event) {
+        if (!model) return;
+
+        onMouseMoveRaycaster(event);
+
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(model.children, true);
+
+        const hovering = intersects.length > 0;
+
+        if (isPressed) {
+          if (hovering) {
+            if (!isHovered) {
+              isHovered = true;
+              document.body.style.cursor = 'pointer';
+              onEnter();
+            }
+          }
+        } else {
+          if (hovering && !isHovered) {
+            isHovered = true;
+            document.body.style.cursor = 'pointer';
+            onEnter();
+          } else if (!hovering && isHovered) {
+            isHovered = false;
+            document.body.style.cursor = 'default';
+            onLeave();
+          }
+        }
+      }
+
+      function onPress(event) {
+        if (!model) return;
+
+        onMouseMoveRaycaster(event);
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(model.children);
+
+        if (intersects.length) {
+          isPressed = true;
+
+          gsap.to(model.scale, {
+            x: 0.8,
+            y: 0.8,
+            z: 0.8,
+            duration: 0.6,
+            ease: 'elastic.out(1, 0.75)'
+          });
+
+          shakeAnimation = gsap.to(model.position, {
+            x: '+=0.04',
+            y: '+=0.04',
+            z: '+=0.04',
+            yoyo: true,
+            repeat: -1,
+            duration: 0.05,
+            ease: 'steps(10)'
+          });
+        }
+      }
+
+      function onRelease() {
+        if (!model || !isPressed) return;
+
+        isPressed = false;
+        isRotating = true;
+
+        if (shakeAnimation) {
+          shakeAnimation.kill();
+        }
+
+        gsap.to(model.scale, {
+          x: 1,
+          y: 1,
+          z: 1,
+          duration: 0.5,
+          ease: 'elastic.out(1, 0.55)',
+          onComplete: () => {
+            if (!model) return;
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObjects(model.children, true);
+            if (intersects.length) {
+              if (!isHovered) {
+                isHovered = true;
+                document.body.style.cursor = 'pointer';
+                onEnter();
+              }
+            } else {
+              if (isHovered) {
+                isHovered = false;
+                document.body.style.cursor = 'default';
+                onLeave();
+              }
+            }
+          }
+        });
+
+        gsap.to(model.rotation, {
+          z: model.rotation.z + Math.PI * 2,
+          duration: 1,
+          ease: 'elastic.out(1, 0.55)',
+          onComplete: () => {
+            if (!model) return;
+            model.rotation.z = ((model.rotation.z % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+            isRotating = false;
+          }
+        });
+
+        gsap.to(model.position, {
+          x: 0,
+          y: 0,
+          z: 0
+        });
+      }
+
+      window.addEventListener('mousemove', moveRaycast);
+      window.addEventListener('mousedown', onPress);
+      window.addEventListener('mouseup', onRelease);
+
+      const loader = new GLTFLoader();
+
+      loader.load('./Burdas2.glb', (gltf) => {
+        model = gltf.scene;
+
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+
+        model.traverse((node) => {
+          if (node.isMesh) {
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        });
+
+        const initZPositions = [3.430607, 5.8232, 3.129749, 1.349015];
+
+        gltf.scene.children.forEach((child, idx) => {
+          const finalZ = child.position.z;
+          child.position.z = initZPositions[idx] || 0;
+
+          const maxDim = Math.max(box.max.x - box.min.x, box.max.y - box.min.y, box.max.z - box.min.z);
+          const baseScale = 8 / maxDim;
+
+          gsap.fromTo(child.scale, { x: 0, y: 0, z: 0 }, { 
+            x: baseScale * 10, 
+            y: baseScale * 10, 
+            z: baseScale * 10 
+          });
+
+          const offsetZ = sizes.width < 768 ? 3.5 : sizes.width < 1024 ? 2 : 0.3;
+          gsap.to(child.position, {
+            z: finalZ - offsetZ,
+            duration: 1.2,
+            ease: 'elastic.out(1, 0.5)',
+            delay: idx * 0.1
+          });
+        });
+
+        scene.add(gltf.scene);
+      });
+
+      const mouse = {
+        mouseX: 0,
+        mouseY: 0,
+        targetX: 0,
+        targetY: 0,
+        windowHalfX: sizes.width / 2,
+        windowHalfY: sizes.height / 2
+      };
+
+      function onMouseMove(event) {
+        mouse.mouseX = event.clientX - mouse.windowHalfX;
+        mouse.mouseY = event.clientY - mouse.windowHalfY;
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      let currentRotationX = Math.PI / 2;
+      let currentRotationY = 0;
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const elapsedTime = clock.getElapsedTime();
+
+        if (model) {
+          mouse.targetX = mouse.mouseX * 0.0003;
+          mouse.targetY = mouse.mouseY * 0.0003;
+
+          currentRotationY += (mouse.targetX - currentRotationY) * 0.06;
+          currentRotationX += (mouse.targetY - currentRotationX) * 0.06;
+
+          if (!isPressed) {
+            model.position.set(0, 0, 0);
+            model.position.y = Math.sin(elapsedTime * 3) * 0.15;
+          }
+
+          model.rotation.x = currentRotationX + Math.PI / 2;
+          if (!isRotating) {
+            const angleDiff = shortestAngleDiff(currentRotationY, model.rotation.z);
+            model.rotation.z += angleDiff * 0.06;
+          }
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      function handleResize() {
+        sizes.width = container.clientWidth;
+        sizes.height = container.clientHeight;
+
+        mouse.windowHalfX = sizes.width / 2;
+        mouse.windowHalfY = sizes.height / 2;
+
+        const ARCamera = sizes.width / sizes.height;
+        let zoom = getZoom(sizes.width);
+
+        camera.left = -ARCamera * zoom + 0.6;
+        camera.right = ARCamera * zoom - 1;
+        camera.top = zoom;
+        camera.bottom = -zoom + 0.6;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }
+
+      window.addEventListener('resize', handleResize);
+    });
+  </script>
+</Layout>
