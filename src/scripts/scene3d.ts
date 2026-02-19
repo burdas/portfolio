@@ -23,6 +23,8 @@ const CONFIG = {
     ENTRY_EASE: 'elastic.out(1, 0.5)',
     LEVITATION_SPEED: 2,
     LEVITATION_AMPLITUDE: 0.1,
+    ROTATION_SPEED: 1.5,
+    ROTATION_AMPLITUDE: 0.05,
     SHAKE_INTENSITY: 0.06,
     SHAKE_DURATION: 0.04
   }
@@ -101,6 +103,7 @@ function applyReleaseEffect(model: THREE.Object3D, originalScale: number): void 
 function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean): void {
   if (!isPressed) {
     model.position.y = Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
+    model.rotation.y = Math.sin(elapsedTime * CONFIG.ANIMATION.ROTATION_SPEED) * CONFIG.ANIMATION.ROTATION_AMPLITUDE;
   }
 }
 
