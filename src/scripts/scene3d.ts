@@ -4,10 +4,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import gsap from 'gsap';
 
 const CONFIG = {
-  ZOOM: { MOBILE: 14, TABLET: 20, DESKTOP: 20 },
+  ZOOM: { MOBILE: 50, TABLET: 20, DESKTOP: 20 },
   BREAKPOINTS: { MOBILE: 768, TABLET: 1024 },
   CAMERA: { POSITION: { x: -11.77, y: 7, z: 18.75 }, NEAR: -10, FAR: 40 },
-  MODEL: { SCALE_FACTOR: 5, BASE_DIMENSION: 8 },
+  MODEL: { SCALE_FACTOR: 5, BASE_DIMENSION: 8, Y_OFFSET: 5 },
   ANIMATION: {
     HOVER_SCALE: 1.05,
     HOVER_DURATION: 0.6,
@@ -102,7 +102,7 @@ function applyReleaseEffect(model: THREE.Object3D, originalScale: number): void 
 
 function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean): void {
   if (!isPressed) {
-    model.position.y = Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
+    model.position.y = CONFIG.MODEL.Y_OFFSET + Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
     model.rotation.y = Math.sin(elapsedTime * CONFIG.ANIMATION.ROTATION_SPEED) * CONFIG.ANIMATION.ROTATION_AMPLITUDE;
   }
 }
@@ -114,13 +114,13 @@ export function initScene3D(): void {
     console.error('Container not found');
     return;
   }
-  
+
   const sizes = { width: container.clientWidth, height: container.clientHeight };
   const scene = new THREE.Scene();
 
   scene.add(new THREE.AmbientLight(0xffffff, 1.2));
   scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 0.8));
-  
+
   const mainDir = new THREE.DirectionalLight(0xffffff, 1.5);
   mainDir.position.set(5, 10, 7);
   scene.add(mainDir);
@@ -180,10 +180,10 @@ export function initScene3D(): void {
     model = gltf.scene;
     centerModel(model);
     enableShadows(model);
-    
+
     originalScale = calculateModelScale(model);
     model.scale.setScalar(0);
-    
+
     gsap.to(model.scale, {
       x: originalScale, y: originalScale, z: originalScale,
       duration: CONFIG.ANIMATION.ENTRY_DURATION,
