@@ -7,8 +7,9 @@ import { Icon } from "astro-icon/components";
 
 <section
   id="hero-3d"
-  class="min-h-[calc(100vh-64px)] flex items-end justify-center relative overflow-hidden"
+  class="h-screen flex items-end justify-center relative overflow-hidden"
 >
+  <NoiseBackground />
   <div class="absolute inset-0 pointer-events-auto">
     <Scene3D />
   </div>
@@ -32,5 +33,9 @@ import { Icon } from "astro-icon/components";
       <Icon name="mouse" class="size-6" />
       <Icon name="arrow_down" class="size-6 animate-bounce" />
     </div>
+  </div>
+  <div
+    class="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-black to-transparent pointer-events-none"
+  >
   </div>
 </section>
