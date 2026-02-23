@@ -1,7 +1,14 @@
 ---
-import Scene3DScript from '../scripts/scene3d.ts?url';
+import "../scripts/scene3d";
 ---
 
-<div class="h-full w-full flex items-center justify-center" id="canvas-container"></div>
+<div
+    class="h-full w-full flex items-center justify-center"
+    id="canvas-container"
+>
+</div>
 
-<script type="module" src={Scene3DScript}>
+<script>
+  import { initScene3D } from "../scripts/scene3d";
+  initScene3D();
+</script>

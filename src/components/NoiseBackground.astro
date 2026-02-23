@@ -1,7 +1,10 @@
 ---
-import NoiseBackgroundScript from '../scripts/noiseBackground.ts?url';
+import "../scripts/noiseBackground";
 ---
 
 <div id="canvas-noise" class="absolute inset-0 -z-10 bg-[#09090e]"></div>
 
-<script type="module" src={NoiseBackgroundScript}></script>
+<script>
+  import { initNoiseBackground } from "../scripts/noiseBackground";
+  initNoiseBackground('canvas-noise');
+</script>

@@ -263,5 +263,3 @@ export function initScene3D(): void {
 
   window.addEventListener('resize', handleResize);
 }
-
-document.addEventListener('DOMContentLoaded', initScene3D);

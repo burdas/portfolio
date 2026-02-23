@@ -161,5 +161,3 @@ export function initNoiseBackground(containerId: string): void {
 
   window.addEventListener('resize', handleResize);
 }
-
-document.addEventListener('DOMContentLoaded', () => initNoiseBackground('canvas-noise'));
