@@ -1,0 +1,122 @@
+---
+import { Image } from "astro:assets";
+import logo from "@/src/assets/logo.avif";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  navLinks: { href: string; label: string }[];
+}
+
+const { navLinks } = Astro.props;
+
+const delayClasses = ["delay-0", "delay-50", "delay-100", "delay-150"];
+---
+
+<div
+  id="mobile-menu-overlay"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"
+>
+</div>
+
+<button
+  role="menu"
+  id="hamburger-btn"
+  class="sm:hidden fixed m-2 top-0 right-0 p-2 text-gray-400 hover:text-white transition-colors backdrop-blur-lg border border-white/10 rounded-xl cursor-pointer z-50"
+  aria-label="Menú"
+>
+  <Icon
+    id="hamburger-icon"
+    name="hamburger"
+    class="size-8 transition-all duration-300"
+  />
+</button>
+
+<nav
+  id="navbar-sm"
+  class="sm:hidden fixed inset-4 backdrop-blur-xl bg-black/80 border border-white/10 rounded-2xl z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 shadow-[0_0_40px_-10px_rgba(99,102,241,0.3)]"
+>
+  <div
+    class="absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-500/5 via-transparent to-purple-500/5 pointer-events-none"
+  >
+  </div>
+
+  <div class="relative z-10 flex justify-between items-center p-4">
+    <a
+      id="logo-link-sm"
+      href="/"
+      class="hover:scale-110 transition-transform duration-300 pl-2"
+    >
+      <Image src={logo} alt="Logo" class="w-12" />
+    </a>
+
+    <button
+      id="close-btn"
+      class="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+      aria-label="Cerrar menú"
+    >
+      <Icon name="close" class="size-8" />
+    </button>
+  </div>
+
+  <ul
+    id="nav-links-sm"
+    class="relative z-10 flex flex-col gap-6 p-6 text-xl text-gray-400"
+  >
+    {
+      navLinks.map((link, index) => (
+        <li
+          class={`nav-link-item opacity-0 translate-y-4 transition-all duration-300 ${delayClasses[index]}`}
+        >
+          <a
+            href={link.href}
+            class="hover:text-white transition-colors block w-full py-2 border-b border-white/5 hover:border-white/20"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  const hamburgerButton = document.getElementById("hamburger-btn");
+  const closeButton = document.getElementById("close-btn");
+  const navbarSm = document.getElementById("navbar-sm");
+  const overlay = document.getElementById("mobile-menu-overlay");
+  const navLinks = document.querySelectorAll(".nav-link-item");
+
+  function openMenu() {
+    navbarSm?.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+    navbarSm?.classList.add("opacity-100", "scale-100", "pointer-events-auto");
+    overlay?.classList.remove("opacity-0", "pointer-events-none");
+    overlay?.classList.add("opacity-100", "pointer-events-auto");
+    hamburgerButton?.classList.add("hidden");
+
+    navLinks.forEach((link) => {
+      link.classList.remove("opacity-0", "translate-y-4");
+      link.classList.add("opacity-100", "translate-y-0");
+    });
+  }
+
+  function closeMenu() {
+    navbarSm?.classList.remove(
+      "opacity-100",
+      "scale-100",
+      "pointer-events-auto",
+    );
+    navbarSm?.classList.add("opacity-0", "scale-95", "pointer-events-none");
+    overlay?.classList.remove("opacity-100", "pointer-events-auto");
+    overlay?.classList.add("opacity-0", "pointer-events-none");
+    hamburgerButton?.classList.remove("hidden");
+
+    navLinks.forEach((link) => {
+      link.classList.add("opacity-0", "translate-y-4");
+      link.classList.remove("opacity-100", "translate-y-0");
+    });
+  }
+
+  hamburgerButton?.addEventListener("click", openMenu);
+  closeButton?.addEventListener("click", closeMenu);
+  overlay?.addEventListener("click", closeMenu);
+</script>

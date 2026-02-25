@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import logo from "@/src/assets/logo.avif";
+import NavbarDesktop from "./NavbarDesktop.astro";
+import NavbarMobile from "./NavbarMobile.astro";
 
 const navLinks = [
   { href: "/#about", label: "Sobre mí" },
@@ -11,54 +11,6 @@ const navLinks = [
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 flex justify-center py-2">
-  <nav
-    class="py-3 px-1 flex justify-between items-center backdrop-blur-lg border border-white/10 rounded-xl"
-  >
-    <a
-      id="logo-link"
-      href="/"
-      class="hover:scale-150 w-0 opacity-0 -translate-x-4 transition-all duration-500"
-    >
-      <Image src={logo} alt="Logo" class="w-8" />
-    </a>
-    <ul id="nav-links" class="flex text-sm text-gray-400">
-      {
-        navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class="hover:text-white transition-colors border border-transparent hover:border-white/10 px-3 py-2 rounded-lg hover:bg-white/5 duration-200"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+  <NavbarDesktop navLinks={navLinks} />
+  <NavbarMobile navLinks={navLinks} />
 </header>
-
-<script>
-  const HIDDEN_CLASSES = ["opacity-0", "-translate-x-4", "w-0", "p-0"];
-  const VISIBLE_CLASSES = ["opacity-100", "translate-x-0", "w-fit", "px-3"];
-
-  const logoLink = document.getElementById("logo-link");
-  const heroSection = document.getElementById("hero-3d");
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          logoLink?.classList.add(...HIDDEN_CLASSES);
-          logoLink?.classList.remove(...VISIBLE_CLASSES);
-        } else {
-          logoLink?.classList.remove(...HIDDEN_CLASSES);
-          logoLink?.classList.add(...VISIBLE_CLASSES);
-        }
-      });
-    },
-    { threshold: 0 },
-  );
-
-  if (heroSection) observer.observe(heroSection);
-</script>

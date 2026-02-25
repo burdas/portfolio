@@ -3,6 +3,7 @@
 @theme {
   --color-primary: #6366f1;
   --color-primary-foreground: oklch(0.95 0 0);
+  --transition-delay-50: 50ms;
 }
 
 @font-face {
