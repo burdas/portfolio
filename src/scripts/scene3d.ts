@@ -63,6 +63,14 @@ function updatePointerPosition(event: MouseEvent, renderer: THREE.WebGLRenderer,
   pointer.y = -((event.clientY - rect.top) / sizes.height) * 2 + 1;
 }
 
+function updateTouchPosition(event: TouchEvent, renderer: THREE.WebGLRenderer, sizes: { width: number; height: number }, pointer: THREE.Vector2): void {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const touch = event.touches[0] || event.changedTouches[0];
+  if (!touch) return;
+  pointer.x = ((touch.clientX - rect.left) / sizes.width) * 2 - 1;
+  pointer.y = -((touch.clientY - rect.top) / sizes.height) * 2 + 1;
+}
+
 function checkHover(model: THREE.Object3D, raycaster: THREE.Raycaster, camera: THREE.Camera, pointer: THREE.Vector2): boolean {
   raycaster.setFromCamera(pointer, camera);
   return raycaster.intersectObjects(model.children, true).length > 0;
@@ -75,7 +83,7 @@ function applyHoverEffect(model: THREE.Object3D, originalScale: number, isEnteri
   gsap.to(model.scale, { x: targetScale, y: targetScale, z: targetScale, duration, ease });
 }
 
-function applyClickEffect(model: THREE.Object3D, originalScale: number): gsap.core.Tween {
+function applyClickEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): gsap.core.Tween {
   gsap.to(model.scale, {
     x: originalScale * CONFIG.ANIMATION.CLICK_SCALE,
     y: originalScale * CONFIG.ANIMATION.CLICK_SCALE,
@@ -84,27 +92,26 @@ function applyClickEffect(model: THREE.Object3D, originalScale: number): gsap.co
     ease: CONFIG.ANIMATION.CLICK_EASE
   });
   return gsap.to(model.position, {
-    x: `+=${CONFIG.ANIMATION.SHAKE_INTENSITY}`,
-    y: `+=${CONFIG.ANIMATION.SHAKE_INTENSITY}`,
-    z: `+=${CONFIG.ANIMATION.SHAKE_INTENSITY}`,
-    yoyo: true, repeat: -1, duration: CONFIG.ANIMATION.SHAKE_DURATION, ease: 'steps(10)'
+    x: basePos.x + CONFIG.ANIMATION.SHAKE_INTENSITY,
+    z: basePos.z + CONFIG.ANIMATION.SHAKE_INTENSITY,
+    yoyo: true, repeat: 3, duration: CONFIG.ANIMATION.SHAKE_DURATION, ease: 'steps(10)'
   });
 }
 
-function applyReleaseEffect(model: THREE.Object3D, originalScale: number): void {
+function applyReleaseEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): void {
   gsap.to(model.scale, {
     x: originalScale, y: originalScale, z: originalScale,
     duration: CONFIG.ANIMATION.RELEASE_DURATION,
     ease: CONFIG.ANIMATION.RELEASE_EASE
   });
-  gsap.to(model.position, { x: 0, y: 0, z: 0 });
+  gsap.to(model.position, { x: basePos.x, y: basePos.y, z: basePos.z });
 }
 
-function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean): void {
-  if (!isPressed) {
-    model.position.y = CONFIG.MODEL.Y_OFFSET + Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
-    model.rotation.y = Math.sin(elapsedTime * CONFIG.ANIMATION.ROTATION_SPEED) * CONFIG.ANIMATION.ROTATION_AMPLITUDE;
-  }
+function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean, basePos: THREE.Vector3): void {
+  if (isPressed) return;
+
+  model.position.y = basePos.y + CONFIG.MODEL.Y_OFFSET + Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
+  model.rotation.y = Math.sin(elapsedTime * CONFIG.ANIMATION.ROTATION_SPEED) * CONFIG.ANIMATION.ROTATION_AMPLITUDE;
 }
 
 export function initScene3D(): void {
@@ -171,6 +178,7 @@ export function initScene3D(): void {
   const pointer = new THREE.Vector2();
   let model: THREE.Object3D | null = null;
   let originalScale = 1;
+  let basePosition = new THREE.Vector3(0, 0, 0);
   let isPressed = false;
   let isHovered = false;
   let shakeAnimation: gsap.core.Tween | null = null;
@@ -183,6 +191,7 @@ export function initScene3D(): void {
 
     originalScale = calculateModelScale(model);
     model.scale.setScalar(0);
+    basePosition.set(0, 0, 0);
 
     gsap.to(model.scale, {
       x: originalScale, y: originalScale, z: originalScale,
@@ -215,7 +224,7 @@ export function initScene3D(): void {
     const isHovering = checkHover(model, raycaster, camera, pointer);
     if (isHovering) {
       isPressed = true;
-      shakeAnimation = applyClickEffect(model, originalScale);
+      shakeAnimation = applyClickEffect(model, originalScale, basePosition);
     }
   };
 
@@ -223,25 +232,51 @@ export function initScene3D(): void {
     if (!model || !isPressed) return;
     isPressed = false;
     if (shakeAnimation) { shakeAnimation.kill(); shakeAnimation = null; }
-    applyReleaseEffect(model, originalScale);
+    applyReleaseEffect(model, originalScale, basePosition);
   };
 
-  container.addEventListener('mousemove', onInteractionMove);
-  container.addEventListener('mousedown', onMouseDown);
-  container.addEventListener('mouseup', onMouseUp);
-  container.addEventListener('mouseleave', () => {
-    if (isHovered && model) {
-      isHovered = false;
-      document.body.style.cursor = 'default';
-      applyHoverEffect(model, originalScale, false);
+  const onTouchStart = (event: TouchEvent) => {
+    if (!model) return;
+    updateTouchPosition(event, renderer, sizes, pointer);
+    const isHovering = checkHover(model, raycaster, camera, pointer);
+    if (isHovering) {
+      isPressed = true;
+      shakeAnimation = applyClickEffect(model, originalScale, basePosition);
     }
-  });
+  };
+
+  const onTouchEnd = () => {
+    if (!model || !isPressed) return;
+    isPressed = false;
+    if (shakeAnimation) { shakeAnimation.kill(); shakeAnimation = null; }
+    applyReleaseEffect(model, originalScale, basePosition);
+  };
+
+  function isDesktop(): boolean {
+    return window.innerWidth >= CONFIG.BREAKPOINTS.MOBILE;
+  }
+
+  if (isDesktop()) {
+    container.addEventListener('mousemove', onInteractionMove);
+    container.addEventListener('mousedown', onMouseDown);
+    container.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('mouseleave', () => {
+      if (isHovered && model) {
+        isHovered = false;
+        document.body.style.cursor = 'default';
+        applyHoverEffect(model, originalScale, false);
+      }
+    });
+  } else {
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+  }
 
   const clock = new THREE.Clock();
   const animate = () => {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
-    if (model) updateLevitation(model, elapsedTime, isPressed);
+    if (model) updateLevitation(model, elapsedTime, isPressed, basePosition);
     controls.update();
     renderer.render(scene, camera);
   };
