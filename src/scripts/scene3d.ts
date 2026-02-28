@@ -50,9 +50,9 @@ function centerModel(model: THREE.Object3D): void {
 
 function enableShadows(model: THREE.Object3D): void {
   model.traverse((node) => {
-    if (node.isMesh) {
-      node.castShadow = true;
-      node.receiveShadow = true;
+    if ((node as THREE.Mesh).isMesh) {
+      (node as THREE.Mesh).castShadow = true;
+      (node as THREE.Mesh).receiveShadow = true;
     }
   });
 }
@@ -84,6 +84,7 @@ function applyHoverEffect(model: THREE.Object3D, originalScale: number, isEnteri
 }
 
 function applyClickEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): gsap.core.Tween {
+  gsap.killTweensOf(model.position);
   gsap.to(model.scale, {
     x: originalScale * CONFIG.ANIMATION.CLICK_SCALE,
     y: originalScale * CONFIG.ANIMATION.CLICK_SCALE,
@@ -99,12 +100,13 @@ function applyClickEffect(model: THREE.Object3D, originalScale: number, basePos:
 }
 
 function applyReleaseEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): void {
+  gsap.killTweensOf(model.position);
   gsap.to(model.scale, {
     x: originalScale, y: originalScale, z: originalScale,
     duration: CONFIG.ANIMATION.RELEASE_DURATION,
     ease: CONFIG.ANIMATION.RELEASE_EASE
   });
-  gsap.to(model.position, { x: basePos.x, y: basePos.y, z: basePos.z });
+  gsap.to(model.position, { x: basePos.x, z: basePos.z, duration: CONFIG.ANIMATION.RELEASE_DURATION, ease: CONFIG.ANIMATION.RELEASE_EASE });
 }
 
 function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean, basePos: THREE.Vector3): void {
@@ -224,6 +226,7 @@ export function initScene3D(): void {
     const isHovering = checkHover(model, raycaster, camera, pointer);
     if (isHovering) {
       isPressed = true;
+      if (shakeAnimation) shakeAnimation.kill();
       shakeAnimation = applyClickEffect(model, originalScale, basePosition);
     }
   };
@@ -241,6 +244,7 @@ export function initScene3D(): void {
     const isHovering = checkHover(model, raycaster, camera, pointer);
     if (isHovering) {
       isPressed = true;
+      if (shakeAnimation) shakeAnimation.kill();
       shakeAnimation = applyClickEffect(model, originalScale, basePosition);
     }
   };
