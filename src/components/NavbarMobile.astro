@@ -86,6 +86,11 @@ const delayClasses = ["delay-0", "delay-50", "delay-100", "delay-150"];
   const overlay = document.getElementById("mobile-menu-overlay");
   const navLinks = document.querySelectorAll(".nav-link-item");
 
+  const menuLinks = document.querySelectorAll("#nav-links-sm a");
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
   function openMenu() {
     navbarSm?.classList.remove("opacity-0", "scale-95", "pointer-events-none");
     navbarSm?.classList.add("opacity-100", "scale-100", "pointer-events-auto");
