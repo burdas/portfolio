@@ -16,13 +16,13 @@ const CONFIG = {
 
 export function cleanupNoiseBackground(): void {
   if (!noiseInstance) return;
-  
+
   if (import.meta.env.DEV) console.log('Cleaning up previous NoiseBackground instance');
-  
+
   cancelAnimationFrame(noiseInstance.animationId);
   noiseInstance.renderer.dispose();
   window.removeEventListener('resize', noiseInstance.resizeHandler);
-  
+
   noiseInstance = null;
 }
 
@@ -31,7 +31,7 @@ export function initNoiseBackground(containerId: string): void {
     if (import.meta.env.DEV) console.log('NoiseBackground already initialized, cleaning up first');
     cleanupNoiseBackground();
   }
-  
+
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -47,7 +47,7 @@ export function initNoiseBackground(containerId: string): void {
   `;
 
   const fragmentShader = `
-    precision lowp float;
+    precision highp float;
 
     uniform vec2 uResolution;
     uniform float uTime;
@@ -184,7 +184,7 @@ export function initNoiseBackground(containerId: string): void {
   }
 
   window.addEventListener('resize', handleResize);
-  
+
   noiseInstance = {
     renderer,
     animationId,
