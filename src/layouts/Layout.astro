@@ -31,6 +31,19 @@ const { title, description = "Portfolio de Marcos Burdaspar - Ingeniero Informá
     </main>
 
     <Footer />
+
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        document.querySelectorAll('a[href="/"]').forEach(link => {
+          link.addEventListener('click', (e) => {
+            if (window.location.pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
 

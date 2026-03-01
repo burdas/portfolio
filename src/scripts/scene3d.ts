@@ -3,13 +3,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import gsap from 'gsap';
 
+type AnyEventHandler = (event: any) => void;
+
 let sceneInstance: {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.OrthographicCamera;
   animationId: number;
   resizeHandler: () => void;
-  eventHandlers: { element: any; type: string; handler: any }[];
+  eventHandlers: { element: EventTarget; type: string; handler: AnyEventHandler }[];
 } | null = null;
 
 const CONFIG = {
@@ -312,16 +314,16 @@ export function initScene3D(): void {
       }
     });
     eventHandlers.push(
-      { element: container, type: 'mousemove', handler: mouseMoveHandler },
-      { element: container, type: 'mousedown', handler: mouseDownHandler },
-      { element: container, type: 'mouseup', handler: mouseUpHandler }
+      { element: container, type: 'mousemove', handler: mouseMoveHandler as AnyEventHandler },
+      { element: container, type: 'mousedown', handler: mouseDownHandler as AnyEventHandler },
+      { element: container, type: 'mouseup', handler: mouseUpHandler as AnyEventHandler }
     );
   } else {
     document.addEventListener('touchstart', touchStartHandler, { passive: true });
     document.addEventListener('touchend', touchEndHandler, { passive: true });
     eventHandlers.push(
-      { element: document, type: 'touchstart', handler: touchStartHandler },
-      { element: document, type: 'touchend', handler: touchEndHandler }
+      { element: document as any, type: 'touchstart', handler: touchStartHandler as AnyEventHandler },
+      { element: document as any, type: 'touchend', handler: touchEndHandler as AnyEventHandler }
     );
   }
 
@@ -351,7 +353,7 @@ export function initScene3D(): void {
   };
 
   window.addEventListener('resize', handleResize);
-  eventHandlers.push({ element: window, type: 'resize', handler: handleResize });
+  eventHandlers.push({ element: window as any, type: 'resize', handler: handleResize as AnyEventHandler });
 
   sceneInstance = {
     renderer,

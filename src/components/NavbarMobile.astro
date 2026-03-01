@@ -21,9 +21,13 @@ const delayClasses = ["delay-0", "delay-50", "delay-100", "delay-150"];
 <button
   role="menu"
   id="hamburger-btn"
-  class="sm:hidden fixed m-2 top-0 right-0 p-2 text-gray-400 hover:text-white transition-colors backdrop-blur-lg border border-white/10 rounded-xl cursor-pointer z-50"
+  class="sm:hidden fixed m-2 top-0 right-0 p-2 text-gray-400 hover:text-white transition-colors backdrop-blur-lg border border-white/10 rounded-xl cursor-pointer z-50 shadow-[0_0_40px_-10px_rgba(99,102,241,0.3)]"
   aria-label="Menú"
 >
+  <div
+    class="absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-500/5 via-transparent to-purple-500/5 pointer-events-none"
+  >
+  </div>
   <Icon
     id="hamburger-icon"
     name="hamburger"
@@ -80,48 +84,58 @@ const delayClasses = ["delay-0", "delay-50", "delay-100", "delay-150"];
 </nav>
 
 <script>
-  const hamburgerButton = document.getElementById("hamburger-btn");
-  const closeButton = document.getElementById("close-btn");
-  const navbarSm = document.getElementById("navbar-sm");
-  const overlay = document.getElementById("mobile-menu-overlay");
-  const navLinks = document.querySelectorAll(".nav-link-item");
+  document.addEventListener("astro:page-load", () => {
+    const hamburgerButton = document.getElementById("hamburger-btn");
+    const closeButton = document.getElementById("close-btn");
+    const navbarSm = document.getElementById("navbar-sm");
+    const overlay = document.getElementById("mobile-menu-overlay");
+    const navLinks = document.querySelectorAll(".nav-link-item");
 
-  const menuLinks = document.querySelectorAll("#nav-links-sm a");
-  menuLinks.forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    const menuLinks = document.querySelectorAll("#nav-links-sm a");
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    function openMenu() {
+      navbarSm?.classList.remove(
+        "opacity-0",
+        "scale-95",
+        "pointer-events-none",
+      );
+      navbarSm?.classList.add(
+        "opacity-100",
+        "scale-100",
+        "pointer-events-auto",
+      );
+      overlay?.classList.remove("opacity-0", "pointer-events-none");
+      overlay?.classList.add("opacity-100", "pointer-events-auto");
+      hamburgerButton?.classList.add("hidden");
+
+      navLinks.forEach((link) => {
+        link.classList.remove("opacity-0", "translate-y-4");
+        link.classList.add("opacity-100", "translate-y-0");
+      });
+    }
+
+    function closeMenu() {
+      navbarSm?.classList.remove(
+        "opacity-100",
+        "scale-100",
+        "pointer-events-auto",
+      );
+      navbarSm?.classList.add("opacity-0", "scale-95", "pointer-events-none");
+      overlay?.classList.remove("opacity-100", "pointer-events-auto");
+      overlay?.classList.add("opacity-0", "pointer-events-none");
+      hamburgerButton?.classList.remove("hidden");
+
+      navLinks.forEach((link) => {
+        link.classList.add("opacity-0", "translate-y-4");
+        link.classList.remove("opacity-100", "translate-y-0");
+      });
+    }
+
+    hamburgerButton?.addEventListener("click", openMenu);
+    closeButton?.addEventListener("click", closeMenu);
+    overlay?.addEventListener("click", closeMenu);
   });
-
-  function openMenu() {
-    navbarSm?.classList.remove("opacity-0", "scale-95", "pointer-events-none");
-    navbarSm?.classList.add("opacity-100", "scale-100", "pointer-events-auto");
-    overlay?.classList.remove("opacity-0", "pointer-events-none");
-    overlay?.classList.add("opacity-100", "pointer-events-auto");
-    hamburgerButton?.classList.add("hidden");
-
-    navLinks.forEach((link) => {
-      link.classList.remove("opacity-0", "translate-y-4");
-      link.classList.add("opacity-100", "translate-y-0");
-    });
-  }
-
-  function closeMenu() {
-    navbarSm?.classList.remove(
-      "opacity-100",
-      "scale-100",
-      "pointer-events-auto",
-    );
-    navbarSm?.classList.add("opacity-0", "scale-95", "pointer-events-none");
-    overlay?.classList.remove("opacity-100", "pointer-events-auto");
-    overlay?.classList.add("opacity-0", "pointer-events-none");
-    hamburgerButton?.classList.remove("hidden");
-
-    navLinks.forEach((link) => {
-      link.classList.add("opacity-0", "translate-y-4");
-      link.classList.remove("opacity-100", "translate-y-0");
-    });
-  }
-
-  hamburgerButton?.addEventListener("click", openMenu);
-  closeButton?.addEventListener("click", closeMenu);
-  overlay?.addEventListener("click", closeMenu);
 </script>
