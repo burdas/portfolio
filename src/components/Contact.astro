@@ -1,18 +1,11 @@
 ---
 import { personalInfo } from "../data/portfolio";
+import GlassCard from "./GlassCard.astro";
 ---
 
 <section id="contact" class="py-24 relative">
   <div class="max-w-5xl mx-auto px-6">
-    <div
-      class="relative p-8 md:p-12 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-[0_0_40px_-10px_rgba(99,102,241,0.3)] text-center"
-    >
-      <div
-        class="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 pointer-events-none"
-      >
-      </div>
-
-      <div class="relative z-10">
+    <GlassCard class="text-center">
         <div class="flex items-center gap-4 mb-6 justify-center">
         <div class="w-12 h-0.5 bg-gradient-to-r from-indigo-500 to-transparent"></div>
         <h2 class="text-3xl font-bold">Contacto</h2>
@@ -66,7 +59,7 @@ import { personalInfo } from "../data/portfolio";
             GitHub
           </a>
         </div>
-      </div>
+      </GlassCard>
     </div>
   </div>
 </section>

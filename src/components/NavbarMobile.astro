@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import logo from "@/src/assets/logo.avif";
 import { Icon } from "astro-icon/components";
+import GlassCard from "./GlassCard.astro";
 
 interface Props {
   navLinks: { href: string; label: string }[];
@@ -33,45 +34,52 @@ const delayClasses = ["delay-0", "delay-50", "delay-100", "delay-150"];
 
 <nav
   id="navbar-sm"
-  class="sm:hidden fixed inset-4 backdrop-blur-xl bg-black/80 border border-white/10 rounded-2xl z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300 shadow-[0_0_40px_5px_rgba(99,102,241,0.3)]"
+  class="sm:hidden fixed inset-4 z-50 opacity-0 scale-95 pointer-events-none transition-all duration-300"
 >
-  <div class="relative z-10 flex justify-between items-center p-4">
-    <a
-      id="logo-link-sm"
-      href="/"
-      class="hover:scale-110 transition-transform duration-300 pl-2"
-    >
-      <Image src={logo} alt="Logo" class="w-12" />
-    </a>
-
-    <button
-      id="close-btn"
-      class="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer"
-      aria-label="Cerrar menú"
-    >
-      <Icon name="close" class="size-8" />
-    </button>
-  </div>
-
-  <ul
-    id="nav-links-sm"
-    class="relative z-10 flex flex-col gap-6 p-6 text-xl text-gray-400"
+  <GlassCard
+    class="w-full h-full"
+    bgClass="bg-black/80 !p-0"
+    showGradient={true}
+    shadowClass="shadow-[0_0_40px_5px_rgba(99,102,241,0.3)]"
   >
-    {
-      navLinks.map((link, index) => (
-        <li
-          class={`nav-link-item opacity-0 translate-y-4 transition-all duration-300 ${delayClasses[index]}`}
-        >
-          <a
-            href={link.href}
-            class="hover:text-white transition-colors block w-full py-2 border-b border-white/5 hover:border-white/20"
+    <div class="relative z-10 flex justify-between items-center p-4">
+      <a
+        id="logo-link-sm"
+        href="/"
+        class="hover:scale-110 transition-transform duration-300 pl-2"
+      >
+        <Image src={logo} alt="Logo" class="w-12" />
+      </a>
+
+      <button
+        id="close-btn"
+        class="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+        aria-label="Cerrar menú"
+      >
+        <Icon name="close" class="size-8" />
+      </button>
+    </div>
+
+    <ul
+      id="nav-links-sm"
+      class="relative z-10 flex flex-col gap-6 p-6 text-xl text-gray-400"
+    >
+      {
+        navLinks.map((link, index) => (
+          <li
+            class={`nav-link-item opacity-0 translate-y-4 transition-all duration-300 ${delayClasses[index]}`}
           >
-            {link.label}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+            <a
+              href={link.href}
+              class="hover:text-white transition-colors block w-full py-2 border-b border-white/5 hover:border-white/20"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </GlassCard>
 </nav>
 
 <script>
