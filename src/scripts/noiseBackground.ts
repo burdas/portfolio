@@ -1,5 +1,11 @@
 import * as THREE from 'three';
 
+let noiseInstance: {
+  renderer: THREE.WebGLRenderer;
+  animationId: number;
+  resizeHandler: () => void;
+} | null = null;
+
 const CONFIG = {
   COLOR: { r: 0.388, g: 0.400, b: 0.945 },
   BG_COLOR: { r: 0.0, g: 0.0, b: 0.0 },
@@ -8,7 +14,24 @@ const CONFIG = {
   TARGET_FPS: 30
 };
 
+export function cleanupNoiseBackground(): void {
+  if (!noiseInstance) return;
+  
+  if (import.meta.env.DEV) console.log('Cleaning up previous NoiseBackground instance');
+  
+  cancelAnimationFrame(noiseInstance.animationId);
+  noiseInstance.renderer.dispose();
+  window.removeEventListener('resize', noiseInstance.resizeHandler);
+  
+  noiseInstance = null;
+}
+
 export function initNoiseBackground(containerId: string): void {
+  if (noiseInstance) {
+    if (import.meta.env.DEV) console.log('NoiseBackground already initialized, cleaning up first');
+    cleanupNoiseBackground();
+  }
+  
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -131,10 +154,11 @@ export function initNoiseBackground(containerId: string): void {
   const clock = new THREE.Clock();
   const frameTime = 1000 / CONFIG.TARGET_FPS;
   let lastTime = 0;
+  let animationId = 0;
 
   function animate(currentTime: number) {
     if (currentTime - lastTime < frameTime) {
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
       return;
     }
     lastTime = currentTime;
@@ -142,7 +166,7 @@ export function initNoiseBackground(containerId: string): void {
     const elapsedTime = clock.getElapsedTime();
     material.uniforms.uTime.value = elapsedTime;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
   }
 
   animate(0);
@@ -160,4 +184,10 @@ export function initNoiseBackground(containerId: string): void {
   }
 
   window.addEventListener('resize', handleResize);
+  
+  noiseInstance = {
+    renderer,
+    animationId,
+    resizeHandler: handleResize
+  };
 }

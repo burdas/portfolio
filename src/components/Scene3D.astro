@@ -9,6 +9,22 @@ import "../scripts/scene3d";
 </div>
 
 <script>
-  import { initScene3D } from "../scripts/scene3d";
-  initScene3D();
+  import { initScene3D, cleanupScene3D } from "../scripts/scene3d";
+  
+  function runInit() {
+    const container = document.getElementById('canvas-container');
+    if (!container || !container.clientWidth || !container.clientHeight) {
+      setTimeout(() => {
+        cleanupScene3D();
+        initScene3D();
+      }, 50);
+      return;
+    }
+    cleanupScene3D();
+    initScene3D();
+  }
+  
+  runInit();
+  
+  document.addEventListener('astro:page-load', runInit);
 </script>

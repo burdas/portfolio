@@ -3,6 +3,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import gsap from 'gsap';
 
+let sceneInstance: {
+  renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.OrthographicCamera;
+  animationId: number;
+  resizeHandler: () => void;
+  eventHandlers: { element: any; type: string; handler: any }[];
+} | null = null;
+
 const CONFIG = {
   ZOOM: { MOBILE: 50, TABLET: 20, DESKTOP: 20 },
   BREAKPOINTS: { MOBILE: 768, TABLET: 1024 },
@@ -116,7 +125,30 @@ function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed:
   model.rotation.y = Math.sin(elapsedTime * CONFIG.ANIMATION.ROTATION_SPEED) * CONFIG.ANIMATION.ROTATION_AMPLITUDE;
 }
 
+export function cleanupScene3D(): void {
+  if (!sceneInstance) return;
+  
+  if (import.meta.env.DEV) console.log('Cleaning up previous Scene3D instance');
+  
+  cancelAnimationFrame(sceneInstance.animationId);
+  sceneInstance.renderer.dispose();
+  
+  if (sceneInstance.renderer.domElement.parentNode) {
+    sceneInstance.renderer.domElement.parentNode.removeChild(sceneInstance.renderer.domElement);
+  }
+  
+  sceneInstance.eventHandlers.forEach(({ element, type, handler }) => {
+    element.removeEventListener(type, handler);
+  });
+  
+  sceneInstance = null;
+}
+
 export function initScene3D(): void {
+  if (sceneInstance) {
+    if (import.meta.env.DEV) console.log('Scene3D already initialized, cleaning up first');
+    cleanupScene3D();
+  }
   console.log('initScene3D called');
   const container = document.getElementById('canvas-container');
   if (!container) {
@@ -256,14 +288,22 @@ export function initScene3D(): void {
     applyReleaseEffect(model, originalScale, basePosition);
   };
 
+  const eventHandlers: { element: Element; type: string; handler: EventListener }[] = [];
+
   function isDesktop(): boolean {
     return window.innerWidth >= CONFIG.BREAKPOINTS.MOBILE;
   }
 
+  const mouseMoveHandler = onInteractionMove;
+  const mouseDownHandler = onMouseDown;
+  const mouseUpHandler = onMouseUp;
+  const touchStartHandler = onTouchStart;
+  const touchEndHandler = onTouchEnd;
+
   if (isDesktop()) {
-    container.addEventListener('mousemove', onInteractionMove);
-    container.addEventListener('mousedown', onMouseDown);
-    container.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('mousemove', mouseMoveHandler);
+    container.addEventListener('mousedown', mouseDownHandler);
+    container.addEventListener('mouseup', mouseUpHandler);
     container.addEventListener('mouseleave', () => {
       if (isHovered && model) {
         isHovered = false;
@@ -271,14 +311,24 @@ export function initScene3D(): void {
         applyHoverEffect(model, originalScale, false);
       }
     });
+    eventHandlers.push(
+      { element: container, type: 'mousemove', handler: mouseMoveHandler },
+      { element: container, type: 'mousedown', handler: mouseDownHandler },
+      { element: container, type: 'mouseup', handler: mouseUpHandler }
+    );
   } else {
-    document.addEventListener('touchstart', onTouchStart, { passive: true });
-    document.addEventListener('touchend', onTouchEnd, { passive: true });
+    document.addEventListener('touchstart', touchStartHandler, { passive: true });
+    document.addEventListener('touchend', touchEndHandler, { passive: true });
+    eventHandlers.push(
+      { element: document, type: 'touchstart', handler: touchStartHandler },
+      { element: document, type: 'touchend', handler: touchEndHandler }
+    );
   }
 
   const clock = new THREE.Clock();
+  let animationId = 0;
   const animate = () => {
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
     if (model) updateLevitation(model, elapsedTime, isPressed, basePosition);
     controls.update();
@@ -301,4 +351,14 @@ export function initScene3D(): void {
   };
 
   window.addEventListener('resize', handleResize);
+  eventHandlers.push({ element: window, type: 'resize', handler: handleResize });
+
+  sceneInstance = {
+    renderer,
+    scene,
+    camera,
+    animationId,
+    resizeHandler: handleResize,
+    eventHandlers
+  };
 }

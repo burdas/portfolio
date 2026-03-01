@@ -5,6 +5,22 @@ import "../scripts/noiseBackground";
 <div id="canvas-noise" class="absolute inset-0 -z-10 bg-[#09090e]"></div>
 
 <script>
-  import { initNoiseBackground } from "../scripts/noiseBackground";
-  initNoiseBackground('canvas-noise');
+  import { initNoiseBackground, cleanupNoiseBackground } from "../scripts/noiseBackground";
+  
+  function runInit() {
+    const container = document.getElementById('canvas-noise');
+    if (!container || !container.clientWidth || !container.clientHeight) {
+      setTimeout(() => {
+        cleanupNoiseBackground();
+        initNoiseBackground('canvas-noise');
+      }, 50);
+      return;
+    }
+    cleanupNoiseBackground();
+    initNoiseBackground('canvas-noise');
+  }
+  
+  runInit();
+  
+  document.addEventListener('astro:page-load', runInit);
 </script>
