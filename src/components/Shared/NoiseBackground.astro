@@ -1,11 +1,11 @@
 ---
-import "../scripts/noiseBackground";
+import "../../scripts/noiseBackground";
 ---
 
 <div id="canvas-noise" class="absolute inset-0 -z-10 bg-[#09090e]"></div>
 
 <script>
-  import { initNoiseBackground, cleanupNoiseBackground } from "../scripts/noiseBackground";
+  import { initNoiseBackground, cleanupNoiseBackground } from "../../scripts/noiseBackground";
   
   function runInit() {
     const container = document.getElementById('canvas-noise');

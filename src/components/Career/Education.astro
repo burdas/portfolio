@@ -1,0 +1,22 @@
+---
+import { education } from "../../data/portfolio";
+---
+
+<h3 class="text-xl font-semibold text-gray-200 mb-8 flex items-center gap-2">
+  <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+  Education
+</h3>
+<div class="space-y-4">
+  {
+    education.map((edu) => (
+      <div class="p-5 bg-white/2 rounded-xl border border-white/5 hover:border-purple-500/30 transition">
+        <div class="flex justify-between items-start mb-1">
+          <h4 class="text-lg font-semibold text-white">{edu.degree}</h4>
+          <span class="text-gray-500 text-xs">{edu.period}</span>
+        </div>
+        <p class="text-gray-300 text-sm mb-1">{edu.institution}</p>
+        <p class="text-gray-500 text-sm">{edu.details}</p>
+      </div>
+    ))
+  }
+</div>
