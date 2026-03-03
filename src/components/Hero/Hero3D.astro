@@ -3,6 +3,8 @@ import NoiseBackground from "../Shared/NoiseBackground.astro";
 import Scene3D from "./Scene3D.astro";
 import SocialButton from "../Shared/SocialButton.astro";
 import { Icon } from "astro-icon/components";
+
+const name = "Marcos Burdaspar";
 ---
 
 <section
@@ -15,21 +17,23 @@ import { Icon } from "astro-icon/components";
   </div>
   <div class="text-center relative z-20 pointer-events-none space-y-36">
     <div class="inline-block pointer-events-auto">
-      <h1 class="text-5xl md:text-7xl font-extrabold tracking-widest mb-2">
-        Marcos Burdaspar
+      <h1
+        class="text-5xl md:text-8xl font-extrabold tracking-widest mb-2 font-['Geist_Variable']"
+        id="hero-title"
+      >
+        {name.split("").map((char) => <span class="char">{char}</span>)}
       </h1>
       <p class="text-gray-300/50 text-xl font-thin mb-2">
         <span class="text-primary font-thin">&lt;</span> Software developer <span
           class="text-primary font-thin">/&gt;</span
         >
       </p>
-      <div class="flex gap-4 justify-center flex-wrap">
+      <div class="flex gap-4 justify-center flex-wrap" id="social-buttons">
         <SocialButton href="https://github.com/burdas" icon="github" />
         <SocialButton href="https://linkedin.com/in/burdas" icon="linkedin" />
       </div>
     </div>
     <div class="flex flex-col place-items-center gap-1 text-gray-300/60">
-      <!-- <span class="text-sm font-light tracking-widest">EXPLORAR</span> -->
       <Icon name="mouse" class="size-6" />
       <Icon name="arrow_down" class="size-6 animate-bounce" />
     </div>
@@ -38,4 +42,46 @@ import { Icon } from "astro-icon/components";
     class="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-black to-transparent pointer-events-none"
   >
   </div>
+
+  <script>
+    import { gsap } from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+      const chars = document.querySelectorAll("#hero-title .char");
+      const subtitle = document.querySelector("#hero-3d h1 + p");
+      const socialButtons = document.querySelectorAll("#social-buttons > *");
+
+      gsap.set(chars, { opacity: 0, y: 50 });
+      gsap.set(subtitle, { opacity: 0, y: 20 });
+      gsap.set(socialButtons, { opacity: 0, y: 20 });
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.to(chars, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+        duration: 0.8,
+      })
+        .to(
+          subtitle,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+          },
+          "-=0.4",
+        )
+        .to(
+          socialButtons,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.5,
+          },
+          "-=0.3",
+        );
+    });
+  </script>
 </section>
