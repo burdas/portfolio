@@ -10,11 +10,13 @@ import { experience } from "../../data/portfolio";
   {
     experience.map((job) => (
       <a href={`/experience/${job.slug}`} class="block group">
-        <article class="relative pl-6 transition-all">
+        <article class="relative pl-6 transition-all job-timeline">
           <div class="absolute left-0 top-0 bottom-0 flex flex-col gap-1 items-center">
-            <div class="w-3 h-3 bg-indigo-500/30 rounded-full" />
-            <div class="h-full w-0.5 rounded-full bg-gray-400/50">
-              <div class="h-3/5 w-full bg-primary" />
+            <div class="w-2 h-2 bg-gray-500 rounded-full overflow-clip flex flex-col items-start">
+              <div class="fill-dot w-full bg-primary" />
+            </div>
+            <div class="h-full w-0.5 rounded-full bg-gray-500">
+              <div class="fill-bar h-0 w-full bg-primary" />
             </div>
           </div>
           <div class="mb-1">
@@ -33,3 +35,34 @@ import { experience } from "../../data/portfolio";
     ))
   }
 </div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  document.addEventListener("astro:page-load", () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const timelines = document.querySelectorAll(".job-timeline");
+
+    timelines.forEach((timeline) => {
+      const fillBar = timeline.querySelector(".fill-bar");
+      const fillDot = timeline.querySelector(".fill-dot");
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: timeline,
+          start: "top 50%",
+          end: "bottom 50%",
+          scrub: true,
+        },
+      });
+
+      tl.fromTo(
+        fillDot,
+        { height: "0%" },
+        { height: "100%", duration: 1 },
+      ).fromTo(fillBar, { height: "0%" }, { height: "100%", duration: 1 });
+    });
+  });
+</script>
