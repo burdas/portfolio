@@ -18,14 +18,20 @@ const name = "Marcos Burdaspar";
   <div class="text-center relative z-20 pointer-events-none space-y-36">
     <div class="inline-block pointer-events-auto">
       <h1
-        class="text-5xl md:text-8xl font-extrabold tracking-widest mb-2 font-['Geist_Variable']"
+        class="text-5xl md:text-8xl font-extrabold tracking-widest mb-2 font-['Geist_Variable'] glitch-wrapper"
         id="hero-title"
       >
-        {name.split("").map((char) => <span class="char">{char}</span>)}
+        {
+          name.split("").map((char, i) => (
+            <span class="char" data-index={i}>
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))
+        }
       </h1>
-      <p class="text-gray-300/50 text-xl font-thin mb-2">
-        <span class="text-primary font-thin">&lt;</span> Software developer <span
-          class="text-primary font-thin">/&gt;</span
+      <p class="text-gray-300/50 text-xl font-thin mb-2" id="hero-subtitle">
+        <span class="text-primary">&lt;</span> Software developer <span
+          class="text-primary">/&gt;</span
         >
       </p>
       <div class="flex gap-4 justify-center flex-wrap" id="social-buttons">
@@ -46,42 +52,136 @@ const name = "Marcos Burdaspar";
   <script>
     import { gsap } from "gsap";
 
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+    const primaryColor = "#6366f1";
+    const secondaryColors = [
+      "#6366f1",
+      "#818cf8",
+      "#4f46e5",
+      "#8b5cf6",
+      "#a78bfa",
+    ];
+
+    function getRandomChar() {
+      return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    function getRandomPrimaryColor() {
+      return secondaryColors[
+        Math.floor(Math.random() * secondaryColors.length)
+      ];
+    }
+
     document.addEventListener("astro:page-load", () => {
-      const chars = document.querySelectorAll("#hero-title .char");
-      const subtitle = document.querySelector("#hero-3d h1 + p");
+      const titleChars = document.querySelectorAll("#hero-title .char");
+      const subtitle = document.querySelector("#hero-subtitle");
       const socialButtons = document.querySelectorAll("#social-buttons > *");
 
-      gsap.set(chars, { opacity: 0, y: 50 });
-      gsap.set(subtitle, { opacity: 0, y: 20 });
-      gsap.set(socialButtons, { opacity: 0, y: 20 });
+      const originalText = Array.from(titleChars).map((el) => el.textContent);
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      titleChars.forEach((el) => {
+        el.textContent = getRandomChar();
+      });
 
-      tl.to(chars, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.05,
-        duration: 0.8,
-      })
-        .to(
+      const tl = gsap.timeline({ defaults: { ease: "power1.out" } });
+
+      titleChars.forEach((el, i) => {
+        const finalChar = originalText[i];
+
+        tl.to(
+          el,
+          {
+            opacity: 1,
+            duration: 0.01,
+          },
+          i * 0.1,
+        ).call(
+          () => {
+            let iterations = 0;
+            const maxIterations = 6;
+            const interval = setInterval(() => {
+              const element = el as HTMLElement;
+              element.textContent = getRandomChar();
+              element.style.color = getRandomPrimaryColor();
+              iterations++;
+              if (iterations >= maxIterations) {
+                clearInterval(interval);
+                element.textContent = finalChar;
+                element.style.color = primaryColor;
+                gsap.to(el, {
+                  textShadow: `0 0 20px ${primaryColor}, 0 0 40px ${primaryColor}, 0 0 60px ${primaryColor}`,
+                  duration: 0.15,
+                  onComplete: () => {
+                    gsap.to(el, {
+                      color: "#ffffff",
+                      textShadow: "0 0 0px transparent",
+                      duration: 0.5,
+                    });
+                  },
+                });
+              }
+            }, 80);
+          },
+          [],
+          i * 0.1 + 0.01,
+        );
+      });
+
+      tl.to({}, { duration: titleChars.length * 0.1 });
+
+      tl.fromTo(
+        subtitle,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.3",
+      )
+        .fromTo(
           subtitle,
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
+            textShadow: "0 0 20px rgba(99, 102, 241, 0)",
           },
-          "-=0.4",
+          {
+            textShadow: "0 0 30px rgba(99, 102, 241, 0.5)",
+            duration: 0.8,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: 1,
+          },
+          "<",
         )
-        .to(
+        .fromTo(
           socialButtons,
+          {
+            opacity: 0,
+            y: 30,
+            scale: 0.8,
+          },
           {
             opacity: 1,
             y: 0,
-            stagger: 0.1,
-            duration: 0.5,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: "back.out(1.7)",
           },
-          "-=0.3",
+          "-=0.6",
         );
     });
   </script>
+
+  <style>
+    #hero-title .char {
+      display: inline-block;
+      color: #ffffff;
+      transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
+    }
+  </style>
 </section>
