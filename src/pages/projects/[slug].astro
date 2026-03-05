@@ -1,6 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import Layout from '../../layouts/Layout.astro';
 import { projects } from '../../data/portfolio';
+
+const images = import.meta.glob('/src/assets/projects/*.{webp,png,jpg,gif}');
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -10,6 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const imagePath = `/src/assets/projects/${project.image}`;
 ---
 
 <Layout title={`${project.name} - Proyecto`} description={project.description}>
@@ -21,8 +25,8 @@ const { project } = Astro.props;
       </a>
 
       <div class="aspect-video rounded-lg overflow-hidden mb-8 bg-white/5">
-        <img 
-          src={project.image} 
+        <Image 
+          src={images[imagePath]()} 
           alt={project.name}
           class="w-full h-full object-cover"
           transition:name={`project-image-${project.slug}`}

@@ -71,6 +71,28 @@ export const education = [
 
 export const projects = [
   {
+    slug: "portfolio",
+    name: "Portfolio",
+    url: undefined,
+    repo: "https://github.com/burdas/portfolio",
+    description: "Mi portfolio personal desarrollado con Astro",
+    fullDescription: "Portfolio personal desarrollado con Astro, TypeScript y Tailwind CSS. Muestra mi experiencia, proyectos, habilidades y formación de manera profesional.",
+    tech: ["Astro", "TypeScript", "Tailwind CSS", "HTML", "CSS"],
+    features: ["Diseño responsive", "Modo oscuro", "Proyectos dinámicos", "Optimización SEO", "Animaciones suaves"],
+    image: "portfolio.webp"
+  },
+  {
+    slug: "dario-nutricion",
+    name: "Dario Nutrición",
+    url: "https://darionutricion.com/",
+    repo: undefined,
+    description: "Página web para un nutricionista. Optimización SEO.",
+    fullDescription: "Página web diseñada para un nutricionista. Sitio web para promocionar el servicio de nutrición con diferentes servicios ofrecidos. Optimización de SEO para su posicionamiento.",
+    tech: ["HTML", "CSS", "JavaScript", "Astro", "Tailwind CSS", "TypeScript"],
+    features: ["Landing page", "Sección de servicios", "Optimización SEO", "Diseño responsive"],
+    image: "dario_nutricion.webp"
+  },
+  {
     slug: "taxi-peralta",
     name: "Taxi Peralta",
     url: "https://www.taxiperalta.com/",
@@ -79,7 +101,7 @@ export const projects = [
     fullDescription: "Taxi Peralta es un proyecto web completo desarrollado para un profesional del taxi. El sitio web cuenta con una calculadora de viajes que permite a los clientes estimar el coste de sus trayectos, un panel de administración para gestionar tarifas y un sistema de contacto eficiente.",
     tech: ["HTML", "CSS", "JavaScript", "jQuery", "PHP", "MySQL", "Bootstrap", "Google Maps API"],
     features: ["Calculadora de viajes", "Admin panel", "Tarifas", "Formulario de contacto", "Optimización SEO"],
-    image: "https://placehold.co/800x400/111/fff?text=Taxi+Peralta"
+    image: "taxiperalta.webp"
   },
   {
     slug: "la-septima-gema",
@@ -90,7 +112,7 @@ export const projects = [
     fullDescription: "La Séptima Gema es una aplicación web que replica la funcionalidad de IMDB, permitiendo a los usuarios buscar películas, ver información detallada y valorar películas con un sistema de 5 estrellas.",
     tech: ["HTML", "CSS", "JavaScript", "jQuery", "PHP", "MySQL", "Bootstrap", "TMDB API"],
     features: ["Buscador de películas", "Top 20", "Valoración 5 estrellas", "Sistema de login", "Detalles de películas"],
-    image: "https://placehold.co/800x400/111/fff?text=La+Séptima+Gema"
+    image: "la_septima_gema.webp"
   },
   {
     slug: "nutricalc",
@@ -101,7 +123,7 @@ export const projects = [
     fullDescription: "NutriCalc es una aplicación web que permite a los usuarios calcular sus necesidades calóricas diarias y los macronutrientes necesarios según sus objetivos.",
     tech: ["HTML", "CSS", "JavaScript", "jQuery", "Bootstrap", "Chart.js"],
     features: ["Cálculo de calorías", "Macronutrientes", "Gráficos con Chart.js", "Configuración de parámetros"],
-    image: "https://placehold.co/800x400/111/fff?text=NutriCalc"
+    image: "nutricalc.webp"
   },
   {
     slug: "facturando",
@@ -111,7 +133,7 @@ export const projects = [
     fullDescription: "Aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar facturación de forma eficiente.",
     tech: ["C#", "Visual Studio", "Windows Forms", ".NET"],
     features: ["Gestión de clientes", "Generación de PDF corporativo", "Autocompletado", "Historial de facturas"],
-    image: "https://placehold.co/800x400/111/fff?text=Facturando"
+    image: "facturando.webp"
   },
   {
     slug: "tfg-blockchain",
@@ -122,7 +144,7 @@ export const projects = [
     fullDescription: "Trabajo de Fin de Grado sobre tecnología Blockchain centrado en Ethereum. Se desarrollaron tres casos de uso prácticos.",
     tech: ["Ethereum", "Solidity", "VS Code", "HTML", "CSS", "JavaScript", "jQuery", "Bootstrap"],
     features: ["Clon de Twitter descentralizado", "Diario descentralizado", "Juego 3 en raya", "Smart Contracts"],
-    image: "https://placehold.co/800x400/111/fff?text=TFG+Blockchain"
+    image: "tfg_ethereum.webp"
   },
   {
     slug: "pipero",
@@ -133,7 +155,7 @@ export const projects = [
     fullDescription: "Pipero es un ERP en miniatura desarrollado para gestionar un local de restauración.",
     tech: ["HTML", "CSS", "JavaScript", "jQuery", "PHP", "SQLite", "Bootstrap"],
     features: ["Gestión de usuarios/roles", "Mensualidades", "Stock", "Bote", "Dashboard"],
-    image: "https://placehold.co/800x400/111/fff?text=Pipero"
+    image: "pipero.webp"
   },
   {
     slug: "burdaspong",
@@ -144,7 +166,7 @@ export const projects = [
     fullDescription: "BurdasPong es un juego clásico de Pong desarrollado con HTML5 Canvas y JavaScript.",
     tech: ["HTML", "JavaScript", "Canvas API"],
     features: ["Motor gráfico Canvas", "IA adversario", "Controles intuitivos", "Sistema de puntuación"],
-    image: "https://placehold.co/800x400/111/fff?text=BurdasPong"
+    image: "burdaspong.webp"
   },
   {
     slug: "recuperalo",
@@ -154,7 +176,7 @@ export const projects = [
     fullDescription: "Aplicación móvil Android que permite reportar objetos perdidos y encontrados.",
     tech: ["Android Studio", "Java", "Open Street Map", "MongoDB", "Firebase"],
     features: ["Login Google", "Búsqueda en mapa", "Chat integrado", "Notificaciones"],
-    image: "https://placehold.co/800x400/111/fff?text=Recupéralo"
+    image: "recuperalo.webp"
   },
   {
     slug: "superpoke",
@@ -164,7 +186,7 @@ export const projects = [
     fullDescription: "Aplicación web que funciona como Pokédex, permitiendo buscar Pokémon y ver sus características.",
     tech: ["HTML", "CSS", "JavaScript", "React", "Material UI", "PokéAPI"],
     features: ["Buscador", "Ficha técnica", "Listado por generaciones", "Detalles de estadísticas"],
-    image: "https://placehold.co/800x400/111/fff?text=Superpoke"
+    image: "pokeno.webp"
   }
 ];
 
