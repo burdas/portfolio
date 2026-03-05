@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  image: string;
+  slug: string;
+  showLabel?: boolean;
+  class?: string;
+}
+
+const { image, slug, showLabel = false, class: className } = Astro.props;
+
+const PROJECT_IMAGES_PATH = "/src/assets/projects/";
+
+const images = import.meta.glob('/src/assets/projects/*.{webp,png,jpg,gif}');
+
+const imagePath = `${PROJECT_IMAGES_PATH}${image}`;
+const imageExists = !!images[imagePath];
+---
+
+{
+  imageExists ? (
+    <Image
+      src={images[imagePath]() as any}
+      alt={slug}
+      class={className}
+      transition:name={`project-image-${slug}`}
+    />
+  ) : (
+    <div
+      class={`w-full h-full bg-white/5 flex items-center justify-center text-gray-500 ${className}`}
+    >
+      {showLabel && "Imagen no encontrada"}
+    </div>
+  )
+}

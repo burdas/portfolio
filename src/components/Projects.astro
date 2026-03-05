@@ -1,8 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import { projects } from "../data/portfolio";
-
-const images = import.meta.glob('/src/assets/projects/*.{webp,png,jpg,gif}');
+import ProjectImage from "./ProjectImage.astro";
 ---
 
 <section id="projects" class="py-24">
@@ -20,20 +18,11 @@ const images = import.meta.glob('/src/assets/projects/*.{webp,png,jpg,gif}');
             class="group block bg-white/3 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-indigo-500/40 hover:shadow-[0_0_30px_-10px_rgba(99,102,241,0.3)] transition"
           >
             <div class="aspect-video bg-white/5 relative overflow-hidden">
-              {(() => {
-                const imagePath = `/src/assets/projects/${project.image}`;
-                if (!images[imagePath]) {
-                  return <div class="w-full h-full bg-white/5 flex items-center justify-center text-gray-500">Imagen no encontrada</div>;
-                }
-                return (
-                  <Image
-                    src={images[imagePath]()}
-                    alt={project.name}
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                    transition:name={`project-image-${project.slug}`}
-                  />
-                );
-              })()}
+              <ProjectImage 
+                image={project.image} 
+                slug={project.slug} 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+              />
               <div class="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                 <span class="text-white text-sm font-medium">
                   Ver proyecto →
