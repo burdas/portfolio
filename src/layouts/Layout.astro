@@ -1,15 +1,18 @@
 ---
-import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
-import Navbar from '../components/Navbar/Navbar.astro';
-import Footer from '../components/Footer.astro';
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import Navbar from "../components/Navbar/Navbar.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = "Portfolio de Marcos Burdaspar - Ingeniero Informático Full Stack" } = Astro.props;
+const {
+  title,
+  description = "Portfolio de Marcos Burdaspar - Ingeniero Informático Full Stack",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -21,11 +24,36 @@ const { title, description = "Portfolio de Marcos Burdaspar - Ingeniero Informá
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ViewTransitions />
+    <ClientRouter />
+    <script>
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      const scrollPositions: Record<string, number> = {};
+
+      document.addEventListener("astro:before-preparation", () => {
+        scrollPositions[location.pathname] = window.scrollY;
+      });
+
+      document.addEventListener("astro:page-load", () => {
+        const saved = scrollPositions[location.pathname] ?? 0;
+
+        if (saved === 0) return;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.scrollTo({ top: saved, behavior: "instant" });
+          });
+        });
+      });
+    </script>
   </head>
-  <body class="bg-black text-white min-h-screen font-['JetBrains_Mono'] antialiased">
+  <body
+    class="bg-black text-white min-h-screen font-['JetBrains_Mono'] antialiased"
+  >
     <Navbar />
-    
+
     <main>
       <slot />
     </main>
@@ -33,12 +61,12 @@ const { title, description = "Portfolio de Marcos Burdaspar - Ingeniero Informá
     <Footer />
 
     <script>
-      document.addEventListener('astro:page-load', () => {
-        document.querySelectorAll('a[href="/"]').forEach(link => {
-          link.addEventListener('click', (e) => {
-            if (window.location.pathname === '/') {
+      document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll('a[href="/"]').forEach((link) => {
+          link.addEventListener("click", (e) => {
+            if (window.location.pathname === "/") {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }
           });
         });
@@ -51,7 +79,7 @@ const { title, description = "Portfolio de Marcos Burdaspar - Ingeniero Informá
   html {
     scroll-behavior: smooth;
   }
-  
+
   ::selection {
     background: white;
     color: black;
