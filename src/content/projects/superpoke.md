@@ -8,6 +8,9 @@ features: ["Buscador", "Ficha técnica", "Listado por generaciones", "Detalles d
 image: "pokeno.webp"
 duration: "1 semana"
 client: "Personal"
+role: "Desarrollador Full Stack"
+challenges: ["Integrar y gestionar datos de más de 800 Pokémon desde una API externa", "Implementar sistema de filtrado por generaciones sin degradar el rendimiento"]
+solutions: ["Uso de caching y técnicas de optimización para cargar datos eficientemente", "Implementación de filtros eficientes que no requieren recargas de página"]
 ---
 
 Aplicación web que funciona como Pokédex, permitiendo buscar Pokémon y ver sus características.

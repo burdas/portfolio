@@ -8,6 +8,9 @@ features: ["Login Google", "Búsqueda en mapa", "Chat integrado", "Notificacione
 image: "recuperalo.webp"
 duration: "3 semanas"
 client: "Personal"
+role: "Desarrollador Android"
+challenges: ["Implementar sistema de chat en tiempo real con Firebase", "Integrar mapas interactivos y geolocalización en Android"]
+solutions: ["Uso de Firebase Realtime Database para chat instantáneo", "Integración de OpenStreetMap con Android Maps API"]
 ---
 
 Aplicación móvil Android que permite reportar objetos perdidos y encontrados.

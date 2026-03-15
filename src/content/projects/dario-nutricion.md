@@ -9,6 +9,9 @@ features: ["Landing page", "Sección de servicios", "Optimización SEO", "Diseñ
 image: "dario_nutricion.webp"
 duration: "1 semana"
 client: "Dario Nutrición"
+role: "Desarrollador Frontend"
+challenges: ["Crear diseño visual atractivo y profesional para sector salud", "Optimizar SEO para aparecer en búsquedas locales de servicios de nutrición"]
+solutions: ["Diseño limpio con colores accesibles y tipografía legible", "Implementación de SEO local con palabras clave específicas del nicho"]
 ---
 
 Diseño web profesional para un nutricionista. El sitio está optimizado para convertir visitantes en clientes potenciales.

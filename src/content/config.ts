@@ -13,6 +13,9 @@ const projects = defineCollection({
     image: z.string(),
     duration: z.string(),
     client: z.string(),
+    role: z.string(),
+    challenges: z.array(z.string()),
+    solutions: z.array(z.string()),
   }),
 });
 

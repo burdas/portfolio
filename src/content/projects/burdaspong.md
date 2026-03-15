@@ -9,6 +9,9 @@ features: ["Motor gráfico Canvas", "IA adversario", "Controles intuitivos", "Si
 image: "burdaspong.webp"
 duration: "1 semana"
 client: "Personal"
+role: "Desarrollador Full Stack"
+challenges: ["Crear una IA que se adapte dinámicamente al nivel del jugador", "Implementar física de pelota y detección de colisiones precisa"]
+solutions: ["Algoritmo de IA con niveles de dificultad ajustables basado en rendimiento del jugador", "Sistema de física con vectores para movimientos realistas de la pelota"]
 ---
 
 BurdasPong es un juego clásico de Pong desarrollado con HTML5 Canvas y JavaScript.

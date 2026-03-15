@@ -9,6 +9,9 @@ features: ["Calculadora de viajes", "Admin panel", "Tarifas", "Formulario de con
 image: "taxiperalta.webp"
 duration: "3 semanas"
 client: "Taxi Peralta"
+role: "Desarrollador Full Stack"
+challenges: ["Integrar Google Maps API para cálculo de rutas y distancias", "Optimizar SEO para mejorar visibilidad en búsquedas locales"]
+solutions: ["Uso de Google Maps Distance Matrix API para cálculos precisos de coste", "Implementación de SEO técnico con meta tags, sitemap y estructura semántica"]
 ---
 
 Taxi Peralta es un proyecto web completo que revolucionó la forma de pedir presupuestos de transporte.

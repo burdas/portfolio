@@ -9,6 +9,9 @@ features: ["Clon de Twitter descentralizado", "Diario descentralizado", "Juego 3
 image: "tfg_ethereum.webp"
 duration: "6 meses"
 client: "Universidad Pública de Navarra"
+role: "Investigador y Desarrollador"
+challenges: ["Desarrollar smart contracts seguros y optimizados en Solidity", "Integrar dApps con la blockchain de Ethereum de forma eficiente"]
+solutions: ["Uso de patrones de diseño seguros y auditoría de contratos inteligentes", "Implementación de Web3.js para conectar el frontend con la blockchain"]
 ---
 
 Trabajo de Fin de Grado sobre tecnología Blockchain centrado en Ethereum.

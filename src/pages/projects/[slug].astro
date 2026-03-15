@@ -98,7 +98,7 @@ const client = data.client;
               <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
                 Rol
               </p>
-              <p class="text-white font-semibold">Desarrollador</p>
+              <p class="text-white font-semibold">{data.role}</p>
             </div>
             <div class="p-8 border-r border-zinc-500/50">
               <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
@@ -140,51 +140,33 @@ const client = data.client;
               <GlassCard>
                 <h3 class="text-xl font-bold mb-6">Retos y soluciones</h3>
                 <div class="grid grid-cols-2 gap-6">
-                  <div>
-                    <p
-                      class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
-                    >
-                      The Challenge
-                    </p>
-                    <p class="text-gray-400 text-sm">
-                      Crear una solución funcional que cumpla con los objetivos
-                      específicos del proyecto.
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
-                    >
-                      The Solution
-                    </p>
-                    <p class="text-gray-400 text-sm">
-                      Implementación de funcionalidades adaptadas a las
-                      necesidades del cliente.
-                    </p>
-                  </div>
-                  <div class="col-span-2 h-px bg-zinc-500/50"></div>
-                  <div>
-                    <p
-                      class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
-                    >
-                      The Challenge
-                    </p>
-                    <p class="text-gray-400 text-sm">
-                      Crear una solución funcional que cumpla con los objetivos
-                      específicos del proyecto.
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
-                    >
-                      The Solution
-                    </p>
-                    <p class="text-gray-400 text-sm">
-                      Implementación de funcionalidades adaptadas a las
-                      necesidades del cliente.
-                    </p>
-                  </div>
+                  {
+                    data.challenges.map((challenge, index) => (
+                      <>
+                        <div>
+                          <p
+                            class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
+                          >
+                            The Challenge
+                          </p>
+                          <p class="text-gray-400 text-sm">
+                            {challenge}
+                          </p>
+                        </div>
+                        <div>
+                          <p
+                            class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
+                          >
+                            The Solution
+                          </p>
+                          <p class="text-gray-400 text-sm">
+                            {data.solutions[index]}
+                          </p>
+                        </div>
+                        {index < data.challenges.length - 1 && <div class="col-span-2 h-px bg-zinc-500/50"></div>}
+                      </>
+                    ))
+                  }
                 </div>
               </GlassCard>
             </div>
