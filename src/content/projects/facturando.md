@@ -1,0 +1,13 @@
+---
+name: "Facturando"
+repo: "https://github.com/burdas/Facturando"
+description: "Gestión de facturación automatizada: genera PDFs, historial completo y autocompletado."
+fullDescription: "Aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar la facturación de taxis de forma eficiente. Genera PDFs corporativos profesionales, mantiene un historial completo de facturas y ofrece autocompletado para acelerar el proceso de facturación."
+tech: ["C#", "Visual Studio", "Windows Forms", ".NET"]
+features: ["Gestión de clientes", "Generación de PDF corporativo", "Autocompletado", "Historial de facturas"]
+image: "facturando.webp"
+duration: "2 semanas"
+client: "Taxi Peralta"
+---
+
+Aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar la facturación de taxis.

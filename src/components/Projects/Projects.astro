@@ -1,6 +1,8 @@
 ---
-import { projects } from "../../data/portfolio";
+import { getCollection } from 'astro:content';
 import Project from "./Project.astro";
+
+const projects = await getCollection('projects');
 ---
 
 <section id="projects" class="py-32 relative overflow-hidden">

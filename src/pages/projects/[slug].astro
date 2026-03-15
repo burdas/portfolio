@@ -1,123 +1,264 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { projects } from "../../data/portfolio";
+import { getCollection } from "astro:content";
 import ProjectImage from "../../components/Projects/ProjectImage.astro";
+import { Icon } from "astro-icon/components";
+import GlassCard from "@/src/components/Shared/GlassCard.astro";
 
 export async function getStaticPaths() {
+  const projects = await getCollection("projects");
   return projects.map((project) => ({
-    params: { slug: project.slug },
+    params: { slug: project.id.replace(/\.md$/, "") },
     props: { project },
   }));
 }
 
 const { project } = Astro.props;
+const { data } = project;
+const duration = data.duration;
+const client = data.client;
 ---
 
-<Layout title={`${project.name} - Proyecto`} description={project.description}>
-  <article class="min-h-screen pt-24 pb-16">
-    <div class="max-w-4xl mx-auto px-6">
-      <a
-        href="/#projects"
-        class="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-8"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          ><path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 19l-7-7 7-7"></path></svg
+<Layout title={`${data.name} - Proyecto`} description={data.description}>
+  <article class="min-h-screen pt-24 pb-16 bg-neutral-950">
+    <div class="max-w-5xl mx-auto px-6">
+      <nav class="mb-4" transition:animate="slide">
+        <ol class="flex items-center gap-2 text-sm">
+          <li>
+            <a
+              href="/#projects"
+              class="text-gray-500 hover:text-white transition"
+            >
+              Proyectos
+            </a>
+          </li>
+          <li>
+            <Icon name="arrow-right" class="w-4 h-4 text-gray-600" />
+          </li>
+          <li class="text-gray-400">{data.name}</li>
+        </ol>
+      </nav>
+      <header class="mb-12" transition:animate="slide">
+        <h1
+          class="text-5xl md:text-6xl font-bold mb-4"
+          transition:name={`project-title-${project.id}`}
         >
-        Volver a Proyectos
-      </a>
-
-      <div class="aspect-video rounded-lg overflow-hidden mb-8 bg-white/5">
-        <ProjectImage
-          image={project.image}
-          slug={project.slug}
-          class="w-full h-full object-cover"
-        />
-      </div>
-
-      <header class="mb-8">
-        <h1 class="text-4xl md:text-5xl font-bold mt-2 mb-4">{project.name}</h1>
-        <p class="text-xl text-gray-400">{project.description}</p>
-      </header>
-
-      <div class="prose prose-invert prose-lg max-w-none mb-12">
-        <p class="text-gray-300 leading-relaxed">{project.fullDescription}</p>
-      </div>
-
-      <section class="mb-8">
-        <h2 class="text-2xl font-semibold mb-4">Tecnologías</h2>
-        <div class="flex flex-wrap gap-2">
+          {data.name}
+        </h1>
+        <p
+          class="text-xl text-gray-400 mb-8 max-w-2xl"
+          transition:name={`project-description-${project.id}`}
+        >
+          {data.description}
+        </p>
+        <div class="flex gap-4 flex-wrap">
           {
-            project.tech.map((tech) => (
-              <span class="px-3 py-1 bg-white/10 border border-white/20 text-gray-300 rounded-full text-sm">
-                {tech}
-              </span>
-            ))
+            data.url && (
+              <a
+                href={data.url}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-500 transition hover:scale-105"
+              >
+                <Icon name="external-link" class="w-5 h-5" />
+                Ver proyecto
+              </a>
+            )
+          }
+          {
+            data.repo && (
+              <a
+                href={data.repo}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 px-6 py-3 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition"
+              >
+                <Icon name="github" class="w-5 h-5" />
+                Código
+              </a>
+            )
           }
         </div>
-      </section>
-
-      <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4">Características</h2>
-        <ul class="space-y-3">
-          {
-            project.features.map((feature) => (
-              <li class="flex items-start gap-3 text-gray-400">
-                <span class="text-white mt-1">→</span>
-                {feature}
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <div class="flex gap-4">
-        {
-          project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition"
-            >
-              Ver proyecto
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </a>
-          )
-        }
-        <a
-          href={project.repo}
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center gap-2 px-6 py-3 border border-white/20 rounded-full hover:bg-white/10 transition"
+      </header>
+      <section class="mb-12" transition:animate="slide">
+        <div
+          class="aspect-video rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-12"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
-            ><path
-              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-            ></path></svg
+          <ProjectImage
+            image={data.image}
+            slug={project.id}
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <section class="mb-12" transition:animate="slide">
+          <div
+            class="grid grid-cols-2 md:grid-cols-4 border border-zinc-500/50 rounded-xl"
           >
-          Código fuente
-        </a>
-      </div>
+            <div class="p-8 border-r border-zinc-500/50">
+              <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                Rol
+              </p>
+              <p class="text-white font-semibold">Desarrollador</p>
+            </div>
+            <div class="p-8 border-r border-zinc-500/50">
+              <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                Duración
+              </p>
+              <p class="text-white font-semibold">{duration}</p>
+            </div>
+            <div class="p-8 border-r border-zinc-500/50">
+              <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                Cliente
+              </p>
+              <p class="text-white font-semibold">{client}</p>
+            </div>
+            <div class="p-8">
+              <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                Core Tech
+              </p>
+              <p class="text-white font-semibold">
+                {data.tech.slice(0, 3).join(", ")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12" transition:animate="slide">
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="col-span-2">
+              <div class="flex place-items-center gap-4 mb-6">
+                <div
+                  class="w-12 h-0.5 bg-linear-to-r from-indigo-500 to-transparent"
+                >
+                </div>
+                <h2 class="text-2xl font-bold">Sobre el Proyecto</h2>
+              </div>
+              <p class="text-gray-300 leading-relaxed mb-8">
+                {data.fullDescription}
+              </p>
+
+              <GlassCard>
+                <h3 class="text-xl font-bold mb-6">Retos y soluciones</h3>
+                <div class="grid grid-cols-2 gap-6">
+                  <div>
+                    <p
+                      class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
+                    >
+                      The Challenge
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                      Crear una solución funcional que cumpla con los objetivos
+                      específicos del proyecto.
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
+                    >
+                      The Solution
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                      Implementación de funcionalidades adaptadas a las
+                      necesidades del cliente.
+                    </p>
+                  </div>
+                  <div class="col-span-2 h-px bg-zinc-500/50"></div>
+                  <div>
+                    <p
+                      class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
+                    >
+                      The Challenge
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                      Crear una solución funcional que cumpla con los objetivos
+                      específicos del proyecto.
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
+                    >
+                      The Solution
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                      Implementación de funcionalidades adaptadas a las
+                      necesidades del cliente.
+                    </p>
+                  </div>
+                </div>
+              </GlassCard>
+            </div>
+
+            <div>
+              <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-4">Tech Stack</h3>
+                <div class="flex flex-wrap gap-2">
+                  {
+                    data.tech.map((tech) => (
+                      <span class="px-3 py-1 bg-indigo-500/10 text-indigo-300 text-sm rounded-xl group-hover:bg-indigo-500/20 group-hover:text-indigo-200 transition-all duration-300">
+                        {tech}
+                      </span>
+                    ))
+                  }
+                </div>
+              </div>
+              <GlassCard class="p-8!">
+                <h3 class="text-lg font-semibold mb-4">Funcionalidades</h3>
+                <ul class="space-y-3">
+                  {
+                    data.features.map((feature) => (
+                      <li class="flex items-start gap-3 text-gray-300">
+                        <Icon
+                          name="check-rounded"
+                          class="w-5 h-5 text-primary shrink-0"
+                        />
+                        {feature}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </GlassCard>
+            </div>
+          </div>
+        </section>
+        <section
+          class="text-center py-12 border-t border-white/10"
+          transition:animate="slide"
+        >
+          <h2 class="text-3xl font-bold mb-4">Listo para verlo en acción?</h2>
+          <p class="text-gray-400 mb-8">
+            Explora el proyecto en vivo o revisa el código fuente
+          </p>
+          <div class="flex gap-4 justify-center flex-wrap">
+            {
+              data.url && (
+                <a
+                  href={data.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex items-center gap-2 px-8 py-4 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-500 transition hover:scale-105"
+                >
+                  <Icon name="play" class="w-5 h-5" />
+                  Explora la demo en vivo
+                </a>
+              )
+            }
+            {
+              data.repo && (
+                <a
+                  href={data.repo}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition"
+                >
+                  <Icon name="github" class="w-5 h-5" />
+                  Revisa el código
+                </a>
+              )
+            }
+          </div>
+        </section>
+      </section>
     </div>
   </article>
 </Layout>
