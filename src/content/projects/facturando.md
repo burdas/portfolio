@@ -12,6 +12,7 @@ role: "Desarrollador Desktop"
 challenges: ["Generar documentos PDF profesionales y correctamente formateados", "Implementar sistema de autocompletado inteligente basado en historial"]
 solutions: ["Uso de librerías PDF robustas como iTextSharp para generación de documentos", "Análisis de patrones de facturación para sugerir datos automáticamente"]
 coreTech: ".NET"
+order: 7
 ---
 
 Aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar la facturación de taxis.

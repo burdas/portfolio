@@ -7,16 +7,16 @@ import GlassCard from "@/src/components/Shared/GlassCard.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
-  return projects.map((project) => ({
-    params: { slug: project.id.replace(/\.md$/, "") },
-    props: { project },
-  }));
+  return projects
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((project) => ({
+      params: { slug: project.id.replace(/\.md$/, "") },
+      props: { project },
+    }));
 }
 
 const { project } = Astro.props;
 const { data } = project;
-const duration = data.duration;
-const client = data.client;
 ---
 
 <Layout title={`${data.name} - Proyecto`} description={data.description}>
@@ -104,13 +104,13 @@ const client = data.client;
               <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
                 Duración
               </p>
-              <p class="text-white font-semibold">{duration}</p>
+              <p class="text-white font-semibold">{data.duration}</p>
             </div>
             <div class="p-8 border-r border-zinc-500/50">
               <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
                 Cliente
               </p>
-              <p class="text-white font-semibold">{client}</p>
+              <p class="text-white font-semibold">{data.client}</p>
             </div>
             <div class="p-8">
               <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
@@ -144,26 +144,22 @@ const client = data.client;
                     data.challenges.map((challenge, index) => (
                       <>
                         <div>
-                          <p
-                            class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold"
-                          >
-                            The Challenge
+                          <p class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold">
+                            El reto
                           </p>
-                          <p class="text-gray-400 text-sm">
-                            {challenge}
-                          </p>
+                          <p class="text-gray-400 text-sm">{challenge}</p>
                         </div>
                         <div>
-                          <p
-                            class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold"
-                          >
-                            The Solution
+                          <p class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold">
+                            La solución
                           </p>
                           <p class="text-gray-400 text-sm">
                             {data.solutions[index]}
                           </p>
                         </div>
-                        {index < data.challenges.length - 1 && <div class="col-span-2 h-px bg-zinc-500/50"></div>}
+                        {index < data.challenges.length - 1 && (
+                          <div class="col-span-2 h-px bg-zinc-500/50" />
+                        )}
                       </>
                     ))
                   }

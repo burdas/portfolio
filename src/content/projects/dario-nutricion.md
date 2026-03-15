@@ -13,6 +13,7 @@ role: "Desarrollador Frontend"
 challenges: ["Crear diseño visual atractivo y profesional para sector salud", "Optimizar SEO para aparecer en búsquedas locales de servicios de nutrición"]
 solutions: ["Diseño limpio con colores accesibles y tipografía legible", "Implementación de SEO local con palabras clave específicas del nicho"]
 coreTech: "Astro"
+order: 3
 ---
 
 Diseño web profesional para un nutricionista. El sitio está optimizado para convertir visitantes en clientes potenciales.

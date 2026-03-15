@@ -17,6 +17,7 @@ const projects = defineCollection({
     challenges: z.array(z.string()),
     solutions: z.array(z.string()),
     coreTech: z.string(),
+    order: z.number(),
   }),
 });
 

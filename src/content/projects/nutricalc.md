@@ -13,6 +13,7 @@ role: "Desarrollador Full Stack"
 challenges: ["Implementar algoritmos precisos de cálculo de necesidades calóricas y macronutrientes", "Crear visualizaciones gráficas interactivas y responsivas"]
 solutions: ["Uso de fórmulas nutricionales basadas en evidencia científica", "Integración de Chart.js con actualización dinámica de datos"]
 coreTech: "JavaScript, Chart.js"
+order: 11
 ---
 
 NutriCalc es una aplicación web que permite a los usuarios calcular sus necesidades calóricas diarias.

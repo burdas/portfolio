@@ -13,6 +13,7 @@ role: "Desarrollador Full Stack"
 challenges: ["Integrar API externa de TMDB y gestionar datos de películas", "Implementar sistema de autenticación y gestión de favoritos"]
 solutions: ["Cacheo de datos de API para optimizar rendimiento y reducir llamadas", "Sistema de autenticación con JWT y almacenamiento de favoritos en MySQL"]
 coreTech: "PHP, MySQL"
+order: 5
 ---
 
 La Séptima Gema es una aplicación web que replica la funcionalidad de IMDb.
