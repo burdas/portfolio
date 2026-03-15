@@ -12,6 +12,7 @@ client: "Personal"
 role: "Desarrollador Frontend"
 challenges: ["Lograr alto rendimiento con animaciones fluidas", "Implementar modo oscuro con transición suave"]
 solutions: ["Uso de Astro para generación estática optimizada", "CSS custom properties para theming dinámico"]
+coreTech: "Astro, ThreeJS, GSAP"
 ---
 
 Mi carta de presentación digital: un portfolio minimalista y performant con animaciones fluidas, diseño dark y una experiencia de usuario excepcional.
