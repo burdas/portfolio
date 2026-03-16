@@ -13,6 +13,7 @@ challenges: ["Implementar sistema de chat en tiempo real con Firebase", "Integra
 solutions: ["Uso de Firebase Realtime Database para chat instantáneo", "Integración de OpenStreetMap con Android Maps API"]
 coreTech: "Android Studio"
 order: 9
+gallery: ["recuperalo.webp", "recuperalo.webp", "recuperalo.webp", "recuperalo.webp"]
 ---
 
 Aplicación móvil Android que permite reportar objetos perdidos y encontrados.

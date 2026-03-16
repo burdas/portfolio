@@ -6,9 +6,10 @@ interface Props {
   slug: string;
   showLabel?: boolean;
   class?: string;
+  disableTransition?: boolean;
 }
 
-const { image, slug, showLabel = false, class: className } = Astro.props;
+const { image, slug, showLabel = false, class: className, disableTransition = false } = Astro.props;
 
 const PROJECT_IMAGES_PATH = "/src/assets/projects/";
 
@@ -24,7 +25,7 @@ const imageExists = !!images[imagePath];
       src={images[imagePath]() as any}
       alt={slug}
       class={className}
-      transition:name={`project-image-${slug}`}
+      {...(!disableTransition && { transition: { name: `project-image-${slug}` } })}
     />
   ) : (
     <div

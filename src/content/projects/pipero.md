@@ -14,6 +14,7 @@ challenges: ["Gestionar múltiples roles de usuario con permisos diferenciados",
 solutions: ["Sistema de autenticación y autorización basado en roles (RBAC)", "Integración de polling o WebSockets para actualización en tiempo real del dashboard"]
 coreTech: "PHP, SQLite"
 order: 8
+gallery: ["pipero.webp", "pipero.webp", "pipero.webp", "pipero.webp"]
 ---
 
 Pipero es un ERP en miniatura desarrollado para gestionar un local de restauración.

@@ -14,6 +14,7 @@ challenges: ["Crear diseño visual atractivo y profesional para sector salud", "
 solutions: ["Diseño limpio con colores accesibles y tipografía legible", "Implementación de SEO local con palabras clave específicas del nicho"]
 coreTech: "Astro"
 order: 3
+gallery: ["dario_nutricion.webp", "dario_nutricion.webp", "dario_nutricion.webp", "dario_nutricion.webp"]
 ---
 
 Diseño web profesional para un nutricionista. El sitio está optimizado para convertir visitantes en clientes potenciales.

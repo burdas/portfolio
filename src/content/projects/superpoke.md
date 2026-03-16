@@ -13,6 +13,7 @@ challenges: ["Integrar y gestionar datos de más de 800 Pokémon desde una API e
 solutions: ["Uso de caching y técnicas de optimización para cargar datos eficientemente", "Implementación de filtros eficientes que no requieren recargas de página"]
 coreTech: "React"
 order: 10
+gallery: ["pokeno.webp", "pokeno.webp", "pokeno.webp", "pokeno.webp"]
 ---
 
 Aplicación web que funciona como Pokédex, permitiendo buscar Pokémon y ver sus características.

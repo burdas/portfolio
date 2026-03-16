@@ -7,6 +7,7 @@ import ProjectHero from "@/src/components/Projects/ProjectHero.astro";
 import ProjectContent from "@/src/components/Projects/ProjectContent.astro";
 import ProjectSidebar from "@/src/components/Projects/ProjectSidebar.astro";
 import ProjectCTA from "@/src/components/Projects/ProjectCTA.astro";
+import ProjectGallery from "@/src/components/Projects/ProjectGallery.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -20,6 +21,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { data } = project;
+const gallery = data.gallery || Array(4).fill(data.image);
+const slug = project.id.replace(/\.md$/, "");
 ---
 
 <Layout title={`${data.name} - Proyecto`} description={data.description}>
@@ -55,6 +58,8 @@ const { data } = project;
           features={data.features}
         />
       </ProjectContent>
+      
+      <ProjectGallery images={gallery} slug={slug} />
       
       <ProjectCTA
         url={data.url}

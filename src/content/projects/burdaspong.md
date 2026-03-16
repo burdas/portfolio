@@ -14,6 +14,7 @@ challenges: ["Crear una IA que se adapte dinámicamente al nivel del jugador", "
 solutions: ["Algoritmo de IA con niveles de dificultad ajustables basado en rendimiento del jugador", "Sistema de física con vectores para movimientos realistas de la pelota"]
 coreTech: "HTML5 Canvas, JavaScript"
 order: 6
+gallery: ["burdaspong.webp", "burdaspong.webp", "burdaspong.webp", "burdaspong.webp"]
 ---
 
 BurdasPong es un juego clásico de Pong desarrollado con HTML5 Canvas y JavaScript.

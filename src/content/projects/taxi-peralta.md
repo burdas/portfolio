@@ -14,6 +14,7 @@ challenges: ["Integrar Google Maps API para cálculo de rutas y distancias", "Op
 solutions: ["Uso de Google Maps Distance Matrix API para cálculos precisos de coste", "Implementación de SEO técnico con meta tags, sitemap y estructura semántica"]
 coreTech: "Astro"
 order: 2
+gallery: ["taxiperalta.webp", "taxiperalta.webp", "taxiperalta.webp", "taxiperalta.webp"]
 ---
 
 Taxi Peralta es un proyecto web completo que revolucionó la forma de pedir presupuestos de transporte.
