@@ -1,0 +1,56 @@
+---
+import ProjectImage from "@/src/components/Projects/ProjectImage.astro";
+
+interface Props {
+  image: string;
+  slug: string;
+  role: string;
+  duration: string;
+  client: string;
+  coreTech: string;
+}
+
+const { image, slug, role, duration, client, coreTech } = Astro.props;
+---
+
+<section class="mb-12" transition:animate="slide">
+  <div
+    class="aspect-video rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-12"
+  >
+    <ProjectImage
+      image={image}
+      slug={slug}
+      class="w-full h-full object-cover"
+    />
+  </div>
+  <div
+    class="grid grid-cols-2 md:grid-cols-4 border border-zinc-500/50 rounded-xl"
+  >
+    <div class="p-8 border-r border-zinc-500/50">
+      <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+        Rol
+      </p>
+      <p class="text-white font-semibold">{role}</p>
+    </div>
+    <div class="p-8 border-r border-zinc-500/50">
+      <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+        Duración
+      </p>
+      <p class="text-white font-semibold">{duration}</p>
+    </div>
+    <div class="p-8 border-r border-zinc-500/50">
+      <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+        Cliente
+      </p>
+      <p class="text-white font-semibold">{client}</p>
+    </div>
+    <div class="p-8">
+      <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+        Core Tech
+      </p>
+      <p class="text-white font-semibold">
+        {coreTech}
+      </p>
+    </div>
+  </div>
+</section>

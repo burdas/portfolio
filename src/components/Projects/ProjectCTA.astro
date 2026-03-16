@@ -1,0 +1,48 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  url?: string;
+  repo?: string;
+}
+
+const { url, repo } = Astro.props;
+---
+
+<section
+  class="text-center py-12 border-t border-white/10"
+  transition:animate="slide"
+>
+  <h2 class="text-3xl font-bold mb-4">Listo para verlo en acción?</h2>
+  <p class="text-gray-400 mb-8">
+    Explora el proyecto en vivo o revisa el código fuente
+  </p>
+  <div class="flex gap-4 justify-center flex-wrap">
+    {
+      url && (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-500 transition hover:scale-105"
+        >
+          <Icon name="play" class="w-5 h-5" />
+          Explora la demo en vivo
+        </a>
+      )
+    }
+    {
+      repo && (
+        <a
+          href={repo}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition"
+        >
+          <Icon name="github" class="w-5 h-5" />
+          Revisa el código
+        </a>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,42 @@
+---
+import { Icon } from "astro-icon/components";
+import GlassCard from "@/src/components/Shared/GlassCard.astro";
+
+interface Props {
+  tech: string[];
+  features: string[];
+}
+
+const { tech, features } = Astro.props;
+---
+
+<div>
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold mb-4">Tech Stack</h3>
+    <div class="flex flex-wrap gap-2">
+      {
+        tech.map((t) => (
+          <span class="px-3 py-1 bg-indigo-500/10 text-indigo-300 text-sm rounded-xl group-hover:bg-indigo-500/20 group-hover:text-indigo-200 transition-all duration-300">
+            {t}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <GlassCard class="p-8!">
+    <h3 class="text-lg font-semibold mb-4">Funcionalidades</h3>
+    <ul class="space-y-3">
+      {
+        features.map((feature) => (
+          <li class="flex items-start gap-3 text-gray-300">
+            <Icon
+              name="check-rounded"
+              class="w-5 h-5 text-primary shrink-0"
+            />
+            {feature}
+          </li>
+        ))
+      }
+    </ul>
+  </GlassCard>
+</div>
