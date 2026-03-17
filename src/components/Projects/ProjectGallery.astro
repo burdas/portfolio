@@ -34,7 +34,7 @@ const { images, slug } = Astro.props;
       {
         images.map((image, index) => (
           <button
-            class="gallery-trigger shrink-0 w-1/3 overflow-hidden rounded-lg aspect-video bg-zinc-800 hover:ring-2 hover:ring-indigo-500 transition-all duration-300 group cursor-pointer snap-start"
+            class="gallery-trigger shrink-0 w-1/2 md:w-1/3 overflow-hidden rounded-lg aspect-video bg-zinc-800 hover:ring-2 hover:ring-indigo-500 transition-all duration-300 group cursor-pointer snap-start"
             data-index={index}
             aria-label="Ampliar imagen"
           >

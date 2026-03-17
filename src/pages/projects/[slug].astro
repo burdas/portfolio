@@ -26,10 +26,10 @@ const slug = project.id.replace(/\.md$/, "");
 ---
 
 <Layout title={`${data.name} - Proyecto`} description={data.description}>
-  <article class="min-h-screen pt-24 pb-16 bg-neutral-950">
+  <article class="min-h-screen pt-8 sm:pt-24 pb-16 bg-neutral-950">
     <div class="max-w-5xl mx-auto px-6">
       <ProjectBreadcrumb projectName={data.name} />
-      
+
       <ProjectHeader
         name={data.name}
         description={data.description}
@@ -37,7 +37,7 @@ const slug = project.id.replace(/\.md$/, "");
         repo={data.repo}
         projectId={project.id}
       />
-      
+
       <ProjectHero
         image={data.image}
         slug={project.id}
@@ -46,7 +46,7 @@ const slug = project.id.replace(/\.md$/, "");
         client={data.client}
         coreTech={data.coreTech}
       />
-      
+
       <ProjectContent
         fullDescription={data.fullDescription}
         challenges={data.challenges}
@@ -58,13 +58,10 @@ const slug = project.id.replace(/\.md$/, "");
           features={data.features}
         />
       </ProjectContent>
-      
+
       <ProjectGallery images={gallery} slug={slug} />
-      
-      <ProjectCTA
-        url={data.url}
-        repo={data.repo}
-      />
+
+      <ProjectCTA url={data.url} repo={data.repo} />
     </div>
   </article>
 </Layout>
