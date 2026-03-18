@@ -14,7 +14,12 @@ challenges: ["Desarrollar smart contracts seguros y optimizados en Solidity", "I
 solutions: ["Uso de patrones de diseño seguros y auditoría de contratos inteligentes", "Implementación de Web3.js para conectar el frontend con la blockchain"]
 coreTech: "Solidity"
 order: 4
-gallery: ["tfg_ethereum.webp", "tfg_ethereum.webp", "tfg_ethereum.webp", "tfg_ethereum.webp"]
+gallery: [
+  { image: "tfg_ethereum.webp", description: "Clon de Twitter descentralizado" },
+  { image: "tfg_ethereum.webp", description: "Diario blockchain" },
+  { image: "tfg_ethereum.webp", description: "Juego 3 en raya" },
+  { image: "tfg_ethereum.webp", description: "Smart contracts" }
+]
 ---
 ---
 

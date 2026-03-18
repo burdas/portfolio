@@ -14,7 +14,12 @@ challenges: ["Implementar algoritmos precisos de cálculo de necesidades calóri
 solutions: ["Uso de fórmulas nutricionales basadas en evidencia científica", "Integración de Chart.js con actualización dinámica de datos"]
 coreTech: "JavaScript, Chart.js"
 order: 11
-gallery: ["nutricalc.webp", "nutricalc.webp", "nutricalc.webp", "nutricalc.webp"]
+gallery: [
+  { image: "nutricalc.webp", description: "Calculadora de calorías" },
+  { image: "nutricalc.webp", description: "Macronutrientes" },
+  { image: "nutricalc.webp", description: "Gráficos visuales" },
+  { image: "nutricalc.webp", description: "Configuración" }
+]
 ---
 
 NutriCalc es una aplicación web que permite a los usuarios calcular sus necesidades calóricas diarias.

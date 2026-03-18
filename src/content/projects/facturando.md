@@ -13,7 +13,12 @@ challenges: ["Generar documentos PDF profesionales y correctamente formateados",
 solutions: ["Uso de librerías PDF robustas como iTextSharp para generación de documentos", "Análisis de patrones de facturación para sugerir datos automáticamente"]
 coreTech: ".NET"
 order: 7
-gallery: ["facturando.webp", "facturando.webp", "facturando.webp", "facturando.webp"]
+gallery: [
+  { image: "facturando.webp", description: "Panel principal" },
+  { image: "facturando.webp", description: "Generar factura" },
+  { image: "facturando.webp", description: "Historial de facturas" },
+  { image: "facturando.webp", description: "Configuración" }
+]
 ---
 
 Aplicación de escritorio desarrollada en C# con Windows Forms que permite gestionar la facturación de taxis.

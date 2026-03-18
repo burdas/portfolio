@@ -14,7 +14,12 @@ challenges: ["Lograr alto rendimiento con animaciones fluidas", "Implementar mod
 solutions: ["Uso de Astro para generación estática optimizada", "CSS custom properties para theming dinámico"]
 coreTech: "Astro, ThreeJS, GSAP"
 order: 1
-gallery: ["portfolio.webp", "portfolio.webp", "portfolio.webp", "portfolio.webp"]
+gallery: [
+  { image: "portfolio.webp", description: "Vista principal del portfolio" },
+  { image: "portfolio.webp", description: "Sección de proyectos" },
+  { image: "portfolio.webp", description: "Detalles de proyecto" },
+  { image: "portfolio.webp", description: "Vista mobile" }
+]
 ---
 
 Mi carta de presentación digital: un portfolio minimalista y performant con animaciones fluidas, diseño dark y una experiencia de usuario excepcional.

@@ -14,7 +14,12 @@ challenges: ["Integrar API externa de TMDB y gestionar datos de películas", "Im
 solutions: ["Cacheo de datos de API para optimizar rendimiento y reducir llamadas", "Sistema de autenticación con JWT y almacenamiento de favoritos en MySQL"]
 coreTech: "PHP, MySQL"
 order: 5
-gallery: ["la_septima_gema.webp", "la_septima_gema.webp", "la_septima_gema.webp", "la_septima_gema.webp"]
+gallery: [
+  { image: "la_septima_gema.webp", description: "Buscador de películas" },
+  { image: "la_septima_gema.webp", description: "Top 20 películas" },
+  { image: "la_septima_gema.webp", description: "Detalles de película" },
+  { image: "la_septima_gema.webp", description: "Mis favoritos" }
+]
 ---
 
 La Séptima Gema es una aplicación web que replica la funcionalidad de IMDb.

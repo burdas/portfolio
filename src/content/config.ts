@@ -18,7 +18,10 @@ const projects = defineCollection({
     solutions: z.array(z.string()),
     coreTech: z.string(),
     order: z.number(),
-    gallery: z.array(z.string()).optional(),
+    gallery: z.array(z.object({
+      image: z.string(),
+      description: z.string()
+    })).optional(),
   }),
 });
 

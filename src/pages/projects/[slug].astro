@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { data } = project;
-const gallery = data.gallery || Array(4).fill(data.image);
+const gallery = data.gallery;
 const slug = project.id.replace(/\.md$/, "");
 ---
 
