@@ -2,7 +2,6 @@
 import ProjectImage from "@/src/components/Projects/ProjectImage.astro";
 
 interface Props {
-  image: string;
   slug: string;
   role: string;
   duration: string;
@@ -10,18 +9,18 @@ interface Props {
   coreTech: string;
 }
 
-const { image, slug, role, duration, client, coreTech } = Astro.props;
+const { slug, role, duration, client, coreTech } = Astro.props;
 ---
 
 <section class="mb-12" transition:animate="slide">
   <div
     class="aspect-video rounded-xl overflow-hidden bg-white/5 border border-white/10 mb-12"
   >
-    <ProjectImage
-      image={image}
-      slug={slug}
-      class="w-full h-full object-cover"
-    />
+      <ProjectImage
+        slug={slug.replace(/\.md$/, "")}
+        imageName="cover.webp"
+        class="w-full h-full object-cover"
+      />
   </div>
   <div
     class="grid grid-cols-2 md:grid-cols-4 border border-zinc-500/50 rounded-xl"

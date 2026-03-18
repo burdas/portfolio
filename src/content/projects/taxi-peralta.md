@@ -15,10 +15,10 @@ solutions: ["Uso de Google Maps Distance Matrix API para cálculos precisos de c
 coreTech: "Astro"
 order: 2
 gallery: [
-  { image: "taxiperalta.webp", description: "Página principal" },
-  { image: "taxiperalta.webp", description: "Calculadora de presupuestos" },
-  { image: "taxiperalta.webp", description: "Formulario de contacto" },
-  { image: "taxiperalta.webp", description: "Vista mobile" }
+  { image: "cover.webp", description: "Página principal" },
+  { image: "cover.webp", description: "Calculadora de presupuestos" },
+  { image: "cover.webp", description: "Formulario de contacto" },
+  { image: "cover.webp", description: "Vista mobile" }
 ]
 ---
 

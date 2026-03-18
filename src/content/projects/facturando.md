@@ -14,10 +14,10 @@ solutions: ["Uso de librerías PDF robustas como iTextSharp para generación de 
 coreTech: ".NET"
 order: 7
 gallery: [
-  { image: "facturando.webp", description: "Panel principal" },
-  { image: "facturando.webp", description: "Generar factura" },
-  { image: "facturando.webp", description: "Historial de facturas" },
-  { image: "facturando.webp", description: "Configuración" }
+  { image: "cover.webp", description: "Panel principal" },
+  { image: "cover.webp", description: "Generar factura" },
+  { image: "cover.webp", description: "Historial de facturas" },
+  { image: "cover.webp", description: "Configuración" }
 ]
 ---
 

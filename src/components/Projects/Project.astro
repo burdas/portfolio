@@ -21,8 +21,8 @@ const { project } = Astro.props;
   >
     <div class="aspect-video bg-white/5 relative overflow-clip rounded-lg">
       <ProjectImage
-        image={project.data.image}
-        slug={project.id}
+        slug={project.id.replace(/\.md$/, "")}
+        imageName="cover.webp"
         class="w-full h-full rounded-lg object-cover group-hover:scale-105 transition-transform duration-500"
       />
     </div>

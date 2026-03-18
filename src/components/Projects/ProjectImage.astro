@@ -2,20 +2,20 @@
 import { Image } from "astro:assets";
 
 interface Props {
-  image: string;
   slug: string;
+  imageName?: string;
   showLabel?: boolean;
   class?: string;
   disableTransition?: boolean;
 }
 
-const { image, slug, showLabel = false, class: className, disableTransition = false } = Astro.props;
+const { slug, imageName = "cover.webp", showLabel = false, class: className, disableTransition = false } = Astro.props;
 
 const PROJECT_IMAGES_PATH = "/src/assets/projects/";
 
-const images = import.meta.glob('/src/assets/projects/*.{webp,png,jpg,gif}');
+const images = import.meta.glob('/src/assets/projects/*/*.{webp,png,jpg,gif}');
 
-const imagePath = `${PROJECT_IMAGES_PATH}${image}`;
+const imagePath = `${PROJECT_IMAGES_PATH}${slug}/${imageName}`;
 const imageExists = !!images[imagePath];
 ---
 

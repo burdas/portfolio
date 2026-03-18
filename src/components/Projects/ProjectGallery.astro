@@ -44,8 +44,8 @@ const { images, slug } = Astro.props;
             aria-label="Ampliar imagen"
           >
             <ProjectImage
-              image={item.image}
-              slug={`${slug}-gallery-${index}`}
+              slug={slug}
+              imageName={item.image}
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               disableTransition={true}
             />
@@ -106,8 +106,8 @@ const { images, slug } = Astro.props;
           data-index={index}
         >
           <ProjectImage
-            image={item.image}
-            slug={`${slug}-lightbox-${index}`}
+            slug={slug}
+            imageName={item.image}
             class="max-w-full max-h-[75vh] object-contain rounded-lg"
           />
           <p class="lightbox-caption mt-4 text-white/80 text-center text-sm">

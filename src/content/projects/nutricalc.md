@@ -15,10 +15,10 @@ solutions: ["Uso de fórmulas nutricionales basadas en evidencia científica", "
 coreTech: "JavaScript, Chart.js"
 order: 11
 gallery: [
-  { image: "nutricalc.webp", description: "Calculadora de calorías" },
-  { image: "nutricalc.webp", description: "Macronutrientes" },
-  { image: "nutricalc.webp", description: "Gráficos visuales" },
-  { image: "nutricalc.webp", description: "Configuración" }
+  { image: "cover.webp", description: "Calculadora de calorías" },
+  { image: "cover.webp", description: "Macronutrientes" },
+  { image: "cover.webp", description: "Gráficos visuales" },
+  { image: "cover.webp", description: "Configuración" }
 ]
 ---
 

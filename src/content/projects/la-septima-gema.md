@@ -15,10 +15,10 @@ solutions: ["Cacheo de datos de API para optimizar rendimiento y reducir llamada
 coreTech: "PHP, MySQL"
 order: 5
 gallery: [
-  { image: "la_septima_gema.webp", description: "Buscador de películas" },
-  { image: "la_septima_gema.webp", description: "Top 20 películas" },
-  { image: "la_septima_gema.webp", description: "Detalles de película" },
-  { image: "la_septima_gema.webp", description: "Mis favoritos" }
+  { image: "cover.webp", description: "Buscador de películas" },
+  { image: "cover.webp", description: "Top 20 películas" },
+  { image: "cover.webp", description: "Detalles de película" },
+  { image: "cover.webp", description: "Mis favoritos" }
 ]
 ---
 

@@ -14,10 +14,10 @@ solutions: ["Uso de Firebase Realtime Database para chat instantáneo", "Integra
 coreTech: "Android Studio"
 order: 9
 gallery: [
-  { image: "recuperalo.webp", description: "Mapa de objetos" },
-  { image: "recuperalo.webp", description: "Publicar objeto" },
-  { image: "recuperalo.webp", description: "Chat en tiempo real" },
-  { image: "recuperalo.webp", description: "Mis publicaciones" }
+  { image: "cover.webp", description: "Mapa de objetos" },
+  { image: "cover.webp", description: "Publicar objeto" },
+  { image: "cover.webp", description: "Chat en tiempo real" },
+  { image: "cover.webp", description: "Mis publicaciones" }
 ]
 ---
 

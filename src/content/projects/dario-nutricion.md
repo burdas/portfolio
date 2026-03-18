@@ -15,10 +15,10 @@ solutions: ["Diseño limpio con colores accesibles y tipografía legible", "Impl
 coreTech: "Astro"
 order: 3
 gallery: [
-  { image: "dario_nutricion.webp", description: "Página principal" },
-  { image: "dario_nutricion.webp", description: "Sección de servicios" },
-  { image: "dario_nutricion.webp", description: "Sobre mí" },
-  { image: "dario_nutricion.webp", description: "Vista mobile" }
+  { image: "cover.webp", description: "Página principal" },
+  { image: "cover.webp", description: "Sección de servicios" },
+  { image: "cover.webp", description: "Sobre mí" },
+  { image: "cover.webp", description: "Vista mobile" }
 ]
 ---
 

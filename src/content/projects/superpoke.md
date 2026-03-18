@@ -14,10 +14,10 @@ solutions: ["Uso de caching y técnicas de optimización para cargar datos efici
 coreTech: "React"
 order: 10
 gallery: [
-  { image: "pokeno.webp", description: "Pokédex principal" },
-  { image: "pokeno.webp", description: "Buscar Pokémon" },
-  { image: "pokeno.webp", description: "Detalles y estadísticas" },
-  { image: "pokeno.webp", description: "Mis favoritos" }
+  { image: "cover.webp", description: "Pokédex principal" },
+  { image: "cover.webp", description: "Buscar Pokémon" },
+  { image: "cover.webp", description: "Detalles y estadísticas" },
+  { image: "cover.webp", description: "Mis favoritos" }
 ]
 ---
 
