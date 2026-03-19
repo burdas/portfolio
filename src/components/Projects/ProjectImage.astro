@@ -28,7 +28,7 @@ const imageSrc = projectImages[projectImagePath]
     <Image
       src={imageSrc() as any}
       alt={slug}
-      class={className}
+      class={`${className} pointer-events-none`}
       {...(!disableTransition && { transition: { name: `project-image-${slug}` } })}
     />
   ) : (
