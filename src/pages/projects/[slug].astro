@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { data } = project;
 const gallery = data.gallery;
-const slug = project.id.replace(/\.md$/, "");
+const slug = project.slug;
 ---
 
 <Layout title={`${data.name} - Proyecto`} description={data.description}>
@@ -58,7 +58,7 @@ const slug = project.id.replace(/\.md$/, "");
         />
       </ProjectContent>
 
-      <ProjectGallery images={gallery} slug={slug} />
+      <ProjectGallery images={gallery ?? []} slug={slug} />
 
       <ProjectCTA url={data.url} repo={data.repo} />
     </div>

@@ -15,10 +15,9 @@ solutions: ["Uso de Astro para generación estática optimizada", "CSS custom pr
 coreTech: "Astro, ThreeJS, GSAP"
 order: 1
 gallery: [
-  { image: "cover.webp", description: "Vista principal del portfolio" },
-  { image: "cover.webp", description: "Sección de proyectos" },
-  { image: "cover.webp", description: "Detalles de proyecto" },
-  { image: "cover.webp", description: "Vista mobile" }
+  { image: "main_page.webp", description: "Página principal generada con google stitch" },
+  { image: "project_detail.webp", description: "Página del detalle de proyecto generada con google stitch" },
+  { image: "job_detail.webp", description: "Página del detalle de trabajo generada con google stitch" },
 ]
 ---
 

@@ -11,18 +11,22 @@ interface Props {
 
 const { slug, imageName = "cover.webp", showLabel = false, class: className, disableTransition = false } = Astro.props;
 
-const PROJECT_IMAGES_PATH = "/src/assets/projects/";
+const projectImages = import.meta.glob('/src/assets/projects/*/*.{webp,png,jpg,gif}');
+const portfolioImages = import.meta.glob('/src/assets/projects/portfolio/*.{webp,png,jpg,gif}');
 
-const images = import.meta.glob('/src/assets/projects/*/*.{webp,png,jpg,gif}');
+const projectImagePath = `/src/assets/projects/${slug}/${imageName}`;
+const portfolioImagePath = `/src/assets/projects/portfolio/${imageName}`;
 
-const imagePath = `${PROJECT_IMAGES_PATH}${slug}/${imageName}`;
-const imageExists = !!images[imagePath];
+const imageExists = !!projectImages[projectImagePath] || !!portfolioImages[portfolioImagePath];
+const imageSrc = projectImages[projectImagePath]
+  ? projectImages[projectImagePath]
+  : portfolioImages[portfolioImagePath];
 ---
 
 {
   imageExists ? (
     <Image
-      src={images[imagePath]() as any}
+      src={imageSrc() as any}
       alt={slug}
       class={className}
       {...(!disableTransition && { transition: { name: `project-image-${slug}` } })}
