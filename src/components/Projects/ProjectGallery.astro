@@ -1,8 +1,8 @@
 ---
 import ProjectImage from "@/src/components/Projects/ProjectImage.astro";
-import CloseIcon from "@/src/icons/close.svg";
 import ArrowLeftIcon from "@/src/icons/arrow-left.svg";
 import ArrowRightIcon from "@/src/icons/arrow-right.svg";
+import ProjectLightbox from "@/src/components/Projects/ProjectLightbox.astro";
 
 interface GalleryItem {
   image: string;
@@ -69,127 +69,14 @@ const { images, slug } = Astro.props;
   </div>
 </section>
 
-<div
-  id="gallery-lightbox"
-  class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-sm items-center justify-center p-4"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Galería de imágenes"
->
-  <button
-    id="lightbox-close"
-    class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2 cursor-pointer"
-    aria-label="Cerrar"
-  >
-    <CloseIcon class="w-8 h-8" />
-  </button>
+<ProjectLightbox images={images} slug={slug} />
 
-  <button
-    id="lightbox-prev"
-    class="absolute left-4 text-white/70 hover:text-white transition-colors p-2 cursor-pointer"
-    aria-label="Imagen anterior"
-  >
-    <ArrowLeftIcon class="w-8 h-8" />
-  </button>
-
-  <button
-    id="lightbox-next"
-    class="absolute right-4 text-white/70 hover:text-white transition-colors p-2 cursor-pointer"
-    aria-label="Imagen siguiente"
-  >
-    <ArrowRightIcon class="w-8 h-8" />
-  </button>
-
-  <div id="lightbox-images-container">
-    {
-      images.map((item, index) => (
-        <div
-          class="lightbox-img hidden scale-95 opacity-0 transition-all duration-300 flex-col items-center"
-          data-index={index}
-        >
-          <ProjectImage
-            slug={slug}
-            imageName={item.image}
-            class="max-w-full max-h-[75vh] object-contain rounded-lg"
-          />
-          <p class="lightbox-caption mt-4 text-white/80 text-center text-sm">
-            {item.description}
-          </p>
-        </div>
-      ))
-    }
-  </div>
-</div>
-
-<script define:vars={{ images, slug }}>
-  const triggers = document.querySelectorAll(".gallery-trigger");
-  const lightbox = document.getElementById("gallery-lightbox");
-  const lightboxImages = document.querySelectorAll(".lightbox-img");
-  const closeBtn = document.getElementById("lightbox-close");
-  const prevBtn = document.getElementById("lightbox-prev");
-  const nextBtn = document.getElementById("lightbox-next");
-
-  let currentIndex = 0;
-
-  function openLightbox(index) {
-    currentIndex = index;
-    updateImage();
-    lightbox.classList.remove("hidden");
-    lightbox.classList.add("flex");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeLightbox() {
-    lightbox.classList.add("hidden");
-    lightbox.classList.remove("flex");
-    document.body.style.overflow = "";
-  }
-
-  function updateImage() {
-    lightboxImages.forEach((img) => {
-      img.classList.add("hidden", "scale-95", "opacity-0");
-      img.classList.remove("scale-100", "opacity-100");
-    });
-    const currentImg = lightboxImages[currentIndex];
-    currentImg?.classList.remove("hidden", "scale-95", "opacity-0");
-    currentImg?.classList.add("scale-100", "opacity-100");
-  }
-
-  function showPrev() {
-    currentIndex =
-      (currentIndex - 1 + lightboxImages.length) % lightboxImages.length;
-    updateImage();
-  }
-
-  function showNext() {
-    currentIndex = (currentIndex + 1) % lightboxImages.length;
-    updateImage();
-  }
-
-  triggers.forEach((trigger, index) => {
-    trigger.addEventListener("click", () => openLightbox(index));
-  });
-
-  closeBtn?.addEventListener("click", closeLightbox);
-  prevBtn?.addEventListener("click", showPrev);
-  nextBtn?.addEventListener("click", showNext);
-
-  lightbox?.addEventListener("click", (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (!lightbox.classList.contains("flex")) return;
-    if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowLeft") showPrev();
-    if (e.key === "ArrowRight") showNext();
-  });
-
+<script>
   const thumbnailsContainer = document.getElementById("thumbnails-container");
   const thumbPrevBtn = document.getElementById("thumb-prev");
   const thumbNextBtn = document.getElementById("thumb-next");
 
-  const scrollAmount = thumbnailsContainer?.clientWidth * 0.6 || 200;
+  const scrollAmount = ((thumbnailsContainer && thumbnailsContainer.clientWidth) || 200) * 0.6;
 
   function updateThumbButtons() {
     if (!thumbnailsContainer || !thumbPrevBtn || !thumbNextBtn) return;
@@ -197,7 +84,7 @@ const { images, slug } = Astro.props;
     thumbPrevBtn.classList.toggle("hidden", scrollLeft <= 10);
     thumbNextBtn.classList.toggle(
       "hidden",
-      scrollLeft + clientWidth >= scrollWidth - 10,
+      scrollLeft + clientWidth >= scrollWidth - 10
     );
   }
 

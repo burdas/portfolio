@@ -1,0 +1,233 @@
+---
+import CloseIcon from "@/src/icons/close.svg";
+import ArrowLeftIcon from "@/src/icons/arrow-left.svg";
+import ArrowRightIcon from "@/src/icons/arrow-right.svg";
+
+interface GalleryItem {
+  image: string;
+  description: string;
+}
+
+interface Props {
+  images: GalleryItem[];
+  slug: string;
+}
+
+const { images, slug } = Astro.props;
+---
+
+<div
+  id="gallery-lightbox"
+  class="lightbox-backdrop fixed inset-0 z-50 hidden bg-black/95"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Galería de imágenes"
+>
+  <header id="lightbox-controls" class="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent">
+    <span id="lightbox-counter" class="text-white font-medium"></span>
+
+    <button
+      id="lightbox-close"
+      class="text-white/70 hover:text-white transition-colors p-2 cursor-pointer"
+      aria-label="Cerrar"
+    >
+      <CloseIcon class="w-8 h-8" />
+    </button>
+  </header>
+
+  <button
+    id="lightbox-prev"
+    class="lightbox-nav absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
+    aria-label="Imagen anterior"
+  >
+    <ArrowLeftIcon class="w-10 h-10" />
+  </button>
+
+  <button
+    id="lightbox-next"
+    class="lightbox-nav absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
+    aria-label="Imagen siguiente"
+  >
+    <ArrowRightIcon class="w-10 h-10" />
+  </button>
+
+  <main id="lightbox-content" class="lightbox-content flex items-center justify-center w-full h-full">
+    <div id="lightbox-img-wrapper" class="cursor-zoom-in transition-all duration-300">
+      <img id="lightbox-img" class="lightbox-img max-w-full max-h-[calc(100vh-80px)] object-contain rounded-lg select-none transition-all duration-300" src="" alt="" />
+    </div>
+    <p id="lightbox-caption" class="absolute bottom-20 w-full text-white/80 text-center text-sm px-4 pointer-events-none"></p>
+  </main>
+
+  <div id="zoom-hint" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-sm text-white/90 text-xs px-4 py-2 rounded-full pointer-events-none transition-opacity duration-300">
+    click to zoom
+  </div>
+</div>
+
+<script is:inline define:vars={{ images, slug }}>
+  (function() {
+    var lightbox = document.getElementById("gallery-lightbox");
+    var content = document.getElementById("lightbox-content");
+    var imgWrapper = document.getElementById("lightbox-img-wrapper");
+    var imgEl = document.getElementById("lightbox-img");
+    var captionEl = document.getElementById("lightbox-caption");
+    var counterEl = document.getElementById("lightbox-counter");
+    var hintEl = document.getElementById("zoom-hint");
+    var closeBtn = document.getElementById("lightbox-close");
+    var prevBtn = document.getElementById("lightbox-prev");
+    var nextBtn = document.getElementById("lightbox-next");
+
+    var currentIndex = 0;
+    var isZoomed = false;
+    var currentSrc = "";
+
+    function updateCounter() {
+      if (counterEl) {
+        counterEl.textContent = (currentIndex + 1) + " / " + images.length;
+      }
+    }
+
+    function updateHint() {
+      if (hintEl) {
+        hintEl.textContent = isZoomed ? "click to reduce" : "click to zoom";
+        hintEl.style.opacity = isZoomed ? "0" : "1";
+      }
+    }
+
+    function resetState() {
+      isZoomed = false;
+      if (imgWrapper) {
+        imgWrapper.classList.remove("max-h-none", "cursor-zoom-out");
+        imgWrapper.classList.add("cursor-zoom-in");
+        var img = imgWrapper.querySelector("img");
+        if (img) {
+          img.classList.remove("w-[min(100%,900px)]", "max-h-none", "mx-auto");
+        }
+      }
+      if (content) {
+        content.classList.remove("items-start", "pt-[72px]", "overflow-y-auto");
+      }
+      if (lightbox) {
+        lightbox.style.overflow = "hidden";
+      }
+      updateHint();
+    }
+
+    function loadImage(index) {
+      currentIndex = index;
+      resetState();
+      updateCounter();
+      if (captionEl) {
+        captionEl.textContent = images[index].description || "";
+      }
+    }
+
+    function openLightbox(index, src) {
+      currentSrc = src;
+      loadImage(index);
+      if (imgEl) {
+        imgEl.src = src;
+        imgEl.alt = images[index].description || "";
+      }
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      resetState();
+      lightbox.classList.add("hidden");
+      lightbox.classList.remove("flex");
+      document.body.style.overflow = "";
+    }
+
+    function showPrev() {
+      var newIndex = (currentIndex - 1 + images.length) % images.length;
+      var triggers = document.querySelectorAll(".gallery-trigger");
+      var trigger = triggers[newIndex];
+      var triggerImg = trigger ? trigger.querySelector("img") : null;
+      var src = triggerImg ? triggerImg.src : "";
+      openLightbox(newIndex, src);
+    }
+
+    function showNext() {
+      var newIndex = (currentIndex + 1) % images.length;
+      var triggers = document.querySelectorAll(".gallery-trigger");
+      var trigger = triggers[newIndex];
+      var triggerImg = trigger ? trigger.querySelector("img") : null;
+      var src = triggerImg ? triggerImg.src : "";
+      openLightbox(newIndex, src);
+    }
+
+    function toggleZoom(e) {
+      if (e) e.stopPropagation();
+      isZoomed = !isZoomed;
+
+      if (isZoomed) {
+        if (imgWrapper) {
+          imgWrapper.classList.add("max-h-none", "cursor-zoom-out");
+          imgWrapper.classList.remove("cursor-zoom-in");
+          var img = imgWrapper.querySelector("img");
+          if (img) {
+            img.classList.add("w-[min(100%,900px)]", "max-h-none", "mx-auto");
+          }
+        }
+        if (content) {
+          content.classList.add("items-start", "pt-[72px]", "overflow-y-auto");
+        }
+        if (lightbox) {
+          lightbox.style.overflow = "auto";
+        }
+      } else {
+        resetState();
+      }
+      updateHint();
+    }
+
+    if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+    if (prevBtn) prevBtn.addEventListener("click", showPrev);
+    if (nextBtn) nextBtn.addEventListener("click", showNext);
+    if (imgWrapper) imgWrapper.addEventListener("click", toggleZoom);
+
+    document.addEventListener("keydown", function(e) {
+      if (!lightbox.classList.contains("flex")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+
+    if (lightbox) {
+      lightbox.addEventListener("click", function(e) {
+        var target = e.target;
+        if (target === lightbox || target === content || target === imgWrapper) {
+          closeLightbox();
+        }
+      });
+    }
+
+    var triggers = document.querySelectorAll(".gallery-trigger");
+    triggers.forEach(function(trigger, index) {
+      trigger.addEventListener("click", function() {
+        var triggerImg = trigger.querySelector("img");
+        var src = triggerImg ? triggerImg.src : "";
+        openLightbox(index, src);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .lightbox-backdrop {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.3) transparent;
+  }
+  .lightbox-backdrop::-webkit-scrollbar {
+    width: 6px;
+  }
+  .lightbox-backdrop::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .lightbox-backdrop::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+  }
+</style>

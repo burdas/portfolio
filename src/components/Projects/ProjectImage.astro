@@ -6,10 +6,11 @@ interface Props {
   imageName?: string;
   showLabel?: boolean;
   class?: string;
+  id?: string;
   disableTransition?: boolean;
 }
 
-const { slug, imageName = "cover.webp", showLabel = false, class: className, disableTransition = false } = Astro.props;
+const { slug, imageName = "cover.webp", showLabel = false, class: className, id, disableTransition = false } = Astro.props;
 
 const projectImages = import.meta.glob('/src/assets/projects/*/*.{webp,png,jpg,gif}');
 const portfolioImages = import.meta.glob('/src/assets/projects/portfolio/*.{webp,png,jpg,gif}');
@@ -28,6 +29,7 @@ const imageSrc = projectImages[projectImagePath]
     <Image
       src={imageSrc() as any}
       alt={slug}
+      id={id}
       class={`${className} pointer-events-none`}
       {...(!disableTransition && { transition: { name: `project-image-${slug}` } })}
     />
