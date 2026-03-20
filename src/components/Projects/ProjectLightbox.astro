@@ -23,7 +23,10 @@ const { images, slug } = Astro.props;
   aria-modal="true"
   aria-label="Galería de imágenes"
 >
-  <header id="lightbox-controls" class="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent">
+  <header
+    id="lightbox-controls"
+    class="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent"
+  >
     <span id="lightbox-counter" class="text-white font-medium"></span>
 
     <button
@@ -51,20 +54,38 @@ const { images, slug } = Astro.props;
     <ArrowRightIcon class="w-10 h-10" />
   </button>
 
-  <main id="lightbox-content" class="lightbox-content flex items-center justify-center w-full h-full">
-    <div id="lightbox-img-wrapper" class="cursor-zoom-in transition-all duration-300">
-      <img id="lightbox-img" class="lightbox-img max-w-full max-h-[calc(100vh-80px)] object-contain rounded-lg select-none transition-all duration-300" src="" alt="" />
+  <main
+    id="lightbox-content"
+    class="lightbox-content flex items-center justify-center w-full h-full"
+  >
+    <div
+      id="lightbox-img-wrapper"
+      class="cursor-zoom-in transition-all duration-300"
+    >
+      <img
+        id="lightbox-img"
+        class="lightbox-img max-w-full max-h-[calc(100vh-80px)] object-contain rounded-lg select-none transition-all duration-300"
+        src=""
+        alt=""
+      />
     </div>
-    <p id="lightbox-caption" class="absolute bottom-20 w-full text-white/80 text-center text-sm px-4 pointer-events-none"></p>
+    <p
+      id="lightbox-caption"
+      class="absolute bottom-20 w-full text-white/80 text-center text-sm px-4 pointer-events-none"
+    >
+    </p>
   </main>
 
-  <div id="zoom-hint" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-sm text-white/90 text-xs px-4 py-2 rounded-full pointer-events-none transition-opacity duration-300">
+  <div
+    id="zoom-hint"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-sm text-white/90 text-xs px-4 py-2 rounded-full pointer-events-none transition-opacity duration-300"
+  >
     click to zoom
   </div>
 </div>
 
 <script is:inline define:vars={{ images, slug }}>
-  (function() {
+  (function () {
     var lightbox = document.getElementById("gallery-lightbox");
     var content = document.getElementById("lightbox-content");
     var imgWrapper = document.getElementById("lightbox-img-wrapper");
@@ -79,10 +100,16 @@ const { images, slug } = Astro.props;
     var currentIndex = 0;
     var isZoomed = false;
     var currentSrc = "";
+    var isZoomableImage = false;
+    var ASPECT_RATIO_THRESHOLD = 1.0;
+
+    function isPanoramic(naturalWidth, naturalHeight) {
+      return naturalWidth / naturalHeight < ASPECT_RATIO_THRESHOLD;
+    }
 
     function updateCounter() {
       if (counterEl) {
-        counterEl.textContent = (currentIndex + 1) + " / " + images.length;
+        counterEl.textContent = currentIndex + 1 + " / " + images.length;
       }
     }
 
@@ -118,6 +145,20 @@ const { images, slug } = Astro.props;
       updateCounter();
       if (captionEl) {
         captionEl.textContent = images[index].description || "";
+      }
+      if (imgEl) {
+        imgEl.onload = function () {
+          isZoomableImage = isPanoramic(
+            imgEl.naturalWidth,
+            imgEl.naturalHeight,
+          );
+          if (!isZoomableImage) {
+            if (hintEl) hintEl.style.display = "none";
+            if (imgWrapper) imgWrapper.classList.remove("cursor-zoom-in");
+          } else {
+            if (hintEl) hintEl.style.display = "";
+          }
+        };
       }
     }
 
@@ -160,6 +201,7 @@ const { images, slug } = Astro.props;
 
     function toggleZoom(e) {
       if (e) e.stopPropagation();
+      if (!isZoomableImage) return;
       isZoomed = !isZoomed;
 
       if (isZoomed) {
@@ -188,7 +230,7 @@ const { images, slug } = Astro.props;
     if (nextBtn) nextBtn.addEventListener("click", showNext);
     if (imgWrapper) imgWrapper.addEventListener("click", toggleZoom);
 
-    document.addEventListener("keydown", function(e) {
+    document.addEventListener("keydown", function (e) {
       if (!lightbox.classList.contains("flex")) return;
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowLeft") showPrev();
@@ -196,17 +238,21 @@ const { images, slug } = Astro.props;
     });
 
     if (lightbox) {
-      lightbox.addEventListener("click", function(e) {
+      lightbox.addEventListener("click", function (e) {
         var target = e.target;
-        if (target === lightbox || target === content || target === imgWrapper) {
+        if (
+          target === lightbox ||
+          target === content ||
+          target === imgWrapper
+        ) {
           closeLightbox();
         }
       });
     }
 
     var triggers = document.querySelectorAll(".gallery-trigger");
-    triggers.forEach(function(trigger, index) {
-      trigger.addEventListener("click", function() {
+    triggers.forEach(function (trigger, index) {
+      trigger.addEventListener("click", function () {
         var triggerImg = trigger.querySelector("img");
         var src = triggerImg ? triggerImg.src : "";
         openLightbox(index, src);
@@ -218,7 +264,7 @@ const { images, slug } = Astro.props;
 <style>
   .lightbox-backdrop {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.3) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
   }
   .lightbox-backdrop::-webkit-scrollbar {
     width: 6px;
@@ -227,7 +273,7 @@ const { images, slug } = Astro.props;
     background: transparent;
   }
   .lightbox-backdrop::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
   }
 </style>
