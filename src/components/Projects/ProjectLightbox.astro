@@ -18,17 +18,15 @@ const { images, slug } = Astro.props;
 
 <div
   id="gallery-lightbox"
-  class="lightbox-backdrop fixed inset-0 z-50 hidden bg-black/95"
+  class="fixed inset-0 z-50 hidden bg-black/95 overflow-hidden"
   role="dialog"
   aria-modal="true"
   aria-label="Galería de imágenes"
 >
   <header
-    id="lightbox-controls"
-    class="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent"
+    class="fixed top-0 inset-x-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent"
   >
     <span id="lightbox-counter" class="text-white font-medium"></span>
-
     <button
       id="lightbox-close"
       class="text-white/70 hover:text-white transition-colors p-2 cursor-pointer"
@@ -40,7 +38,7 @@ const { images, slug } = Astro.props;
 
   <button
     id="lightbox-prev"
-    class="lightbox-nav absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
+    class="fixed left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
     aria-label="Imagen anterior"
   >
     <ArrowLeftIcon class="w-10 h-10" />
@@ -48,231 +46,185 @@ const { images, slug } = Astro.props;
 
   <button
     id="lightbox-next"
-    class="lightbox-nav absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
+    class="fixed right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 cursor-pointer z-40"
     aria-label="Imagen siguiente"
   >
     <ArrowRightIcon class="w-10 h-10" />
   </button>
 
-  <main
-    id="lightbox-content"
-    class="lightbox-content flex items-center justify-center w-full h-full"
+  <div
+    id="lightbox-scroll"
+    class="w-full h-full overflow-y-hidden flex items-center justify-center"
   >
     <div
-      id="lightbox-img-wrapper"
-      class="cursor-zoom-in transition-all duration-300"
+      id="lightbox-content"
+      class="flex items-center justify-center w-full min-h-full py-[72px] px-4"
     >
       <img
         id="lightbox-img"
-        class="lightbox-img max-w-full max-h-[calc(100vh-80px)] object-contain rounded-lg select-none transition-all duration-300"
+        class="max-w-full max-h-[calc(100vh-80px)] object-contain rounded-lg select-none cursor-zoom-in"
         src=""
         alt=""
       />
     </div>
-    <p
-      id="lightbox-caption"
-      class="absolute bottom-20 w-full text-white/80 text-center text-sm px-4 pointer-events-none"
-    >
-    </p>
-  </main>
+  </div>
+
+  <p
+    id="lightbox-caption"
+    class="fixed bottom-6 inset-x-0 text-white/80 text-center text-sm px-4 pointer-events-none z-30"
+  >
+  </p>
 
   <div
     id="zoom-hint"
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-sm text-white/90 text-xs px-4 py-2 rounded-full pointer-events-none transition-opacity duration-300"
+    class="fixed bottom-14 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-sm text-white/90 text-xs px-4 py-2 rounded-full pointer-events-none transition-opacity duration-300"
   >
     click to zoom
   </div>
 </div>
 
-<script is:inline define:vars={{ images, slug }}>
+<script is:inline define:vars={{ images }}>
   (function () {
-    var lightbox = document.getElementById("gallery-lightbox");
-    var content = document.getElementById("lightbox-content");
-    var imgWrapper = document.getElementById("lightbox-img-wrapper");
-    var imgEl = document.getElementById("lightbox-img");
-    var captionEl = document.getElementById("lightbox-caption");
-    var counterEl = document.getElementById("lightbox-counter");
-    var hintEl = document.getElementById("zoom-hint");
-    var closeBtn = document.getElementById("lightbox-close");
-    var prevBtn = document.getElementById("lightbox-prev");
-    var nextBtn = document.getElementById("lightbox-next");
+    const lightbox = document.getElementById("gallery-lightbox");
+    const scroll = document.getElementById("lightbox-scroll");
+    const content = document.getElementById("lightbox-content");
+    const imgEl = document.getElementById("lightbox-img");
+    const captionEl = document.getElementById("lightbox-caption");
+    const counterEl = document.getElementById("lightbox-counter");
+    const hintEl = document.getElementById("zoom-hint");
 
-    var currentIndex = 0;
-    var isZoomed = false;
-    var currentSrc = "";
-    var isZoomableImage = false;
-    var ASPECT_RATIO_THRESHOLD = 1.0;
+    let currentIndex = 0;
+    let isZoomed = false;
 
-    function isPanoramic(naturalWidth, naturalHeight) {
-      return naturalWidth / naturalHeight < ASPECT_RATIO_THRESHOLD;
-    }
+    const getTriggerSrc = (index) => {
+      const img = document
+        .querySelectorAll(".gallery-trigger")
+        [index]?.querySelector("img");
+      return img?.src ?? "";
+    };
 
-    function updateCounter() {
-      if (counterEl) {
-        counterEl.textContent = currentIndex + 1 + " / " + images.length;
+    const isZoomable = () => imgEl.naturalWidth / imgEl.naturalHeight < 1.0;
+
+    function applyZoom(zoom) {
+      isZoomed = zoom;
+
+      imgEl.style.transition = "transform 0.4s ease-out";
+      imgEl.style.transformOrigin = "top center";
+
+      if (zoom) {
+        imgEl.style.transform = "scale(3)";
+        imgEl.style.cursor = "zoom-out";
+        scroll.style.overflowY = "auto";
+        scroll.style.alignItems = "flex-start";
+      } else {
+        imgEl.style.transform = "scale(1)";
+        imgEl.style.cursor = "zoom-in";
+        scroll.style.overflowY = "hidden";
+        scroll.style.alignItems = "";
+        scroll.scrollTop = 0;
       }
-    }
 
-    function updateHint() {
       if (hintEl) {
-        hintEl.textContent = isZoomed ? "click to reduce" : "click to zoom";
-        hintEl.style.opacity = isZoomed ? "0" : "1";
+        hintEl.textContent = zoom ? "click to reduce" : "click to zoom";
+        hintEl.style.opacity = zoom ? "0" : "1";
       }
     }
 
-    function resetState() {
-      isZoomed = false;
-      if (imgWrapper) {
-        imgWrapper.classList.remove("max-h-none", "cursor-zoom-out");
-        imgWrapper.classList.add("cursor-zoom-in");
-        var img = imgWrapper.querySelector("img");
-        if (img) {
-          img.classList.remove("w-[min(100%,900px)]", "max-h-none", "mx-auto");
-        }
-      }
-      if (content) {
-        content.classList.remove("items-start", "pt-[72px]", "overflow-y-auto");
-      }
-      if (lightbox) {
-        lightbox.style.overflow = "hidden";
-      }
-      updateHint();
-    }
-
-    function loadImage(index) {
-      currentIndex = index;
-      resetState();
-      updateCounter();
-      if (captionEl) {
-        captionEl.textContent = images[index].description || "";
-      }
-      if (imgEl) {
-        imgEl.onload = function () {
-          isZoomableImage = isPanoramic(
-            imgEl.naturalWidth,
-            imgEl.naturalHeight,
-          );
-          if (!isZoomableImage) {
-            if (hintEl) hintEl.style.display = "none";
-            if (imgWrapper) imgWrapper.classList.remove("cursor-zoom-in");
-          } else {
-            if (hintEl) hintEl.style.display = "";
-          }
-        };
-      }
+    function toggleZoom(e) {
+      e.stopPropagation();
+      if (!isZoomable()) return;
+      applyZoom(!isZoomed);
     }
 
     function openLightbox(index, src) {
-      currentSrc = src;
-      loadImage(index);
-      if (imgEl) {
-        imgEl.src = src;
-        imgEl.alt = images[index].description || "";
-      }
-      lightbox.classList.remove("hidden");
-      lightbox.classList.add("flex");
+      currentIndex = index;
+      isZoomed = false;
+
+      imgEl.style.transition = "none";
+      imgEl.style.transform = "scale(1)";
+      imgEl.style.transformOrigin = "top center";
+      imgEl.style.cursor = "zoom-in";
+      scroll.style.overflowY = "hidden";
+      scroll.style.alignItems = "";
+      scroll.scrollTop = 0;
+
+      imgEl.src = src;
+      imgEl.alt = images[index].description ?? "";
+      imgEl.onload = () => {
+        if (!isZoomable()) {
+          hintEl.style.display = "none";
+          imgEl.style.cursor = "default";
+        } else {
+          hintEl.style.display = "";
+        }
+      };
+
+      if (captionEl) captionEl.textContent = images[index].description ?? "";
+      if (counterEl) counterEl.textContent = `${index + 1} / ${images.length}`;
+
+      lightbox.classList.replace("hidden", "flex");
       document.body.style.overflow = "hidden";
     }
 
     function closeLightbox() {
-      resetState();
-      lightbox.classList.add("hidden");
-      lightbox.classList.remove("flex");
+      applyZoom(false);
+      lightbox.classList.replace("flex", "hidden");
       document.body.style.overflow = "";
     }
 
-    function showPrev() {
-      var newIndex = (currentIndex - 1 + images.length) % images.length;
-      var triggers = document.querySelectorAll(".gallery-trigger");
-      var trigger = triggers[newIndex];
-      var triggerImg = trigger ? trigger.querySelector("img") : null;
-      var src = triggerImg ? triggerImg.src : "";
-      openLightbox(newIndex, src);
-    }
+    const showPrev = () => {
+      const i = (currentIndex - 1 + images.length) % images.length;
+      openLightbox(i, getTriggerSrc(i));
+    };
 
-    function showNext() {
-      var newIndex = (currentIndex + 1) % images.length;
-      var triggers = document.querySelectorAll(".gallery-trigger");
-      var trigger = triggers[newIndex];
-      var triggerImg = trigger ? trigger.querySelector("img") : null;
-      var src = triggerImg ? triggerImg.src : "";
-      openLightbox(newIndex, src);
-    }
+    const showNext = () => {
+      const i = (currentIndex + 1) % images.length;
+      openLightbox(i, getTriggerSrc(i));
+    };
 
-    function toggleZoom(e) {
-      if (e) e.stopPropagation();
-      if (!isZoomableImage) return;
-      isZoomed = !isZoomed;
+    document
+      .getElementById("lightbox-close")
+      .addEventListener("click", closeLightbox);
+    document
+      .getElementById("lightbox-prev")
+      .addEventListener("click", showPrev);
+    document
+      .getElementById("lightbox-next")
+      .addEventListener("click", showNext);
+    imgEl.addEventListener("click", toggleZoom);
 
-      if (isZoomed) {
-        if (imgWrapper) {
-          imgWrapper.classList.add("max-h-none", "cursor-zoom-out");
-          imgWrapper.classList.remove("cursor-zoom-in");
-          var img = imgWrapper.querySelector("img");
-          if (img) {
-            img.classList.add("w-[min(100%,900px)]", "max-h-none", "mx-auto");
-          }
-        }
-        if (content) {
-          content.classList.add("items-start", "pt-[72px]", "overflow-y-auto");
-        }
-        if (lightbox) {
-          lightbox.style.overflow = "auto";
-        }
-      } else {
-        resetState();
-      }
-      updateHint();
-    }
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox || e.target === scroll || e.target === content)
+        closeLightbox();
+    });
 
-    if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
-    if (prevBtn) prevBtn.addEventListener("click", showPrev);
-    if (nextBtn) nextBtn.addEventListener("click", showNext);
-    if (imgWrapper) imgWrapper.addEventListener("click", toggleZoom);
-
-    document.addEventListener("keydown", function (e) {
+    document.addEventListener("keydown", (e) => {
       if (!lightbox.classList.contains("flex")) return;
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowLeft") showPrev();
       if (e.key === "ArrowRight") showNext();
     });
 
-    if (lightbox) {
-      lightbox.addEventListener("click", function (e) {
-        var target = e.target;
-        if (
-          target === lightbox ||
-          target === content ||
-          target === imgWrapper
-        ) {
-          closeLightbox();
-        }
-      });
-    }
-
-    var triggers = document.querySelectorAll(".gallery-trigger");
-    triggers.forEach(function (trigger, index) {
-      trigger.addEventListener("click", function () {
-        var triggerImg = trigger.querySelector("img");
-        var src = triggerImg ? triggerImg.src : "";
-        openLightbox(index, src);
-      });
+    document.querySelectorAll(".gallery-trigger").forEach((trigger, index) => {
+      trigger.addEventListener("click", () =>
+        openLightbox(index, getTriggerSrc(index)),
+      );
     });
   })();
 </script>
 
 <style>
-  .lightbox-backdrop {
+  #lightbox-scroll {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
   }
-  .lightbox-backdrop::-webkit-scrollbar {
+  #lightbox-scroll::-webkit-scrollbar {
     width: 6px;
   }
-  .lightbox-backdrop::-webkit-scrollbar-track {
+  #lightbox-scroll::-webkit-scrollbar-track {
     background: transparent;
   }
-  .lightbox-backdrop::-webkit-scrollbar-thumb {
+  #lightbox-scroll::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
   }
