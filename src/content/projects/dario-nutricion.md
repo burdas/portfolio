@@ -16,9 +16,6 @@ coreTech: "Astro"
 order: 3
 gallery: [
   { image: "cover.webp", description: "Página principal" },
-  { image: "cover.webp", description: "Sección de servicios" },
-  { image: "cover.webp", description: "Sobre mí" },
-  { image: "cover.webp", description: "Vista mobile" }
 ]
 ---
 

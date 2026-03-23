@@ -15,10 +15,12 @@ solutions: ["Uso de patrones de diseño seguros y auditoría de contratos inteli
 coreTech: "Solidity"
 order: 4
 gallery: [
-  { image: "cover.webp", description: "Clon de Twitter descentralizado" },
-  { image: "cover.webp", description: "Diario blockchain" },
-  { image: "cover.webp", description: "Juego 3 en raya" },
-  { image: "cover.webp", description: "Smart contracts" }
+  { image: "ganache.webp", description: "Red ethereum local" },
+  { image: "metamask.webp", description: "Monedero de pago" },
+  { image: "twitter.webp", description: "Red social de microbloggin descentralizada" },
+  { image: "diario_bitacora.webp", description: "Cuaderno de bitácora descentralizado" },
+  { image: "tres_raya.webp", description: "Juego online descentralizado" },
+  { image: "ethereum_cost.webp", description: "Coste ETH de desplegar la red social" },
 ]
 ---
 ---

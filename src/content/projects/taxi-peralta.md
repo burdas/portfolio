@@ -15,10 +15,9 @@ solutions: ["Uso de Google Maps Distance Matrix API para cálculos precisos de c
 coreTech: "Astro"
 order: 2
 gallery: [
-  { image: "cover.webp", description: "Página principal" },
-  { image: "cover.webp", description: "Calculadora de presupuestos" },
-  { image: "cover.webp", description: "Formulario de contacto" },
-  { image: "cover.webp", description: "Vista mobile" }
+  { image: "main_page.webp", description: "Página principal" },
+  { image: "calculadora_page.webp", description: "Calculadora de viajes" },
+  { image: "admin_page.webp", description: "Página de administrador" },
 ]
 ---
 
