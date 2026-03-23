@@ -15,10 +15,7 @@ solutions: ["Algoritmo de IA con niveles de dificultad ajustables basado en rend
 coreTech: "HTML5 Canvas, JavaScript"
 order: 6
 gallery: [
-  { image: "cover.webp", description: "Pantalla de inicio" },
-  { image: "cover.webp", description: "Jugando contra IA" },
-  { image: "cover.webp", description: "Pantalla de puntuación" },
-  { image: "cover.webp", description: "Game over" }
+  { image: "burdaspong.webp", description: "Pantalla de juego" },
 ]
 ---
 
