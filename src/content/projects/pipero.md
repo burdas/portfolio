@@ -15,10 +15,10 @@ solutions: ["Sistema de autenticación y autorización basado en roles (RBAC)", 
 coreTech: "PHP, SQLite"
 order: 8
 gallery: [
-  { image: "pipero.webp", description: "Dashboard principal" },
-  { image: "pipero.webp", description: "Gestión de usuarios" },
-  { image: "pipero.webp", description: "Control de stock" },
-  { image: "pipero.webp", description: "Estadísticas" }
+  { image: "cover.webp", description: "Dashboard principal" },
+  { image: "cover.webp", description: "Gestión de usuarios" },
+  { image: "cover.webp", description: "Control de stock" },
+  { image: "cover.webp", description: "Estadísticas" }
 ]
 ---
 

@@ -15,10 +15,9 @@ solutions: ["Uso de fórmulas nutricionales basadas en evidencia científica", "
 coreTech: "JavaScript, Chart.js"
 order: 11
 gallery: [
-  { image: "cover.webp", description: "Calculadora de calorías" },
-  { image: "cover.webp", description: "Macronutrientes" },
-  { image: "cover.webp", description: "Gráficos visuales" },
-  { image: "cover.webp", description: "Configuración" }
+  { image: "params_input.webp", description: "Formulario de parámetros de entrada" },
+  { image: "config_page.webp", description: "Página de configuración" },
+  { image: "result_page.webp", description: "Página de resultados" }
 ]
 ---
 
