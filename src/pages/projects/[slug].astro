@@ -23,9 +23,16 @@ const { project } = Astro.props;
 const { data } = project;
 const gallery = data.gallery;
 const slug = project.slug;
+
+// Ideally we would resolve the absolute URL for the OG image here
+// For now we pass the description and title
 ---
 
-<Layout title={`${data.name} - Proyecto`} description={data.description}>
+<Layout 
+  title={`${data.name} - Proyecto`} 
+  description={data.description}
+  ogImage={`/images/projects/${slug}/cover.webp`}
+>
   <article class="min-h-screen pt-8 sm:pt-24 pb-16 bg-neutral-950">
     <div class="max-w-5xl mx-auto px-6">
       <ProjectBreadcrumb projectName={data.name} />

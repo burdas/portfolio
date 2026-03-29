@@ -29,7 +29,10 @@ const getLogoContent = (company: string) => {
 };
 ---
 
-<Layout title={`${jobData.role} - ${jobData.company}`} description={jobData.description}>
+<Layout 
+  title={`${jobData.role} - ${jobData.company}`} 
+  description={jobData.description}
+>
   <article class="min-h-screen pt-24 pb-16 bg-black text-gray-300 font-['JetBrains_Mono']">
     <div class="max-w-6xl mx-auto px-6">
       <!-- Breadcrumb -->
