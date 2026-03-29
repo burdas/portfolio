@@ -1,5 +1,8 @@
 ---
-import { experience } from "../../data/portfolio";
+import { getCollection } from "astro:content";
+
+const experience = await getCollection("experience");
+const sortedExperience = experience.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <h3 class="text-xl font-semibold text-gray-200 mb-8 flex items-center gap-2">
@@ -8,7 +11,7 @@ import { experience } from "../../data/portfolio";
 </h3>
 <div class="space-y-8">
   {
-    experience.map((job) => (
+    sortedExperience.map((job) => (
       <a href={`/experience/${job.slug}`} class="block group">
         <article class="relative pl-6 transition-all job-timeline">
           <div class="absolute left-0 top-0 bottom-0 flex flex-col gap-1 items-center">
@@ -20,13 +23,13 @@ import { experience } from "../../data/portfolio";
             </div>
           </div>
           <div class="mb-1">
-            <span class="text-xs text-gray-500">{job.period}</span>
+            <span class="text-xs text-gray-500">{job.data.period}</span>
           </div>
           <h4 class="text-lg font-semibold text-white group-hover:text-indigo-300 transition">
-            {job.role}
+            {job.data.role}
           </h4>
-          <p class="text-gray-400 text-sm mb-2">{job.company}</p>
-          <p class="text-gray-500 text-sm line-clamp-2">{job.description}</p>
+          <p class="text-gray-400 text-sm mb-2">{job.data.company}</p>
+          <p class="text-gray-500 text-sm line-clamp-2">{job.data.description}</p>
           <div class="mt-2 text-xs text-gray-500 flex items-center gap-1 group-hover:text-indigo-400 transition">
             Ver más <span class="group-hover:translate-x-1 transition">→</span>
           </div>
