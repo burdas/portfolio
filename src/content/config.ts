@@ -34,6 +34,20 @@ const experience = defineCollection({
     description: z.string(),
     highlights: z.array(z.string()),
     order: z.number(),
+    logo: z.string().optional(),
+    type: z.string().optional(),
+    location: z.string().optional(),
+    siteUrl: z.string().url().optional(),
+    technologies: z.array(z.string()).optional(),
+    keyProjects: z.array(z.object({
+      name: z.string(),
+      description: z.string(),
+      slug: z.string().optional(),
+    })).optional(),
+    detailedHighlights: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+    })).optional(),
   }),
 });
 
