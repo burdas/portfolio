@@ -21,7 +21,7 @@ const currentIndex = sortedExperience.findIndex(j => j.slug === job.slug);
 const prevJob = currentIndex > 0 ? sortedExperience[currentIndex - 1] : null;
 const nextJob = currentIndex < sortedExperience.length - 1 ? sortedExperience[currentIndex + 1] : null;
 
-const experienceLogos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/Experience/*.{avif,webp,png,jpg,svg}');
+const experienceLogos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/experience/*.{avif,webp,png,jpg,svg}');
 
 // Helper to get initials or placeholder logo
 const getLogoContent = (company: string) => {
