@@ -5,9 +5,16 @@ import Career from "../components/Career/Career.astro";
 import Projects from "../components/Projects/Projects.astro";
 import Contact from "../components/Contact.astro";
 import Hero3D from "../components/Hero/Hero3D.astro";
+import ogImage from "../assets/og.png";
 ---
 
-<Layout title="Marcos Burdaspar - Portfolio">
+<Layout 
+  title="Marcos Burdaspar - Portfolio"
+  description="Portfolio de Marcos Burdaspar - Desarrollador Full Stack"
+  ogImage={ogImage.src}
+  ogImageWidth="1200"
+  ogImageHeight="630"
+>
   <Hero3D />
   <About />
   <Career />

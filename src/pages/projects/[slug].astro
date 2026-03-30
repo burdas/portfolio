@@ -31,7 +31,9 @@ const slug = project.slug;
 <Layout 
   title={`${data.name} - Proyecto`} 
   description={data.description}
-  ogImage={`/images/projects/${slug}/cover.webp`}
+  ogImage={`/og/${Astro.params.slug}.png`}
+  ogImageWidth="1200"
+  ogImageHeight="630"
 >
   <article class="min-h-screen pt-8 sm:pt-24 pb-16 bg-neutral-950">
     <div class="max-w-5xl mx-auto px-6">
