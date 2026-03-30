@@ -11,12 +11,20 @@ export async function getStaticPaths() {
 
   const projectPaths = projects.map((p) => ({
     params: { slug: p.id.replace(/\.md$/, '') },
-    props: { title: p.data.name, description: p.data.description, type: 'Proyecto' },
+    props: { 
+      title: p.data.name, 
+      description: p.data.description, 
+      type: 'Proyecto',
+    },
   }));
 
   const experiencePaths = experience.map((e) => ({
     params: { slug: e.slug },
-    props: { title: e.data.role, description: e.data.company, type: 'Experiencia' },
+    props: { 
+      title: e.data.role, 
+      description: e.data.company, 
+      type: 'Experiencia',
+    },
   }));
 
   return [...projectPaths, ...experiencePaths];
@@ -38,14 +46,12 @@ export const GET: APIRoute = async ({ props }) => {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundColor: '#0a0a0a',
-          backgroundImage: 'radial-gradient(circle at 25% 25%, #1a1a1a 0%, #0a0a0a 100%)',
+          backgroundColor: '#09090b',
+          backgroundImage: 'radial-gradient(circle at 25% 25%, #18181b 0%, #09090b 50%)',
           padding: '80px',
           fontFamily: 'JetBrains Mono',
           color: 'white',
-          border: '20px solid #6366f1',
         },
         children: [
           {
@@ -54,18 +60,18 @@ export const GET: APIRoute = async ({ props }) => {
               style: {
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
-                marginBottom: '24px',
+                gap: '16px',
+                marginBottom: '32px',
               },
               children: [
                 {
                   type: 'div',
                   props: {
                     style: {
-                      width: '12px',
-                      height: '12px',
+                      width: '10px',
+                      height: '10px',
                       backgroundColor: '#6366f1',
-                      borderRadius: '50%',
+                      borderRadius: '2px',
                     },
                   },
                 },
@@ -73,11 +79,11 @@ export const GET: APIRoute = async ({ props }) => {
                   type: 'span',
                   props: {
                     style: {
-                      fontSize: '24px',
-                      fontWeight: 700,
+                      fontSize: '20px',
+                      fontWeight: 500,
                       textTransform: 'uppercase',
                       letterSpacing: '0.2em',
-                      color: '#6366f1',
+                      color: '#a1a1aa',
                     },
                     children: type,
                   },
@@ -89,10 +95,11 @@ export const GET: APIRoute = async ({ props }) => {
             type: 'h1',
             props: {
               style: {
-                fontSize: '84px',
+                fontSize: '80px',
                 fontWeight: 700,
-                margin: '0 0 20px 0',
+                margin: '0 0 24px 0',
                 lineHeight: 1.1,
+                letterSpacing: '-0.03em',
               },
               children: title,
             },
@@ -103,7 +110,7 @@ export const GET: APIRoute = async ({ props }) => {
               style: {
                 fontSize: '32px',
                 margin: 0,
-                color: '#a3a3a3',
+                color: '#71717a',
                 maxWidth: '900px',
                 lineHeight: 1.4,
               },
@@ -114,22 +121,20 @@ export const GET: APIRoute = async ({ props }) => {
             type: 'div',
             props: {
               style: {
-                position: 'absolute',
-                bottom: '80px',
-                left: '80px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
+                marginTop: '48px',
               },
               children: [
                 {
                   type: 'span',
                   props: {
                     style: {
-                      fontSize: '20px',
-                      color: '#4b5563',
+                      fontSize: '18px',
+                      color: '#52525b',
                     },
-                    children: 'burdaspar.com',
+                    children: 'burdas-portfolio.vercel.com',
                   },
                 },
               ],
