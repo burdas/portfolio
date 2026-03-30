@@ -1,11 +1,14 @@
 ---
 import { personalInfo } from "../../data/portfolio";
 import logo from "../../assets/logo.png";
+import coverImage from "../../assets/projects/portfolio/cover.webp";
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
+  imageWidth?: string;
+  imageHeight?: string;
   canonicalURL?: string;
   type?: string;
 }
@@ -13,13 +16,19 @@ interface Props {
 const {
   title = personalInfo.name,
   description = "Portfolio de Marcos Burdaspar - Ingeniero Informático Full Stack",
-  image = logo.src,
+  image = coverImage.src,
+  imageWidth,
+  imageHeight,
   canonicalURL = Astro.url.href,
   type = "website",
 } = Astro.props;
 
 const siteUrl = Astro.site ? Astro.site.origin : "";
 const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+
+// Default dimensions only if using the default image
+const finalWidth = imageWidth || (image === coverImage.src ? "1056" : undefined);
+const finalHeight = imageHeight || (image === coverImage.src ? "1056" : undefined);
 ---
 
 <!-- Global Metadata -->
@@ -43,6 +52,8 @@ const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
+{finalWidth && <meta property="og:image:width" content={finalWidth} />}
+{finalHeight && <meta property="og:image:height" content={finalHeight} />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />

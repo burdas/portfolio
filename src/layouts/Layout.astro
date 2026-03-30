@@ -9,6 +9,8 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogImageWidth?: string;
+  ogImageHeight?: string;
   canonicalURL?: string;
 }
 
@@ -16,6 +18,8 @@ const {
   title,
   description,
   ogImage,
+  ogImageWidth,
+  ogImageHeight,
   canonicalURL,
 } = Astro.props;
 ---
@@ -27,6 +31,8 @@ const {
       title={title} 
       description={description} 
       image={ogImage} 
+      imageWidth={ogImageWidth}
+      imageHeight={ogImageHeight}
       canonicalURL={canonicalURL} 
     />
     <ClientRouter />
