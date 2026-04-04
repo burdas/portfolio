@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import portraitImage from "../assets/portrait_image.webp";
 
 const techStack = [
   "PHP",
@@ -48,7 +49,7 @@ const getSlug = (name: string) =>
           >
           </div>
           <img
-            src="https://ui-avatars.com/api/?name=Marcos+Burdaspar&background=6366f1&color=fff&size=150&font-size=0.4&bold=true"
+            src={portraitImage.src}
             alt="Marcos Burdaspar"
             class="relative w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-white/10 object-cover group-hover:scale-105 transition-transform duration-500"
           />
