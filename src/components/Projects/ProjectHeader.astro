@@ -12,7 +12,7 @@ interface Props {
 const { name, description, url, repo, projectId } = Astro.props;
 ---
 
-<header class="mb-12" transition:animate="slide">
+<header class="mb-12" transition:animate="slide" data-reveal data-reveal-type="fade-up">
   <h1
     class="text-5xl md:text-6xl font-bold mb-4"
     transition:name={`project-title-${projectId}`}

@@ -5,16 +5,16 @@ import GlassCard from "./Shared/GlassCard.astro";
 
 <section id="contact" class="py-24 relative">
   <div class="max-w-5xl mx-auto px-6">
-    <GlassCard class="text-center">
-      <div class="flex items-center gap-4 mb-6 justify-center">
+    <GlassCard class="text-center" data-reveal data-reveal-type="fade-up">
+      <div class="flex items-center gap-4 mb-6 justify-center" data-reveal data-reveal-type="fade-down" data-reveal-delay="0.2">
         <div class="w-12 h-0.5 bg-linear-to-r from-indigo-500 to-transparent">
         </div>
         <h2 class="text-3xl font-bold">Contacto</h2>
       </div>
-      <p class="text-lg text-gray-300 mb-8">
+      <p class="text-lg text-gray-300 mb-8" data-reveal data-reveal-type="fade-up" data-reveal-delay="0.3">
         ¿Interesado en trabajar conmigo? No dudes en contactarme.
       </p>
-      <div class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-4 items-center" data-reveal data-reveal-type="fade-up" data-reveal-stagger="0.1" data-reveal-delay="0.4">
         <a
           href={`mailto:${personalInfo.email}`}
           class="flex items-center gap-3 text-lg text-gray-300 hover:text-indigo-300 transition px-6 py-3 rounded-xl bg-white/2 border border-white/5 hover:border-indigo-500/30 w-full justify-center"

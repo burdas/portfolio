@@ -7,6 +7,18 @@
   --transition-delay-50: 50ms;
 }
 
+@layer base {
+  [data-reveal] {
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  [data-reveal] > * {
+    will-change: transform, opacity;
+  }
+}
+
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('/fonts/JetBrainsMono-Light.woff2') format('woff2');

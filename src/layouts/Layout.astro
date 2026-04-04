@@ -37,6 +37,12 @@ const {
     />
     <ClientRouter />
     <script>
+      import { initScrollReveal } from "../scripts/scrollReveal";
+
+      document.addEventListener("astro:page-load", () => {
+        initScrollReveal();
+      });
+
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }

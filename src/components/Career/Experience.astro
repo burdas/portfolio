@@ -9,7 +9,7 @@ const sortedExperience = experience.sort((a, b) => a.data.order - b.data.order);
   <span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
   Experience
 </h3>
-<div class="space-y-8">
+<div class="space-y-8" data-reveal data-reveal-type="fade-up" data-reveal-stagger="0.1">
   {
     sortedExperience.map((job) => (
       <a href={`/experience/${job.slug}`} class="block group">

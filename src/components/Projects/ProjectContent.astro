@@ -10,7 +10,7 @@ interface Props {
 const { fullDescription, challenges, solutions } = Astro.props;
 ---
 
-<section class="mb-12" transition:animate="slide">
+<section class="mb-12" transition:animate="slide" data-reveal data-reveal-type="fade-up" data-reveal-delay="0.1">
   <div class="grid md:grid-cols-3 gap-8">
     <div class="md:col-span-2">
       <div class="flex place-items-center gap-4 mb-6">
@@ -22,32 +22,34 @@ const { fullDescription, challenges, solutions } = Astro.props;
         {fullDescription}
       </p>
 
-      <GlassCard>
-        <h3 class="text-xl font-bold mb-6">Retos y soluciones</h3>
-        <div class="grid grid-cols-2 gap-6">
-          {
-            challenges.map((challenge, index) => (
-              <>
-                <div>
-                  <p class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold">
-                    El reto
-                  </p>
-                  <p class="text-gray-400 text-sm">{challenge}</p>
-                </div>
-                <div>
-                  <p class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold">
-                    La solución
-                  </p>
-                  <p class="text-gray-400 text-sm">{solutions[index]}</p>
-                </div>
-                {index < challenges.length - 1 && (
-                  <div class="col-span-2 h-px bg-zinc-500/50" />
-                )}
-              </>
-            ))
-          }
-        </div>
-      </GlassCard>
+      <div data-reveal data-reveal-type="fade-up" data-reveal-delay="0.2">
+        <GlassCard>
+          <h3 class="text-xl font-bold mb-6">Retos y soluciones</h3>
+          <div class="grid grid-cols-2 gap-6">
+            {
+              challenges.map((challenge, index) => (
+                <>
+                  <div>
+                    <p class="text-primary text-xs uppercase tracking-wider mb-3 font-semibold">
+                      El reto
+                    </p>
+                    <p class="text-gray-400 text-sm">{challenge}</p>
+                  </div>
+                  <div>
+                    <p class="text-indigo-400 text-xs uppercase tracking-wider mb-3 font-semibold">
+                      La solución
+                    </p>
+                    <p class="text-gray-400 text-sm">{solutions[index]}</p>
+                  </div>
+                  {index < challenges.length - 1 && (
+                    <div class="col-span-2 h-px bg-zinc-500/50" />
+                  )}
+                </>
+              ))
+            }
+          </div>
+        </GlassCard>
+      </div>
     </div>
     <slot name="sidebar" />
   </div>

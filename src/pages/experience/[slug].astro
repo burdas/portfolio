@@ -51,7 +51,7 @@ const getLogoContent = (company: string) => {
   >
     <div class="max-w-6xl mx-auto px-6">
       <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-sm mb-12 text-gray-500">
+      <nav class="flex items-center gap-2 text-sm mb-12 text-gray-500" data-reveal data-reveal-type="fade-down">
         <a
           href="/#career"
           class="hover:text-white transition flex items-center gap-2"
@@ -64,7 +64,7 @@ const getLogoContent = (company: string) => {
       </nav>
 
       <!-- Header -->
-      <header class="flex flex-col md:flex-row gap-8 items-start mb-16">
+      <header class="flex flex-col md:flex-row gap-8 items-start mb-16" data-reveal data-reveal-type="fade-up">
         <div
           class="w-24 h-24 md:w-32 md:h-32 bg-indigo-900/30 border border-indigo-500/20 rounded-2xl flex items-center justify-center shrink-0 relative group"
         >
@@ -156,7 +156,7 @@ const getLogoContent = (company: string) => {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-16">
-          <section>
+          <section data-reveal data-reveal-type="fade-up" data-reveal-delay="0.1">
             <div class="flex items-center gap-4 mb-8">
               <div class="h-px w-8 bg-indigo-500"></div>
               <h2
@@ -171,7 +171,7 @@ const getLogoContent = (company: string) => {
           </section>
 
           <section>
-            <div class="flex items-center gap-4 mb-10">
+            <div class="flex items-center gap-4 mb-10" data-reveal data-reveal-type="fade-up">
               <div class="h-px w-8 bg-indigo-500"></div>
               <h2
                 class="text-xs font-bold tracking-[0.2em] uppercase text-white"
@@ -180,7 +180,7 @@ const getLogoContent = (company: string) => {
               </h2>
             </div>
 
-            <div class="space-y-10">
+            <div class="space-y-10" data-reveal data-reveal-type="fade-up" data-reveal-stagger="0.15">
               {
                 (jobData.detailedHighlights || jobData.highlights).map(
                   (item) => (
@@ -217,7 +217,7 @@ const getLogoContent = (company: string) => {
           <!-- Technologies -->
           {
             jobData.technologies && (
-              <div class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm">
+              <div class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm" data-reveal data-reveal-type="fade-left" data-reveal-delay="0.2">
                 <div class="flex items-center gap-3 mb-6">
                   <Icon name="zap" class="w-5 h-5 text-indigo-400" />
                   <h3 class="text-sm font-bold text-white uppercase tracking-wider">
@@ -238,7 +238,7 @@ const getLogoContent = (company: string) => {
           <!-- Key Projects -->
           {
             jobData.keyProjects && (
-              <div class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm">
+              <div class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm" data-reveal data-reveal-type="fade-left" data-reveal-delay="0.3">
                 <div class="flex items-center gap-3 mb-6">
                   <Icon name="folder" class="w-5 h-5 text-indigo-400" />
                   <h3 class="text-sm font-bold text-white uppercase tracking-wider">
@@ -278,6 +278,7 @@ const getLogoContent = (company: string) => {
           <!-- CTA Card -->
           <div
             class="p-8 bg-indigo-600 rounded-3xl relative overflow-hidden group"
+            data-reveal data-reveal-type="scale-in" data-reveal-delay="0.4"
           >
             <div
               class="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"
@@ -304,7 +305,7 @@ const getLogoContent = (company: string) => {
       </div>
 
       <!-- Pagination & Socials -->
-      <footer class="mt-32 pt-16 border-t border-white/5">
+      <footer class="mt-32 pt-16 border-t border-white/5" data-reveal data-reveal-type="fade-up">
         <div
           class="flex flex-col md:flex-row justify-between items-center gap-12"
         >

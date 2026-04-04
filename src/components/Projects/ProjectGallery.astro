@@ -18,7 +18,7 @@ const { images, slug } = Astro.props;
 const validImages = await resolveProjectImages(slug, images);
 ---
 
-<section class="mb-12" transition:animate="slide">
+<section class="mb-12" transition:animate="slide" data-reveal data-reveal-type="fade-up">
   <div class="flex place-items-center gap-4 mb-6">
     <div class="w-12 h-0.5 bg-linear-to-r from-indigo-500 to-transparent"></div>
     <h2 class="text-2xl font-bold">Galería</h2>
