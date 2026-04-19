@@ -1,6 +1,6 @@
 ---
 name: "Nutricalc"
-url: "https://taxiperalta.com/NutriCalc/"
+url: "https://nutri-calc-virid.vercel.app/"
 repo: "https://github.com/burdas/NutriCalc"
 description: "Controla tu nutrición: calcula calorías y macronutrientes con gráficos visuales."
 fullDescription: "NutriCalc es una aplicación web que permite a los usuarios calcular sus necesidades calóricas diarias y los macronutrientes necesarios según sus objetivos (perder peso, mantener o ganar masa). Incluye gráficos visuales interactivos con Chart.js para ver la distribución de nutrientes de forma intuitiva."

@@ -1,6 +1,5 @@
 ---
 name: "Pipero"
-url: "https://taxiperalta.com/pipero"
 repo: "https://github.com/burdas/pipero"
 description: "ERP en miniatura para restaurantes: gestión de usuarios, stock y dashboard."
 fullDescription: "Pipero es un ERP en miniatura desarrollado para gestionar un local de restauración. Permite gestionar usuarios con diferentes roles (admin, empleado), control de stock, seguimiento de mensualidades de socios, gestión del 'bote' comunitario y un dashboard con estadísticas en tiempo real."

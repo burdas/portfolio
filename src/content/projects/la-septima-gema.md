@@ -1,6 +1,5 @@
 ---
 name: "La Séptima Gema"
-url: "https://taxiperalta.com/LaSeptimaGema"
 repo: "https://github.com/burdas/La7aGema"
 description: "Tu propia IMDb: busca películas, consulta detalles y crea tu lista de favoritos."
 fullDescription: "La Séptima Gema es una aplicación web que replica la funcionalidad de IMDb, permitiéndote buscar películas, ver información detallada, consultar el top 20 de películas y valorar tus favoritas con un sistema de 5 estrellas. Todo integrado con la API de TMDB para datos actualizados."
