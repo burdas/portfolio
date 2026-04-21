@@ -8,6 +8,7 @@ import ProjectContent from "@/src/components/Projects/ProjectContent.astro";
 import ProjectSidebar from "@/src/components/Projects/ProjectSidebar.astro";
 import ProjectCTA from "@/src/components/Projects/ProjectCTA.astro";
 import ProjectGallery from "@/src/components/Projects/ProjectGallery.astro";
+import ProjectFooter from "@/src/components/Projects/ProjectFooter.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -24,8 +25,16 @@ const { data } = project;
 const gallery = data.gallery;
 const slug = project.slug;
 
+const allProjects = await getCollection("projects");
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const currentIndex = sortedProjects.findIndex((p) => p.id === project.id);
+const prevProject = currentIndex > 0 ? sortedProjects[currentIndex - 1] : null;
+const nextProject =
+  currentIndex < sortedProjects.length - 1
+    ? sortedProjects[currentIndex + 1]
+    : null;
+
 // Ideally we would resolve the absolute URL for the OG image here
-// For now we pass the description and title
 ---
 
 <Layout 
@@ -70,6 +79,8 @@ const slug = project.slug;
       <ProjectGallery images={gallery ?? []} slug={slug} />
 
       <ProjectCTA url={data.url} repo={data.repo} />
+
+      <ProjectFooter prevProject={prevProject} nextProject={nextProject} />
     </div>
   </article>
 </Layout>

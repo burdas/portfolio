@@ -1,0 +1,22 @@
+---
+interface Props {
+  company: string;
+}
+
+const { company } = Astro.props;
+---
+
+<nav
+  class="flex items-center gap-2 text-sm mb-12 text-gray-500"
+  data-reveal
+  data-reveal-type="fade-down"
+>
+  <a
+    href="/#career"
+    class="hover:text-white transition flex items-center gap-2"
+  >
+    Trayectoria
+  </a>
+  <span>/</span>
+  <span class="text-gray-300">{company}</span>
+</nav>

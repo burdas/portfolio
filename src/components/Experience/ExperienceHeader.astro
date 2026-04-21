@@ -1,0 +1,115 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+interface Props {
+  company: string;
+  role: string;
+  logo?: string;
+  type?: string;
+  period: string;
+  location?: string;
+  siteUrl?: string;
+}
+
+const { company, role, logo, type, period, location, siteUrl } = Astro.props;
+
+const experienceLogos = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/experience/*.{avif,webp,png,jpg,svg}",
+);
+
+// Helper to get initials or placeholder logo
+const getLogoContent = (company: string) => {
+  return company
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
+---
+
+<header
+  class="flex flex-col md:flex-row gap-8 items-start mb-16"
+  data-reveal
+  data-reveal-type="fade-up"
+>
+  <div
+    class="w-24 h-24 md:w-32 md:h-32 bg-indigo-900/30 border border-indigo-500/20 rounded-2xl flex items-center justify-center shrink-0 relative group"
+  >
+    <div
+      class="absolute inset-0 bg-indigo-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition duration-500"
+    >
+    </div>
+    {
+      logo && experienceLogos[logo] ? (
+        <Image
+          src={experienceLogos[logo]() as any}
+          alt={company}
+          class="w-16 h-16 md:w-20 md:h-20 object-contain relative z-10"
+        />
+      ) : (
+        <span class="text-3xl md:text-4xl font-bold text-indigo-400 relative z-10">
+          {getLogoContent(company)}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex-1">
+    <div class="flex flex-wrap gap-3 mb-4">
+      {
+        type && (
+          <span class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold tracking-wider uppercase rounded-full">
+            {type}
+          </span>
+        )
+      }
+      <span class="flex items-center gap-1.5 text-xs text-gray-500">
+        <Icon name="calendar" class="w-3.5 h-3.5" />
+        {period}
+      </span>
+    </div>
+
+    <h1
+      class="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight"
+    >
+      {role}
+    </h1>
+
+    <div
+      class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-400"
+    >
+      <span class="text-lg font-medium text-gray-200"
+        >{company}</span
+      >
+      {
+        location && (
+          <span class="flex items-center gap-1.5 text-sm">
+            <Icon name="map-pin" class="w-4 h-4 text-indigo-500" />
+            {location}
+          </span>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="flex gap-3 mt-4 md:mt-0">
+    {
+      siteUrl && (
+        <a
+          href={siteUrl}
+          target="_blank"
+          rel="noopener"
+          class="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-medium transition group"
+        >
+          <Icon
+            name="globe"
+            class="w-4 h-4 text-gray-400 group-hover:text-white transition"
+          />
+          Ver sitio
+        </a>
+      )
+    }
+  </div>
+</header>

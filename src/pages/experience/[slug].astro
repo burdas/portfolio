@@ -1,8 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
+import ExperienceBreadcrumb from "@/src/components/Experience/ExperienceBreadcrumb.astro";
+import ExperienceHeader from "@/src/components/Experience/ExperienceHeader.astro";
+import ExperienceContent from "@/src/components/Experience/ExperienceContent.astro";
+import ExperienceSidebar from "@/src/components/Experience/ExperienceSidebar.astro";
+import ExperienceFooter from "@/src/components/Experience/ExperienceFooter.astro";
 
 export async function getStaticPaths() {
   const experience = await getCollection("experience");
@@ -23,20 +26,6 @@ const nextJob =
   currentIndex < sortedExperience.length - 1
     ? sortedExperience[currentIndex + 1]
     : null;
-
-const experienceLogos = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/experience/*.{avif,webp,png,jpg,svg}",
-);
-
-// Helper to get initials or placeholder logo
-const getLogoContent = (company: string) => {
-  return company
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
 ---
 
 <Layout
@@ -50,381 +39,30 @@ const getLogoContent = (company: string) => {
     class="min-h-screen pt-8 sm:pt-24 pb-16 bg-black text-gray-300 font-['JetBrains_Mono']"
   >
     <div class="max-w-6xl mx-auto px-6">
-      <!-- Breadcrumb -->
-      <nav
-        class="flex items-center gap-2 text-sm mb-12 text-gray-500"
-        data-reveal
-        data-reveal-type="fade-down"
+      <ExperienceBreadcrumb company={jobData.company} />
+
+      <ExperienceHeader
+        company={jobData.company}
+        role={jobData.role}
+        logo={jobData.logo}
+        type={jobData.type}
+        period={jobData.period}
+        location={jobData.location}
+        siteUrl={jobData.siteUrl}
+      />
+
+      <ExperienceContent
+        description={jobData.description}
+        highlights={jobData.detailedHighlights || jobData.highlights}
       >
-        <a
-          href="/#career"
-          class="hover:text-white transition flex items-center gap-2"
-        >
-          Trayectoria
-        </a>
-        <span>/</span>
-        <span class="text-gray-300">{jobData.company}</span>
-      </nav>
+        <ExperienceSidebar
+          slot="sidebar"
+          technologies={jobData.technologies}
+          keyProjects={jobData.keyProjects}
+        />
+      </ExperienceContent>
 
-      <!-- Header -->
-      <header
-        class="flex flex-col md:flex-row gap-8 items-start mb-16"
-        data-reveal
-        data-reveal-type="fade-up"
-      >
-        <div
-          class="w-24 h-24 md:w-32 md:h-32 bg-indigo-900/30 border border-indigo-500/20 rounded-2xl flex items-center justify-center shrink-0 relative group"
-        >
-          <div
-            class="absolute inset-0 bg-indigo-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition duration-500"
-          >
-          </div>
-          {
-            jobData.logo && experienceLogos[jobData.logo] ? (
-              <Image
-                src={experienceLogos[jobData.logo]() as any}
-                alt={jobData.company}
-                class="w-16 h-16 md:w-20 md:h-20 object-contain relative z-10"
-              />
-            ) : (
-              <span class="text-3xl md:text-4xl font-bold text-indigo-400 relative z-10">
-                {getLogoContent(jobData.company)}
-              </span>
-            )
-          }
-        </div>
-
-        <div class="flex-1">
-          <div class="flex flex-wrap gap-3 mb-4">
-            {
-              jobData.type && (
-                <span class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold tracking-wider uppercase rounded-full">
-                  {jobData.type}
-                </span>
-              )
-            }
-            <span class="flex items-center gap-1.5 text-xs text-gray-500">
-              <Icon name="calendar" class="w-3.5 h-3.5" />
-              {jobData.period}
-            </span>
-          </div>
-
-          <h1
-            class="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight"
-          >
-            {jobData.role}
-          </h1>
-
-          <div
-            class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-400"
-          >
-            <span class="text-lg font-medium text-gray-200"
-              >{jobData.company}</span
-            >
-            {
-              jobData.location && (
-                <span class="flex items-center gap-1.5 text-sm">
-                  <Icon name="map-pin" class="w-4 h-4 text-indigo-500" />
-                  {jobData.location}
-                </span>
-              )
-            }
-          </div>
-        </div>
-
-        <div class="flex gap-3 mt-4 md:mt-0">
-          {
-            jobData.siteUrl && (
-              <a
-                href={jobData.siteUrl}
-                target="_blank"
-                rel="noopener"
-                class="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-medium transition group"
-              >
-                <Icon
-                  name="globe"
-                  class="w-4 h-4 text-gray-400 group-hover:text-white transition"
-                />
-                Ver sitio
-              </a>
-            )
-          }
-          <!-- <button
-            class="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition group"
-          >
-            <Icon
-              name="share"
-              class="w-5 h-5 text-gray-400 group-hover:text-white transition"
-            />
-          </button> -->
-        </div>
-      </header>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-16">
-          <section
-            data-reveal
-            data-reveal-type="fade-up"
-            data-reveal-delay="0.1"
-          >
-            <div class="flex items-center gap-4 mb-8">
-              <div class="h-px w-8 bg-indigo-500"></div>
-              <h2
-                class="text-xs font-bold tracking-[0.2em] uppercase text-white"
-              >
-                Resumen
-              </h2>
-            </div>
-            <p class="text-xl text-gray-400 leading-relaxed font-light">
-              {jobData.description}
-            </p>
-          </section>
-
-          <section>
-            <div
-              class="flex items-center gap-4 mb-10"
-              data-reveal
-              data-reveal-type="fade-up"
-            >
-              <div class="h-px w-8 bg-indigo-500"></div>
-              <h2
-                class="text-xs font-bold tracking-[0.2em] uppercase text-white"
-              >
-                Impacto y Responsabilidades
-              </h2>
-            </div>
-
-            <div
-              class="space-y-10"
-              data-reveal
-              data-reveal-type="fade-up"
-              data-reveal-stagger="0.15"
-            >
-              {
-                (jobData.detailedHighlights || jobData.highlights).map(
-                  (item) => (
-                    <div class="flex gap-6 group">
-                      <div class="mt-1.5 shrink-0">
-                        <div class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)] group-hover:scale-125 transition duration-300" />
-                      </div>
-                      <div>
-                        {typeof item === "string" ? (
-                          <p class="text-lg text-gray-300 leading-relaxed">
-                            {item}
-                          </p>
-                        ) : (
-                          <>
-                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition duration-300">
-                              {item.title}
-                            </h3>
-                            <p class="text-lg text-gray-400 leading-relaxed font-light">
-                              {item.description}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ),
-                )
-              }
-            </div>
-          </section>
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="space-y-8">
-          <!-- Technologies -->
-          {
-            jobData.technologies && (
-              <div
-                class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm"
-                data-reveal
-                data-reveal-type="fade-left"
-                data-reveal-delay="0.2"
-              >
-                <div class="flex items-center gap-3 mb-6">
-                  <Icon name="zap" class="w-5 h-5 text-indigo-400" />
-                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">
-                    Tecnologías
-                  </h3>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  {jobData.technologies.map((tech) => (
-                    <span class="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:border-white/20 transition cursor-default">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )
-          }
-
-          <!-- Key Projects -->
-          {
-            jobData.keyProjects && (
-              <div
-                class="p-8 bg-white/3 border border-white/5 rounded-3xl backdrop-blur-sm"
-                data-reveal
-                data-reveal-type="fade-left"
-                data-reveal-delay="0.3"
-              >
-                <div class="flex items-center gap-3 mb-6">
-                  <Icon name="folder" class="w-5 h-5 text-indigo-400" />
-                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">
-                    Proyectos Clave
-                  </h3>
-                </div>
-                <div class="space-y-4">
-                  {jobData.keyProjects.map((project) =>
-                    project.slug ? (
-                      <a
-                        href={`/projects/${project.slug}`}
-                        class="block p-4 bg-white/5 border border-white/5 rounded-2xl hover:border-indigo-500/30 transition group"
-                      >
-                        <h4 class="text-sm font-bold text-white mb-1 group-hover:text-indigo-300 transition">
-                          {project.name}
-                        </h4>
-                        <p class="text-xs text-gray-500 line-clamp-2">
-                          {project.description}
-                        </p>
-                      </a>
-                    ) : (
-                      <div class="p-4 bg-white/5 border border-white/5 rounded-2xl">
-                        <h4 class="text-sm font-bold text-white mb-1">
-                          {project.name}
-                        </h4>
-                        <p class="text-xs text-gray-500 line-clamp-2">
-                          {project.description}
-                        </p>
-                      </div>
-                    ),
-                  )}
-                </div>
-              </div>
-            )
-          }
-
-          <!-- CTA Card -->
-          <div
-            class="p-8 bg-indigo-600 rounded-3xl relative overflow-hidden group"
-            data-reveal
-            data-reveal-type="scale-in"
-            data-reveal-delay="0.4"
-          >
-            <div
-              class="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2"
-            >
-            </div>
-            <div class="relative z-10">
-              <h3 class="text-xl font-bold text-white mb-4">
-                ¿Te interesa que trabajemos juntos?
-              </h3>
-              <p class="text-indigo-100 text-sm mb-8 leading-relaxed">
-                Actualmente estoy abierto a proyectos colaborativos y
-                oportunidades de ingeniería senior.
-              </p>
-              <a
-                href="/#contact"
-                class="flex items-center justify-center gap-2 w-full py-4 bg-white text-indigo-600 rounded-2xl font-bold hover:bg-indigo-50 transition shadow-xl"
-              >
-                <Icon name="mail" class="w-5 h-5" />
-                Contactar
-              </a>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      <!-- Pagination & Socials -->
-      <footer
-        class="mt-32 pt-16 border-t border-white/5"
-        data-reveal
-        data-reveal-type="fade-up"
-      >
-        <div
-          class="flex flex-col md:flex-row justify-between items-center gap-12"
-        >
-          <!-- Prev -->
-          <div class="flex-1 w-full md:w-auto">
-            {
-              prevJob ? (
-                <a href={`/experience/${prevJob.slug}`} class="group block">
-                  <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 block mb-2">
-                    Experiencia Anterior
-                  </span>
-                  <div class="flex items-center gap-3">
-                    <Icon
-                      name="arrow-left"
-                      class="w-5 h-5 text-gray-500 group-hover:text-white transition group-hover:-translate-x-1"
-                    />
-                    <span class="text-lg font-bold text-gray-400 group-hover:text-white transition">
-                      {prevJob.data.role} • {prevJob.data.company}
-                    </span>
-                  </div>
-                </a>
-              ) : (
-                <div class="opacity-0 pointer-events-none">Empty</div>
-              )
-            }
-          </div>
-
-          <!-- Socials -->
-          <div class="flex items-center gap-8">
-            <a
-              href="mailto:marcos@burdaspar.com"
-              class="text-gray-500 hover:text-white transition"
-            >
-              <Icon name="mail" class="w-6 h-6" />
-            </a>
-            <a
-              href="https://linkedin.com/in/burdaspar"
-              target="_blank"
-              class="text-gray-500 hover:text-white transition"
-            >
-              <Icon name="linkedin" class="w-6 h-6" />
-            </a>
-            <a
-              href="https://github.com/burdaspar"
-              target="_blank"
-              class="text-gray-500 hover:text-white transition"
-            >
-              <Icon name="github" class="w-6 h-6" />
-            </a>
-          </div>
-
-          <!-- Next -->
-          <div class="flex-1 w-full md:w-auto text-right">
-            {
-              nextJob ? (
-                <a href={`/experience/${nextJob.slug}`} class="group block">
-                  <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 block mb-2">
-                    Siguiente Experiencia
-                  </span>
-                  <div class="flex items-center justify-end gap-3">
-                    <span class="text-lg font-bold text-gray-400 group-hover:text-white transition">
-                      {nextJob.data.role} • {nextJob.data.company}
-                    </span>
-                    <Icon
-                      name="arrow-right"
-                      class="w-5 h-5 text-gray-500 group-hover:text-white transition group-hover:translate-x-1"
-                    />
-                  </div>
-                </a>
-              ) : (
-                <div>
-                  <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-500 block mb-2">
-                    Siguiente Experiencia
-                  </span>
-                  <span class="text-lg font-bold text-gray-600">
-                    Próximamente...
-                  </span>
-                </div>
-              )
-            }
-          </div>
-        </div>
-      </footer>
+      <ExperienceFooter prevJob={prevJob} nextJob={nextJob} />
     </div>
   </article>
 </Layout>

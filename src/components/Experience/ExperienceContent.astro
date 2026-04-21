@@ -1,0 +1,86 @@
+---
+interface Props {
+  description: string;
+  highlights: (string | { title: string; description: string })[];
+}
+
+const { description, highlights } = Astro.props;
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+  <!-- Main Content -->
+  <div class="lg:col-span-2 space-y-16">
+    <section
+      data-reveal
+      data-reveal-type="fade-up"
+      data-reveal-delay="0.1"
+    >
+      <div class="flex items-center gap-4 mb-8">
+        <div class="h-px w-8 bg-indigo-500"></div>
+        <h2
+          class="text-xs font-bold tracking-[0.2em] uppercase text-white"
+        >
+          Resumen
+        </h2>
+      </div>
+      <p class="text-xl text-gray-400 leading-relaxed font-light">
+        {description}
+      </p>
+    </section>
+
+    <section>
+      <div
+        class="flex items-center gap-4 mb-10"
+        data-reveal
+        data-reveal-type="fade-up"
+      >
+        <div class="h-px w-8 bg-indigo-500"></div>
+        <h2
+          class="text-xs font-bold tracking-[0.2em] uppercase text-white"
+        >
+          Impacto y Responsabilidades
+        </h2>
+      </div>
+
+      <div
+        class="space-y-10"
+        data-reveal
+        data-reveal-type="fade-up"
+        data-reveal-stagger="0.15"
+      >
+        {
+          highlights.map(
+            (item) => (
+              <div class="flex gap-6 group">
+                <div class="mt-1.5 shrink-0">
+                  <div class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)] group-hover:scale-125 transition duration-300" />
+                </div>
+                <div>
+                  {typeof item === "string" ? (
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                      {item}
+                    </p>
+                  ) : (
+                    <>
+                      <h3 class="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition duration-300">
+                        {item.title}
+                      </h3>
+                      <p class="text-lg text-gray-400 leading-relaxed font-light">
+                        {item.description}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            ),
+          )
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Sidebar Slot -->
+  <aside class="space-y-8">
+    <slot name="sidebar" />
+  </aside>
+</div>
