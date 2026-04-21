@@ -6,7 +6,6 @@ import ProjectHeader from "@/src/components/Projects/ProjectHeader.astro";
 import ProjectHero from "@/src/components/Projects/ProjectHero.astro";
 import ProjectContent from "@/src/components/Projects/ProjectContent.astro";
 import ProjectSidebar from "@/src/components/Projects/ProjectSidebar.astro";
-import ProjectCTA from "@/src/components/Projects/ProjectCTA.astro";
 import ProjectGallery from "@/src/components/Projects/ProjectGallery.astro";
 import ProjectFooter from "@/src/components/Projects/ProjectFooter.astro";
 
@@ -78,9 +77,12 @@ const nextProject =
 
       <ProjectGallery images={gallery ?? []} slug={slug} />
 
-      <ProjectCTA url={data.url} repo={data.repo} />
-
-      <ProjectFooter prevProject={prevProject} nextProject={nextProject} />
+      <ProjectFooter 
+        prevProject={prevProject} 
+        nextProject={nextProject} 
+        url={data.url} 
+        repo={data.repo} 
+      />
     </div>
   </article>
 </Layout>
