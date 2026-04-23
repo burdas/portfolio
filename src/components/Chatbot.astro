@@ -3,15 +3,36 @@ import { Image } from "astro:assets";
 import logo from "../assets/logo.avif";
 ---
 
-<div id="chatbot-container" class="fixed bottom-6 right-6 z-50 font-['JetBrains_Mono']">
-  <!-- Botón flotante -->
+<div
+  id="chatbot-container"
+  class="fixed bottom-6 right-6 z-50 font-['JetBrains_Mono']"
+>
+  <!-- Botón flotante animado (Logo a la derecha) -->
   <button
     id="chat-toggle"
-    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 text-white flex items-center justify-center shadow-2xl hover:scale-110 hover:border-white/30 transition-all duration-300 cursor-pointer overflow-hidden p-0 group"
+    class="chat-button-initial h-20 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 text-white flex items-center justify-end shadow-2xl hover:scale-105 hover:border-white/30 transition-all duration-500 cursor-pointer overflow-hidden group"
     aria-label="Toggle chat"
   >
-    <div class="w-full h-full flex items-center justify-center p-3">
-       <Image src={logo} alt="Logo" class="w-full h-full object-contain transition-transform" />
+    <!-- Contenedor del Marquee (A la izquierda) -->
+    <div
+      id="chat-marquee"
+      class="whitespace-nowrap overflow-hidden w-0 opacity-0 transition-all duration-700 ease-in-out"
+    >
+      <div class="pl-8 text-sm font-medium text-white/80">
+        <span class="inline-block animate-marquee paused">
+          Charla con la IA sobre mi
+        </span>
+        <span class="inline-block animate-marquee paused">
+          Charla con la IA sobre mi
+        </span>
+      </div>
+    </div>
+
+    <!-- Contenedor del Logo (Fijo a la derecha) -->
+    <div
+      class="flex-shrink-0 w-20 h-20 flex items-center justify-center p-3 z-10 bg-black/10"
+    >
+      <Image src={logo} alt="Logo" class="w-full h-full object-contain" />
     </div>
   </button>
 
@@ -20,23 +41,38 @@ import logo from "../assets/logo.avif";
     id="chat-window"
     class="fixed inset-0 sm:absolute sm:inset-auto sm:bottom-24 sm:right-0 w-full h-full sm:w-[500px] sm:h-[750px] bg-black/60 backdrop-blur-3xl sm:rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col hidden opacity-0 translate-y-8 transition-all duration-500 ease-out overflow-hidden border-0 sm:border sm:border-white/10"
   >
-    <!-- Header -->
     <div class="p-8 pb-0 flex justify-end items-center">
-      <button id="close-chat" class="text-white/30 hover:text-white cursor-pointer p-2 hover:bg-white/5 rounded-full transition-all">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      <button
+        id="close-chat"
+        class="text-white/30 hover:text-white cursor-pointer p-2 hover:bg-white/5 rounded-full transition-all"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg
+        >
       </button>
     </div>
-
-    <!-- Mensajes -->
-    <div id="chat-messages" class="flex-1 overflow-y-auto px-8 pb-4 space-y-8 scroll-smooth">
+    <div
+      id="chat-messages"
+      class="flex-1 overflow-y-auto px-8 pb-4 space-y-8 scroll-smooth"
+    >
       <div class="flex flex-col gap-3">
-        <div class="bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80">
-          Hola, soy el asistente de Marcos. He analizado sus proyectos y experiencia profesional, ¿en qué puedo ayudarte?
+        <div
+          class="bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80"
+        >
+          Hola, soy el asistente de Marcos. He analizado sus proyectos y
+          experiencia profesional, ¿en qué puedo ayudarte?
         </div>
       </div>
     </div>
-
-    <!-- Input Area -->
     <div class="p-8 pb-10">
       <form id="chat-form" class="relative">
         <input
@@ -49,9 +85,20 @@ import logo from "../assets/logo.avif";
         <button
           type="submit"
           id="chat-submit"
-          class="absolute right-3 top-1/2 -translate-y-1/2 bg-white text-black w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105 disabled:opacity-20 disabled:grayscale transition-all cursor-pointer"
+          class="absolute right-3 top-1/2 -translate-y-1/2 bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-indigo-500 hover:scale-105 disabled:opacity-20 disabled:grayscale transition-all cursor-pointer shadow-lg shadow-indigo-600/20"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+          >
         </button>
       </form>
     </div>
@@ -59,16 +106,53 @@ import logo from "../assets/logo.avif";
 </div>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const chatForm = document.getElementById('chat-form') as HTMLFormElement;
-    const chatInput = document.getElementById('chat-input') as HTMLInputElement;
-    const chatMessages = document.getElementById('chat-messages');
-    const chatSubmit = document.getElementById('chat-submit') as HTMLButtonElement;
+  document.addEventListener("astro:page-load", () => {
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatMarquee = document.getElementById("chat-marquee");
+    const chatWindow = document.getElementById("chat-window");
+    const closeChat = document.getElementById("close-chat");
+    const chatForm = document.getElementById("chat-form") as HTMLFormElement;
+    const chatInput = document.getElementById("chat-input") as HTMLInputElement;
+    const chatMessages = document.getElementById("chat-messages");
+    const chatSubmit = document.getElementById(
+      "chat-submit",
+    ) as HTMLButtonElement;
 
     if (!chatToggle || !chatForm) return;
+
+    // Intersection Observer para disparar la animación al ser visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              chatToggle.style.width = "280px";
+              if (chatMarquee) {
+                chatMarquee.style.width = "200px";
+                chatMarquee.style.opacity = "1";
+                setTimeout(() => {
+                  const marquees =
+                    chatMarquee.querySelectorAll(".animate-marquee");
+                  marquees.forEach((m) => m.classList.remove("paused"));
+                }, 700);
+              }
+              // Cierre sincronizado con el nuevo tiempo del marquee
+              setTimeout(() => {
+                chatToggle.style.width = "80px";
+                if (chatMarquee) {
+                  chatMarquee.style.width = "0px";
+                  chatMarquee.style.opacity = "0";
+                }
+              }, 4000);
+            }, 1000);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 },
+    );
+
+    observer.observe(chatToggle);
 
     let isOpen = false;
     let history: { role: string; content: string }[] = [];
@@ -77,86 +161,80 @@ import logo from "../assets/logo.avif";
     function toggleChat() {
       isOpen = !isOpen;
       if (isOpen) {
-        chatWindow?.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden', 'sm:overflow-auto');
+        chatWindow?.classList.remove("hidden");
+        document.body.classList.add("overflow-hidden", "sm:overflow-auto");
         setTimeout(() => {
-          chatWindow?.classList.remove('opacity-0', 'translate-y-8');
-          chatWindow?.classList.add('opacity-100', 'translate-y-0');
+          chatWindow?.classList.remove("opacity-0", "translate-y-8");
+          chatWindow?.classList.add("opacity-100", "translate-y-0");
         }, 10);
         chatInput?.focus();
       } else {
-        chatWindow?.classList.add('opacity-0', 'translate-y-8');
-        chatWindow?.classList.remove('opacity-100', 'translate-y-0');
-        document.body.classList.remove('overflow-hidden', 'sm:overflow-auto');
+        chatWindow?.classList.add("opacity-0", "translate-y-8");
+        chatWindow?.classList.remove("opacity-100", "translate-y-0");
+        document.body.classList.remove("overflow-hidden", "sm:overflow-auto");
         setTimeout(() => {
-          chatWindow?.classList.add('hidden');
+          chatWindow?.classList.add("hidden");
         }, 500);
       }
     }
 
-    chatToggle.addEventListener('click', toggleChat);
-    closeChat?.addEventListener('click', toggleChat);
+    chatToggle.addEventListener("click", toggleChat);
+    closeChat?.addEventListener("click", toggleChat);
 
-    function addMessage(role: 'user' | 'assistant', content: string) {
+    function addMessage(role: "user" | "assistant", content: string) {
       if (!chatMessages) return;
-
-      const messageWrapper = document.createElement('div');
-      messageWrapper.className = 'flex flex-col gap-3';
-      
-      const messageDiv = document.createElement('div');
-      
-      if (role === 'user') {
-        messageDiv.className = 'bg-white text-black rounded-3xl rounded-tr-none p-5 text-sm leading-relaxed max-w-[90%] self-end ml-auto shadow-xl';
+      const messageWrapper = document.createElement("div");
+      messageWrapper.className = "flex flex-col gap-3";
+      const messageDiv = document.createElement("div");
+      if (role === "user") {
+        messageDiv.className =
+          "bg-white text-black rounded-3xl rounded-tr-none p-5 text-sm leading-relaxed max-w-[90%] self-end ml-auto shadow-xl";
       } else {
-        messageDiv.className = 'bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80';
+        messageDiv.className =
+          "bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80";
       }
-      
       messageDiv.textContent = content;
       messageWrapper.appendChild(messageDiv);
       chatMessages.appendChild(messageWrapper);
       chatMessages.scrollTop = chatMessages.scrollHeight;
-      
-      if (role !== 'assistant' || content !== '...') {
+      if (role !== "assistant" || content !== "...") {
         history.push({ role, content });
       }
-
       return messageDiv;
     }
 
-    chatForm.addEventListener('submit', async (e) => {
+    chatForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = chatInput?.value.trim();
       if (!message || isLoading) return;
-
-      chatInput.value = '';
-      addMessage('user', message);
-      
+      chatInput.value = "";
+      addMessage("user", message);
       isLoading = true;
       chatSubmit.disabled = true;
-      
-      const loadingDiv = addMessage('assistant', '...');
-      
+      const loadingDiv = addMessage("assistant", "...");
       try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message, history })
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, history }),
         });
-
-        if (loadingDiv?.parentElement) chatMessages?.removeChild(loadingDiv.parentElement);
-
+        if (loadingDiv?.parentElement)
+          chatMessages?.removeChild(loadingDiv.parentElement);
         if (response.status === 429) {
-          addMessage('assistant', 'Se ha alcanzado el límite diario de consultas. Vuelve mañana 🙏');
+          addMessage(
+            "assistant",
+            "Se ha alcanzado el límite diario de consultas. Vuelve mañana 🙏",
+          );
         } else if (!response.ok) {
-          throw new Error('Server error');
+          throw new Error("Server error");
         } else {
           const data = await response.json();
-          addMessage('assistant', data.content);
+          addMessage("assistant", data.content);
         }
       } catch (error) {
-        if (loadingDiv?.parentElement) chatMessages?.removeChild(loadingDiv.parentElement);
-        addMessage('assistant', 'Ha ocurrido un error. Inténtalo de nuevo.');
-        console.error(error);
+        if (loadingDiv?.parentElement)
+          chatMessages?.removeChild(loadingDiv.parentElement);
+        addMessage("assistant", "Ha ocurrido un error. Inténtalo de nuevo.");
       } finally {
         isLoading = false;
         chatSubmit.disabled = false;
@@ -166,6 +244,10 @@ import logo from "../assets/logo.avif";
 </script>
 
 <style>
+  .chat-button-initial {
+    width: 80px;
+  }
+
   #chat-messages {
     display: flex;
     flex-direction: column;
@@ -175,5 +257,23 @@ import logo from "../assets/logo.avif";
 
   #chat-messages::-webkit-scrollbar {
     display: none;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 4s linear infinite;
+    padding-right: 50px;
+  }
+
+  .animate-marquee.paused {
+    animation-play-state: paused;
   }
 </style>
