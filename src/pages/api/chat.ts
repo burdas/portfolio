@@ -19,27 +19,18 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'server_error' }), { status: 500 });
     }
 
-    // Leer contexto de repomix
+    // Leer contexto desde Markdown
     let context = '';
-    const repomixPath = path.resolve(process.cwd(), 'repomix-output.xml');
+    const contextPath = path.resolve(process.cwd(), 'src/data/chatbot-context.md');
     
-    if (fs.existsSync(repomixPath)) {
-      context = fs.readFileSync(repomixPath, 'utf-8');
-      
-      // Limpieza básica para ahorrar tokens: eliminar SVGs y comentarios largos
-      context = context.replace(/<svg[\s\S]*?<\/svg>/gi, '[SVG OMITTED]');
-      context = context.replace(/\/\*[\s\S]*?\*\//g, '');
-      
-      // Truncar a 12k caracteres para ajustarse al límite de 6k TPM de Groq
-      if (context.length > 12000) {
-        context = context.substring(0, 12000) + '... [TRUNCATED FOR TOKEN LIMIT]';
-      }
+    if (fs.existsSync(contextPath)) {
+      context = fs.readFileSync(contextPath, 'utf-8');
     } else {
-      console.warn('repomix-output.xml not found at', repomixPath);
-      context = 'No hay contexto adicional disponible sobre el portfolio.';
+      console.warn('Chatbot context file not found at', contextPath);
+      context = 'No hay información detallada disponible en este momento.';
     }
 
-    const systemPrompt = `Eres el asistente del portfolio de Marcos Burdaspar. Responde preguntas sobre sus proyectos, habilidades y experiencia basándote ÚNICAMENTE en el siguiente contexto:\n\n${context}`;
+    const systemPrompt = `Responde preguntas sobre Marcos Burdaspar basándote ÚNICAMENTE en el siguiente contexto:\n\n${context}`;
 
     // Limitar historial a los últimos 10 mensajes
     const limitedHistory = history?.slice(-10) || [];

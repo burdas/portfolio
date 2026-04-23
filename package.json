@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npx repomix@latest --ignore \".vercel,dist,node_modules,.astro,pnpm-lock.yaml\" && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
