@@ -1,85 +1,57 @@
 ---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.avif";
 ---
 
 <div id="chatbot-container" class="fixed bottom-6 right-6 z-50 font-['JetBrains_Mono']">
   <!-- Botón flotante -->
   <button
     id="chat-toggle"
-    class="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer"
-    aria-label="Abrir chat"
+    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 text-white flex items-center justify-center shadow-2xl hover:scale-110 hover:border-white/30 transition-all duration-300 cursor-pointer overflow-hidden p-0 group"
+    aria-label="Toggle chat"
   >
-    <svg
-      id="chat-icon"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="block"
-    >
-      <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
-    </svg>
-    <svg
-      id="close-icon"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="hidden"
-    >
-      <path d="M18 6 6 18"></path>
-      <path d="m6 6 12 12"></path>
-    </svg>
+    <div class="w-full h-full flex items-center justify-center p-3">
+       <Image src={logo} alt="Logo" class="w-full h-full object-contain transition-transform" />
+    </div>
   </button>
 
   <!-- Ventana de chat -->
   <div
     id="chat-window"
-    class="absolute bottom-20 right-0 w-[350px] sm:w-[380px] h-[500px] bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col hidden opacity-0 translate-y-4 transition-all duration-300 overflow-hidden"
+    class="fixed inset-0 sm:absolute sm:inset-auto sm:bottom-24 sm:right-0 w-full h-full sm:w-[500px] sm:h-[750px] bg-black/60 backdrop-blur-3xl sm:rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col hidden opacity-0 translate-y-8 transition-all duration-500 ease-out overflow-hidden border-0 sm:border sm:border-white/10"
   >
     <!-- Header -->
-    <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-      <div class="flex items-center gap-2">
-        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-        <span class="text-sm font-bold">Asistente IA</span>
-      </div>
-      <button id="close-chat" class="text-white/50 hover:text-white cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    <div class="p-8 pb-0 flex justify-end items-center">
+      <button id="close-chat" class="text-white/30 hover:text-white cursor-pointer p-2 hover:bg-white/5 rounded-full transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
       </button>
     </div>
 
     <!-- Mensajes -->
-    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
-      <div class="bg-white/5 border border-white/10 rounded-2xl p-3 text-sm max-w-[85%] self-start">
-        ¡Hola! Soy el asistente de Marcos. ¿En qué puedo ayudarte hoy?
+    <div id="chat-messages" class="flex-1 overflow-y-auto px-8 pb-4 space-y-8 scroll-smooth">
+      <div class="flex flex-col gap-3">
+        <div class="bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80">
+          Hola, soy el asistente de Marcos. He analizado sus proyectos y experiencia profesional, ¿en qué puedo ayudarte?
+        </div>
       </div>
     </div>
 
-    <!-- Input -->
-    <div class="p-4 border-t border-white/10 bg-black/40">
-      <form id="chat-form" class="flex gap-2">
+    <!-- Input Area -->
+    <div class="p-8 pb-10">
+      <form id="chat-form" class="relative">
         <input
           type="text"
           id="chat-input"
-          placeholder="Escribe un mensaje..."
-          class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-white/30 transition-colors"
+          placeholder="Pregúntame lo que quieras..."
+          class="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 pr-16 text-sm focus:outline-none focus:border-white/20 focus:bg-white/[0.05] transition-all placeholder:text-white/20"
           autocomplete="off"
         />
         <button
           type="submit"
           id="chat-submit"
-          class="bg-white text-black p-2 rounded-xl hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+          class="absolute right-3 top-1/2 -translate-y-1/2 bg-white text-black w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105 disabled:opacity-20 disabled:grayscale transition-all cursor-pointer"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
         </button>
       </form>
     </div>
@@ -90,8 +62,6 @@
   document.addEventListener('astro:page-load', () => {
     const chatToggle = document.getElementById('chat-toggle');
     const chatWindow = document.getElementById('chat-window');
-    const chatIcon = document.getElementById('chat-icon');
-    const closeIcon = document.getElementById('close-icon');
     const closeChat = document.getElementById('close-chat');
     const chatForm = document.getElementById('chat-form') as HTMLFormElement;
     const chatInput = document.getElementById('chat-input') as HTMLInputElement;
@@ -108,21 +78,19 @@
       isOpen = !isOpen;
       if (isOpen) {
         chatWindow?.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden', 'sm:overflow-auto');
         setTimeout(() => {
-          chatWindow?.classList.remove('opacity-0', 'translate-y-4');
+          chatWindow?.classList.remove('opacity-0', 'translate-y-8');
           chatWindow?.classList.add('opacity-100', 'translate-y-0');
         }, 10);
-        chatIcon?.classList.add('hidden');
-        closeIcon?.classList.remove('hidden');
         chatInput?.focus();
       } else {
-        chatWindow?.classList.add('opacity-0', 'translate-y-4');
+        chatWindow?.classList.add('opacity-0', 'translate-y-8');
         chatWindow?.classList.remove('opacity-100', 'translate-y-0');
+        document.body.classList.remove('overflow-hidden', 'sm:overflow-auto');
         setTimeout(() => {
           chatWindow?.classList.add('hidden');
-        }, 300);
-        chatIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
+        }, 500);
       }
     }
 
@@ -132,13 +100,20 @@
     function addMessage(role: 'user' | 'assistant', content: string) {
       if (!chatMessages) return;
 
+      const messageWrapper = document.createElement('div');
+      messageWrapper.className = 'flex flex-col gap-3';
+      
       const messageDiv = document.createElement('div');
-      messageDiv.className = role === 'user' 
-        ? 'bg-white text-black rounded-2xl p-3 text-sm max-w-[85%] self-end ml-auto' 
-        : 'bg-white/5 border border-white/10 rounded-2xl p-3 text-sm max-w-[85%] self-start';
+      
+      if (role === 'user') {
+        messageDiv.className = 'bg-white text-black rounded-3xl rounded-tr-none p-5 text-sm leading-relaxed max-w-[90%] self-end ml-auto shadow-xl';
+      } else {
+        messageDiv.className = 'bg-white/[0.03] border border-white/10 rounded-3xl rounded-tl-none p-5 text-sm leading-relaxed max-w-[90%] text-white/80';
+      }
       
       messageDiv.textContent = content;
-      chatMessages.appendChild(messageDiv);
+      messageWrapper.appendChild(messageDiv);
+      chatMessages.appendChild(messageWrapper);
       chatMessages.scrollTop = chatMessages.scrollHeight;
       
       if (role !== 'assistant' || content !== '...') {
@@ -159,7 +134,7 @@
       isLoading = true;
       chatSubmit.disabled = true;
       
-      const loadingMessage = addMessage('assistant', '...');
+      const loadingDiv = addMessage('assistant', '...');
       
       try {
         const response = await fetch('/api/chat', {
@@ -168,7 +143,7 @@
           body: JSON.stringify({ message, history })
         });
 
-        if (loadingMessage) chatMessages?.removeChild(loadingMessage);
+        if (loadingDiv?.parentElement) chatMessages?.removeChild(loadingDiv.parentElement);
 
         if (response.status === 429) {
           addMessage('assistant', 'Se ha alcanzado el límite diario de consultas. Vuelve mañana 🙏');
@@ -179,7 +154,7 @@
           addMessage('assistant', data.content);
         }
       } catch (error) {
-        if (loadingMessage) chatMessages?.removeChild(loadingMessage);
+        if (loadingDiv?.parentElement) chatMessages?.removeChild(loadingDiv.parentElement);
         addMessage('assistant', 'Ha ocurrido un error. Inténtalo de nuevo.');
         console.error(error);
       } finally {
@@ -194,16 +169,11 @@
   #chat-messages {
     display: flex;
     flex-direction: column;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   #chat-messages::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  #chat-messages::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    display: none;
   }
 </style>
