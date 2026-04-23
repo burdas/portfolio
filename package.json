@@ -4,11 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npx repomix@latest --ignore \".vercel,dist,node_modules,.astro,pnpm-lock.yaml\" && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/vercel": "^9.0.5",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
@@ -23,6 +24,8 @@
     "three": "^0.182.0"
   },
   "devDependencies": {
-    "@types/three": "^0.182.0"
+    "@astrojs/check": "^0.9.8",
+    "@types/three": "^0.182.0",
+    "typescript": "^6.0.3"
   }
 }
