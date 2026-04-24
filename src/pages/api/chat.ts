@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import fs from 'fs';
-import path from 'path';
+import { getEntry } from 'astro:content';
 
 export const prerender = false;
 
@@ -15,25 +14,17 @@ export const POST: APIRoute = async ({ request }) => {
     const GROQ_API_KEY = import.meta.env.GROQ_API_KEY;
 
     if (!GROQ_API_KEY) {
-      console.error('GROQ_API_KEY is not defined');
       return new Response(JSON.stringify({ error: 'server_error' }), { status: 500 });
     }
 
-    // Leer contexto desde Markdown
-    let context = '';
-    const contextPath = path.resolve(process.cwd(), 'src/data/chatbot-context.md');
-    
-    if (fs.existsSync(contextPath)) {
-      context = fs.readFileSync(contextPath, 'utf-8');
-    } else {
-      console.warn('Chatbot context file not found at', contextPath);
-      context = 'No hay información detallada disponible en este momento.';
-    }
+    const chatbotEntry = await getEntry('chatbot', 'context');
+    const context = chatbotEntry?.body || 'No hay información detallada disponible en este momento.';
 
     const systemPrompt = `Responde preguntas sobre Marcos Burdaspar basándote ÚNICAMENTE en el siguiente contexto:\n\n${context}`;
-
-    // Limitar historial a los últimos 10 mensajes
     const limitedHistory = history?.slice(-10) || [];
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -41,6 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
         'Authorization': `Bearer ${GROQ_API_KEY}`,
         'Content-Type': 'application/json',
       },
+      signal: controller.signal,
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
         messages: [
@@ -53,13 +45,13 @@ export const POST: APIRoute = async ({ request }) => {
       }),
     });
 
+    clearTimeout(timeoutId);
+
     if (response.status === 429) {
       return new Response(JSON.stringify({ error: 'rate_limit' }), { status: 429 });
     }
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Groq API error:', errorData);
       return new Response(JSON.stringify({ error: 'server_error' }), { status: 500 });
     }
 
@@ -74,7 +66,6 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   } catch (error) {
-    console.error('Chat API Error:', error);
     return new Response(JSON.stringify({ error: 'server_error' }), { status: 500 });
   }
 };

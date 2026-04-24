@@ -51,4 +51,9 @@ const experience = defineCollection({
   }),
 });
 
-export const collections = { projects, experience };
+const chatbot = defineCollection({
+  type: 'content',
+  schema: z.any(),
+});
+
+export const collections = { projects, experience, chatbot };
