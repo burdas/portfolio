@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
+import { GROQ_API_URL, GROQ_MODEL, MAX_HISTORY_LENGTH } from '../../config';
 
 export const prerender = false;
 
@@ -21,12 +22,12 @@ export const POST: APIRoute = async ({ request }) => {
     const context = chatbotEntry?.body || 'No hay información detallada disponible en este momento.';
 
     const systemPrompt = `Responde preguntas sobre Marcos Burdaspar basándote ÚNICAMENTE en el siguiente contexto:\n\n${context}`;
-    const limitedHistory = history?.slice(-10) || [];
+    const limitedHistory = history?.slice(-MAX_HISTORY_LENGTH) || [];
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const response = await fetch(GROQ_API_URL, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${GROQ_API_KEY}`,
@@ -34,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
+        model: GROQ_MODEL,
         messages: [
           { role: 'system', content: systemPrompt },
           ...limitedHistory,
