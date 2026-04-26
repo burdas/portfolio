@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-const experience = await getCollection("experience");
+const experience: CollectionEntry<"experience">[] = await getCollection("experience");
 const sortedExperience = experience.sort((a, b) => a.data.order - b.data.order);
 ---
 
