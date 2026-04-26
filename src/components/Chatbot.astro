@@ -86,7 +86,8 @@ import logo from "../assets/logo.avif";
     if (mermaidLoaded) return Promise.resolve();
     return new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+      script.src =
+        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
       script.onload = () => {
         mermaidLoaded = true;
         // @ts-ignore
@@ -110,20 +111,22 @@ import logo from "../assets/logo.avif";
     const chatForm = document.getElementById("chat-form") as HTMLFormElement;
     const chatInput = document.getElementById("chat-input") as HTMLInputElement;
     const chatMessages = document.getElementById("chat-messages");
-    const chatSubmit = document.getElementById("chat-submit") as HTMLButtonElement;
+    const chatSubmit = document.getElementById(
+      "chat-submit",
+    ) as HTMLButtonElement;
 
     if (!chatToggle || !chatForm) return;
 
     // Placeholder rotation logic with typewriter effect
     const placeholders = [
-      "Diagrama de su carrera profesional...",
-      "Tabla comparativa de sus proyectos...",
-      "Diagrama de sus habilidades técnicas...",
-      "Tabla detallada de su experiencia...",
-      "Mapa de su stack tecnológico...",
+      "Crea un diagrama de su carrera profesional...",
+      "Crea una tabla comparativa de sus proyectos...",
+      "Crea un diagrama de sus habilidades técnicas...",
+      "Crea una tabla detallada de su experiencia...",
+      "Crea un mapa de su stack tecnológico...",
       "¿Qué proyectos tiene con React?",
-      "Diagrama de su formación académica...",
-      "Tabla de sus roles y responsabilidades..."
+      "Crea un diagrama de su formación académica...",
+      "Crea una tabla de sus roles y responsabilidades...",
     ];
     let currentPlaceholderIndex = 0;
     let isDeleting = false;
@@ -140,7 +143,7 @@ import logo from "../assets/logo.avif";
       }
 
       const currentFullTxt = placeholders[currentPlaceholderIndex];
-      
+
       if (isDeleting) {
         txt = currentFullTxt.substring(0, txt.length - 1);
       } else {
@@ -156,7 +159,8 @@ import logo from "../assets/logo.avif";
         isDeleting = true;
       } else if (isDeleting && txt === "") {
         isDeleting = false;
-        currentPlaceholderIndex = (currentPlaceholderIndex + 1) % placeholders.length;
+        currentPlaceholderIndex =
+          (currentPlaceholderIndex + 1) % placeholders.length;
         typeSpeed = 500;
       }
 
@@ -173,7 +177,8 @@ import logo from "../assets/logo.avif";
       }
     });
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(
+      (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setTimeout(() => {
@@ -182,7 +187,8 @@ import logo from "../assets/logo.avif";
                 chatMarquee.style.width = "200px";
                 chatMarquee.style.opacity = "1";
                 setTimeout(() => {
-                  const marquees = chatMarquee.querySelectorAll(".animate-marquee");
+                  const marquees =
+                    chatMarquee.querySelectorAll(".animate-marquee");
                   marquees.forEach((m) => m.classList.remove("paused"));
                 }, 700);
               }
@@ -197,7 +203,9 @@ import logo from "../assets/logo.avif";
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.5 });
+      },
+      { threshold: 0.5 },
+    );
 
     observer.observe(chatToggle);
 
@@ -231,7 +239,7 @@ import logo from "../assets/logo.avif";
 
     async function addMessage(role: "user" | "assistant", content: string) {
       if (!chatMessages) return;
-      
+
       const messageWrapper = document.createElement("div");
       messageWrapper.className = "flex flex-col gap-3";
       if (content === "...") {
@@ -275,24 +283,29 @@ import logo from "../assets/logo.avif";
 
         if (hasMermaid) {
           await loadMermaid();
-          const mermaidBlocks = messageDiv.querySelectorAll(".language-mermaid");
-          
+          const mermaidBlocks =
+            messageDiv.querySelectorAll(".language-mermaid");
+
           for (const [index, block] of Array.from(mermaidBlocks).entries()) {
             const pre = block.parentElement;
             if (pre) {
               const container = document.createElement("div");
-              container.className = "mermaid-outer my-6 bg-white/5 p-4 rounded-xl border border-white/5 flex flex-col items-center group cursor-zoom-in";
-              
+              container.className =
+                "mermaid-outer my-6 bg-white/5 p-4 rounded-xl border border-white/5 flex flex-col items-center group cursor-zoom-in";
+
               const scrollContainer = document.createElement("div");
-              scrollContainer.className = "w-full overflow-x-auto scrollbar-hide flex justify-center";
+              scrollContainer.className =
+                "w-full overflow-x-auto scrollbar-hide flex justify-center";
 
               const mermaidDiv = document.createElement("div");
               const uniqueId = `mermaid-${Date.now()}-${index}`;
               mermaidDiv.id = uniqueId;
-              mermaidDiv.className = "mermaid min-w-full opacity-0 transition-opacity duration-500";
-              
+              mermaidDiv.className =
+                "mermaid min-w-full opacity-0 transition-opacity duration-500";
+
               const zoomHint = document.createElement("div");
-              zoomHint.className = "text-[10px] text-white/20 mt-2 opacity-0 group-hover:opacity-100 transition-opacity";
+              zoomHint.className =
+                "text-[10px] text-white/20 mt-2 opacity-0 group-hover:opacity-100 transition-opacity";
               zoomHint.textContent = "Click para expandir";
 
               scrollContainer.appendChild(mermaidDiv);
@@ -304,14 +317,16 @@ import logo from "../assets/logo.avif";
               container.addEventListener("click", () => {
                 const svg = mermaidDiv.querySelector("svg");
                 if (!svg) return;
-                
+
                 const modal = document.createElement("div");
-                modal.className = "fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-10 cursor-zoom-out";
-                
+                modal.className =
+                  "fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-10 cursor-zoom-out";
+
                 const closeBtn = document.createElement("button");
                 closeBtn.innerHTML = "✕";
-                closeBtn.className = "absolute top-6 right-6 text-white text-2xl hover:scale-110 transition-transform";
-                
+                closeBtn.className =
+                  "absolute top-6 right-6 text-white text-2xl hover:scale-110 transition-transform";
+
                 const svgClone = svg.cloneNode(true) as SVGElement;
                 svgClone.style.width = "auto";
                 svgClone.style.height = "auto";
@@ -322,43 +337,61 @@ import logo from "../assets/logo.avif";
                 modal.appendChild(closeBtn);
                 modal.appendChild(svgClone);
                 document.body.appendChild(modal);
-                
+
                 modal.addEventListener("click", () => modal.remove());
               });
-              
+
               // Limpieza profunda del código Mermaid
               let code = block.textContent || "";
-              
+
               // 1. Limpieza de artefactos del LLM y espacios innecesarios
               code = code
                 .trim()
-                .replace(/^```mermaid\s+/i, "") 
-                .replace(/```$/i, "")           
-                .replace(/^(mermaid\s+)+/i, "") 
+                .replace(/^```mermaid\s+/i, "")
+                .replace(/```$/i, "")
+                .replace(/^(mermaid\s+)+/i, "")
                 .trim();
 
               // 2. Asegurar que empiece por un comando válido de Mermaid si el LLM se olvidó
               // o si incluyó texto explicativo antes
-              const validStarts = ['graph', 'sequenceDiagram', 'classDiagram', 'stateDiagram', 'erDiagram', 'journey', 'gantt', 'pie', 'quadrantChart', 'mindmap', 'timeline', 'gitGraph', 'C4Context'];
-              const firstLine = code.split('\n')[0].trim();
-              const hasValidStart = validStarts.some(start => firstLine.toLowerCase().startsWith(start.toLowerCase()));
-              
-              if (!hasValidStart && !firstLine.includes('{')) {
+              const validStarts = [
+                "graph",
+                "sequenceDiagram",
+                "classDiagram",
+                "stateDiagram",
+                "erDiagram",
+                "journey",
+                "gantt",
+                "pie",
+                "quadrantChart",
+                "mindmap",
+                "timeline",
+                "gitGraph",
+                "C4Context",
+              ];
+              const firstLine = code.split("\n")[0].trim();
+              const hasValidStart = validStarts.some((start) =>
+                firstLine.toLowerCase().startsWith(start.toLowerCase()),
+              );
+
+              if (!hasValidStart && !firstLine.includes("{")) {
                 // Si no detectamos un inicio válido, intentamos buscarlo más adelante
                 // por si el LLM puso texto antes del diagrama
-                const lines = code.split('\n');
-                const startIndex = lines.findIndex(line => 
-                  validStarts.some(start => line.trim().toLowerCase().startsWith(start.toLowerCase()))
+                const lines = code.split("\n");
+                const startIndex = lines.findIndex((line) =>
+                  validStarts.some((start) =>
+                    line.trim().toLowerCase().startsWith(start.toLowerCase()),
+                  ),
                 );
-                
+
                 if (startIndex !== -1) {
-                  code = lines.slice(startIndex).join('\n').trim();
+                  code = lines.slice(startIndex).join("\n").trim();
                 } else {
                   // Fallback: Si no hay inicio claro, asumimos graph TD
-                  code = 'graph TD\n' + code;
+                  code = "graph TD\n" + code;
                 }
               }
-              
+
               // 3. Validaciones y correcciones automáticas
               if (!code || code.length < 5) {
                 container.remove();
@@ -368,20 +401,33 @@ import logo from "../assets/logo.avif";
               // Corrección de errores comunes del LLM
               code = code
                 .replace(/\|>/g, "|") // Corregir |>
-                // 1. Limpiar comillas dobles anidadas dentro de etiquetas ya entrecomilladas
-                .replace(/\|"(.*?)"\|/g, (match, p1) => `|"${p1.replace(/"/g, "'")}"|`)
-                .replace(/(\[|\()"(.*?)"(\]|\))/g, (match, start, p1, end) => `${start}"${p1.replace(/"/g, "'")}"${end}`)
-                // 2. Envolver etiquetas de flechas |texto| que tengan caracteres especiales pero NO comillas
-                .replace(/\|([^|"\n]+)\|/g, (match, p1) => {
-                  if (/[()\[\]:,]/.test(p1)) return `|"${p1.trim()}"|`;
-                  return match;
-                })
-                // 3. Envolver etiquetas de nodos [texto] o (texto) que tengan caracteres especiales pero NO comillas
-                .replace(/(\[|\()([^\]\)"\n]+)(\]|\))/g, (match, start, p1, end) => {
-                  if (/[()\[\]:,]/.test(p1)) return `${start}"${p1.trim()}"${end}`;
+                // 1. Limpiar comillas dobles anidadas dentro de etiquetas [...], (...) y |...|
+                .replace(
+                  /(\[|\()([\s\S]*?)(\]|\))/g,
+                  (match, start, content, end) => {
+                    if (content.startsWith('"') && content.endsWith('"')) {
+                      const inner = content.substring(1, content.length - 1);
+                      return `${start}"${inner.replace(/"/g, "'")}"${end}`;
+                    }
+                    // Si no tiene comillas pero tiene caracteres especiales, envolverlo (seguridad extra)
+                    if (/[()\[\]:,]/.test(content)) {
+                      return `${start}"${content.replace(/"/g, "'").trim()}"${end}`;
+                    }
+                    return match;
+                  },
+                )
+                .replace(/\|([\s\S]*?)\|/g, (match, content) => {
+                  if (content.startsWith('"') && content.endsWith('"')) {
+                    const inner = content.substring(1, content.length - 1);
+                    return `|"${inner.replace(/"/g, "'")}"|`;
+                  }
+                  // Envolver etiquetas de flechas que tengan espacios o caracteres especiales
+                  if (/[()\[\]:, ]/.test(content)) {
+                    return `|"${content.replace(/"/g, "'").trim()}"|`;
+                  }
                   return match;
                 });
-              
+
               mermaidDiv.textContent = code;
               container.appendChild(mermaidDiv);
               pre.replaceWith(container);
@@ -389,7 +435,7 @@ import logo from "../assets/logo.avif";
               try {
                 // @ts-ignore
                 await mermaid.run({
-                  nodes: [mermaidDiv]
+                  nodes: [mermaidDiv],
                 });
                 mermaidDiv.classList.remove("opacity-0");
                 mermaidDiv.classList.add("opacity-100");
@@ -432,7 +478,7 @@ import logo from "../assets/logo.avif";
       chatSubmit.disabled = true;
 
       await addMessage("assistant", "...");
-      
+
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
@@ -441,8 +487,10 @@ import logo from "../assets/logo.avif";
         });
 
         // ELIMINACIÓN SEGURA DEL SKELETON ANTES DE PROCESAR
-        const skeletons = chatMessages?.querySelectorAll('[data-is-loading="true"]');
-        skeletons?.forEach(s => s.remove());
+        const skeletons = chatMessages?.querySelectorAll(
+          '[data-is-loading="true"]',
+        );
+        skeletons?.forEach((s) => s.remove());
 
         if (response.status === 429) {
           await addMessage(
@@ -457,13 +505,21 @@ import logo from "../assets/logo.avif";
         }
       } catch (error) {
         console.error("Chat error:", error);
-        const skeletons = chatMessages?.querySelectorAll('[data-is-loading="true"]');
-        skeletons?.forEach(s => s.remove());
-        await addMessage("assistant", "Ha ocurrido un error. Inténtalo de nuevo.");
+        const skeletons = chatMessages?.querySelectorAll(
+          '[data-is-loading="true"]',
+        );
+        skeletons?.forEach((s) => s.remove());
+        await addMessage(
+          "assistant",
+          "Ha ocurrido un error. Inténtalo de nuevo.",
+        );
       } finally {
         isLoading = false;
         chatSubmit.disabled = false;
-        chatMessages?.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+        chatMessages?.scrollTo({
+          top: chatMessages.scrollHeight,
+          behavior: "smooth",
+        });
       }
     });
   });
@@ -480,7 +536,8 @@ import logo from "../assets/logo.avif";
     color: white;
     font-weight: 600;
   }
-  .markdown-content ul, .markdown-content ol {
+  .markdown-content ul,
+  .markdown-content ol {
     list-style-type: disc;
     margin-left: 1.25rem;
     margin-bottom: 0.75rem;
@@ -496,7 +553,7 @@ import logo from "../assets/logo.avif";
   .markdown-content a:hover {
     color: #a5b4fc;
   }
-  
+
   /* Table Styles */
   .markdown-content table {
     display: block;
@@ -510,7 +567,7 @@ import logo from "../assets/logo.avif";
     background: rgba(255, 255, 255, 0.02);
     border-radius: 0.5rem;
   }
-  
+
   /* Custom scrollbar for tables */
   .markdown-content table::-webkit-scrollbar {
     height: 4px;
@@ -523,7 +580,8 @@ import logo from "../assets/logo.avif";
     border-radius: 10px;
   }
 
-  .markdown-content th, .markdown-content td {
+  .markdown-content th,
+  .markdown-content td {
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0.5rem 0.75rem;
     text-align: left;
