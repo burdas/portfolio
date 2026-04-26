@@ -18,6 +18,7 @@ gallery: [
   { image: "main_page.webp", description: "Vista principal que muestra la integración de ThreeJS y el layout diseñado en Figma" },
   { image: "project_detail.webp", description: "Detalle de proyecto con galería PhotoSwipe y assets de Google Stitch" },
   { image: "job_detail.webp", description: "Sección de experiencia laboral con animaciones de scroll mediante GSAP" },
+  { image: "chatbotia.webp", description: "Chat de IA con la información del portfolio" },
 ]
 ---
 

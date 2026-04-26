@@ -4,6 +4,7 @@ import { ClientRouter } from "astro:transitions";
 import Navbar from "../components/Navbar/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import SEO from "../components/Shared/SEO.astro";
+import Chatbot from "../components/Chatbot.astro";
 
 interface Props {
   title: string;
@@ -89,6 +90,7 @@ const {
         });
       });
     </script>
+    <Chatbot />
   </body>
 </html>
 

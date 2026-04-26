@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/vercel": "^9.0.5",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
@@ -16,6 +17,7 @@
     "astro": "^5.17.1",
     "astro-icon": "^1.1.5",
     "gsap": "^3.14.2",
+    "marked": "^18.0.2",
     "photoswipe": "^5.4.4",
     "satori": "^0.26.0",
     "sharp": "^0.34.5",
@@ -23,6 +25,8 @@
     "three": "^0.182.0"
   },
   "devDependencies": {
-    "@types/three": "^0.182.0"
+    "@astrojs/check": "^0.9.8",
+    "@types/three": "^0.182.0",
+    "typescript": "^6.0.3"
   }
 }
