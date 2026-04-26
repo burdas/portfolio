@@ -6,9 +6,9 @@ import gsap from 'gsap';
 type AnyEventHandler = (event: any) => void;
 
 let sceneInstance: {
-  renderer: THREE.WebGLRenderer;
-  scene: THREE.Scene;
-  camera: THREE.OrthographicCamera;
+  renderer: any;
+  scene: any;
+  camera: any;
   animationId: number;
   resizeHandler: () => void;
   eventHandlers: { element: EventTarget; type: string; handler: AnyEventHandler }[];
@@ -47,34 +47,34 @@ function getZoomForWidth(width: number): number {
   return CONFIG.ZOOM.DESKTOP;
 }
 
-function calculateModelScale(model: THREE.Object3D): number {
+function calculateModelScale(model: any): number {
   const box = new THREE.Box3().setFromObject(model);
   const maxDim = Math.max(box.max.x - box.min.x, box.max.y - box.min.y, box.max.z - box.min.z);
   return (CONFIG.MODEL.BASE_DIMENSION / maxDim) * CONFIG.MODEL.SCALE_FACTOR;
 }
 
-function centerModel(model: THREE.Object3D): void {
+function centerModel(model: any): void {
   const box = new THREE.Box3().setFromObject(model);
   const center = box.getCenter(new THREE.Vector3());
   model.position.sub(center);
 }
 
-function enableShadows(model: THREE.Object3D): void {
-  model.traverse((node) => {
-    if ((node as THREE.Mesh).isMesh) {
-      (node as THREE.Mesh).castShadow = true;
-      (node as THREE.Mesh).receiveShadow = true;
+function enableShadows(model: any): void {
+  model.traverse((node: any) => {
+    if (node.isMesh) {
+      node.castShadow = true;
+      node.receiveShadow = true;
     }
   });
 }
 
-function updatePointerPosition(event: MouseEvent, renderer: THREE.WebGLRenderer, sizes: { width: number; height: number }, pointer: THREE.Vector2): void {
+function updatePointerPosition(event: MouseEvent, renderer: any, sizes: { width: number; height: number }, pointer: any): void {
   const rect = renderer.domElement.getBoundingClientRect();
   pointer.x = ((event.clientX - rect.left) / sizes.width) * 2 - 1;
   pointer.y = -((event.clientY - rect.top) / sizes.height) * 2 + 1;
 }
 
-function updateTouchPosition(event: TouchEvent, renderer: THREE.WebGLRenderer, sizes: { width: number; height: number }, pointer: THREE.Vector2): void {
+function updateTouchPosition(event: TouchEvent, renderer: any, sizes: { width: number; height: number }, pointer: any): void {
   const rect = renderer.domElement.getBoundingClientRect();
   const touch = event.touches[0] || event.changedTouches[0];
   if (!touch) return;
@@ -82,19 +82,19 @@ function updateTouchPosition(event: TouchEvent, renderer: THREE.WebGLRenderer, s
   pointer.y = -((touch.clientY - rect.top) / sizes.height) * 2 + 1;
 }
 
-function checkHover(model: THREE.Object3D, raycaster: THREE.Raycaster, camera: THREE.Camera, pointer: THREE.Vector2): boolean {
+function checkHover(model: any, raycaster: any, camera: any, pointer: any): boolean {
   raycaster.setFromCamera(pointer, camera);
   return raycaster.intersectObjects(model.children, true).length > 0;
 }
 
-function applyHoverEffect(model: THREE.Object3D, originalScale: number, isEntering: boolean): void {
+function applyHoverEffect(model: any, originalScale: number, isEntering: boolean): void {
   const targetScale = isEntering ? originalScale * CONFIG.ANIMATION.HOVER_SCALE : originalScale;
   const duration = isEntering ? CONFIG.ANIMATION.HOVER_DURATION : CONFIG.ANIMATION.LEAVE_DURATION;
   const ease = isEntering ? CONFIG.ANIMATION.HOVER_EASE : CONFIG.ANIMATION.LEAVE_EASE;
   gsap.to(model.scale, { x: targetScale, y: targetScale, z: targetScale, duration, ease });
 }
 
-function applyClickEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): gsap.core.Tween {
+function applyClickEffect(model: any, originalScale: number, basePos: any): gsap.core.Tween {
   gsap.killTweensOf(model.position);
   gsap.to(model.scale, {
     x: originalScale * CONFIG.ANIMATION.CLICK_SCALE,
@@ -110,7 +110,7 @@ function applyClickEffect(model: THREE.Object3D, originalScale: number, basePos:
   });
 }
 
-function applyReleaseEffect(model: THREE.Object3D, originalScale: number, basePos: THREE.Vector3): void {
+function applyReleaseEffect(model: any, originalScale: number, basePos: any): void {
   gsap.killTweensOf(model.position);
   gsap.to(model.scale, {
     x: originalScale, y: originalScale, z: originalScale,
@@ -120,7 +120,7 @@ function applyReleaseEffect(model: THREE.Object3D, originalScale: number, basePo
   gsap.to(model.position, { x: basePos.x, z: basePos.z, duration: CONFIG.ANIMATION.RELEASE_DURATION, ease: CONFIG.ANIMATION.RELEASE_EASE });
 }
 
-function updateLevitation(model: THREE.Object3D, elapsedTime: number, isPressed: boolean, basePos: THREE.Vector3): void {
+function updateLevitation(model: any, elapsedTime: number, isPressed: boolean, basePos: any): void {
   if (isPressed) return;
 
   model.position.y = basePos.y + CONFIG.MODEL.Y_OFFSET + Math.sin(elapsedTime * CONFIG.ANIMATION.LEVITATION_SPEED) * CONFIG.ANIMATION.LEVITATION_AMPLITUDE;
@@ -212,7 +212,7 @@ export function initScene3D(): void {
 
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  let model: THREE.Object3D | null = null;
+  let model: any | null = null;
   let originalScale = 1;
   let basePosition = new THREE.Vector3(0, 0, 0);
   let isPressed = false;
@@ -220,8 +220,9 @@ export function initScene3D(): void {
   let shakeAnimation: gsap.core.Tween | null = null;
 
   const loader = new GLTFLoader();
-  loader.load('/B.glb', (gltf) => {
+  loader.load('/B.glb', (gltf: any) => {
     model = gltf.scene;
+    if (!model) return;
     centerModel(model);
     enableShadows(model);
 
@@ -235,7 +236,7 @@ export function initScene3D(): void {
       ease: CONFIG.ANIMATION.ENTRY_EASE
     });
 
-    scene.add(gltf.scene);
+    scene.add(model);
   });
 
   const onInteractionMove = (event: MouseEvent) => {
