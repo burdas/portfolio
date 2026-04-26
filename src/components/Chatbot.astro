@@ -10,7 +10,7 @@ import logo from "../assets/logo.avif";
 >
   <button
     id="chat-toggle"
-    class="chat-button-initial h-20 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 text-white flex items-center justify-end shadow-2xl hover:scale-105 hover:border-white/30 transition-all duration-500 cursor-pointer overflow-hidden group"
+    class="chat-button-initial h-20 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 hover:border-transparent text-white flex items-center justify-end shadow-2xl hover:scale-105 transition-all duration-500 cursor-pointer overflow-hidden group relative"
     aria-label="Toggle chat"
   >
     <div
@@ -27,16 +27,14 @@ import logo from "../assets/logo.avif";
       </div>
     </div>
 
-    <div
-      class="shrink-0 w-20 h-20 flex items-center justify-center p-3 z-10 bg-black/10"
-    >
+    <div class="shrink-0 w-20 h-20 flex items-center justify-center p-3 z-10">
       <Image src={logo} alt="Logo" class="w-full h-full object-contain" />
     </div>
   </button>
 
   <div
     id="chat-window"
-    class="fixed inset-0 sm:absolute sm:inset-auto sm:bottom-24 sm:right-0 w-full h-full sm:w-125 sm:h-[calc(100dvh-150px)] sm:max-h-[800px] bg-black/60 backdrop-blur-3xl sm:rounded-[2rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col opacity-0 translate-y-8 transition-all duration-500 ease-out overflow-hidden border-0 sm:border sm:border-white/10 hidden"
+    class="fixed inset-0 sm:absolute sm:inset-auto sm:bottom-24 sm:right-0 w-full h-full sm:w-125 sm:h-[calc(100dvh-150px)] sm:max-h-200 bg-black/60 backdrop-blur-3xl sm:rounded-4xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col opacity-0 translate-y-8 transition-all duration-500 ease-out overflow-hidden border-0 sm:border sm:border-white/10"
   >
     <div class="p-8 pb-0 flex justify-end items-center sm:hidden">
       <button
@@ -206,5 +204,41 @@ import logo from "../assets/logo.avif";
   #chat-input::placeholder {
     font-size: 0.75rem; /* text-xs */
     transition: opacity 0.3s;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 50%;
+    }
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+
+  #chat-toggle:hover {
+    border-color: transparent;
+  }
+
+  #chat-toggle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px; /* rounded-full */
+    padding: 2px; /* border thickness */
+    background: linear-gradient(90deg, #c084fc, #818cf8, #c084fc);
+    background-size: 200% 100%;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+    pointer-events: none;
+  }
+
+  #chat-toggle:hover::after {
+    opacity: 1;
+    animation: shimmer 3s linear infinite;
   }
 </style>
