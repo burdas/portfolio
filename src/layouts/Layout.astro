@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import SEO from "../components/Shared/SEO.astro";
 import Chatbot from "../components/Chatbot.astro";
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ const {
       imageHeight={ogImageHeight}
       canonicalURL={canonicalURL} 
     />
+    <Analytics />
     <ClientRouter />
     <script>
       import { initScrollReveal } from "../scripts/scrollReveal";
