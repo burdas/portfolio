@@ -6,6 +6,7 @@ import Footer from "../components/Footer.astro";
 import SEO from "../components/Shared/SEO.astro";
 import Chatbot from "../components/Chatbot.astro";
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 interface Props {
   title: string;
@@ -38,6 +39,7 @@ const {
       canonicalURL={canonicalURL} 
     />
     <Analytics />
+    <SpeedInsights />
     <ClientRouter />
     <script>
       import { initScrollReveal } from "../scripts/scrollReveal";
