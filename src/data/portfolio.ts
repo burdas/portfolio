@@ -1,7 +1,7 @@
 export const personalInfo = {
   name: "Marcos Burdaspar",
   title: "Ingeniero Informático | Desarrollador Full Stack | Analista de Datos",
-  email: "burdasparmarcos@gmail.com",
+  email: "contacto@burdas.anonaddy.com",
   linkedin: "https://www.linkedin.com/in/marcos-burdaspar-celada-91a660155",
   github: "https://github.com/burdas",
   available: true
